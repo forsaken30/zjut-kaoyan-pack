@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>浙工大材料学院导师加权打分工具</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --danger: #dc2626;
+    --success: #16a34a;
+    --warn: #ea580c;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --border: #cbd5e1;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --muted: #94a3b8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* 顶部工具栏 */
+  .toolbar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--primary);
+    color: #fff;
+    padding: 10px 12px;
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .toolbar h1 { font-size: 16px; font-weight: 600; margin-right: auto; white-space: nowrap; }
+  .toolbar button {
+    background: rgba(255,255,255,0.2);
+    color: #fff; border: none;
+    padding: 7px 12px; border-radius: 6px;
+    font-size: 13px; cursor: pointer;
+    white-space: nowrap;
+  }
+  .toolbar button:active { background: rgba(255,255,255,0.35); }
+  /* 标签页 */
+  .tabs {
+    display: flex;
+    background: var(--card);
+    border-bottom: 2px solid var(--border);
+    position: sticky; top: 52px; z-index: 90;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    flex: 1; min-width: 80px;
+    padding: 12px 8px;
+    background: none; border: none;
+    font-size: 14px; color: var(--text-light);
+    cursor: pointer; border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+  /* 内容区 */
+  .content { padding: 12px; max-width: 900px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  /* 卡片 */
+  .card {
+    background: var(--card);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .card-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+  /* 表格行（权重/打分项） */
+  .field-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .field-row:last-child { border-bottom: none; }
+  .field-name { flex: 1; font-size: 14px; }
+  .field-name.is-id { color: var(--primary); font-weight: 600; }
+  .field-name.disabled { color: var(--muted); text-decoration: line-through; }
+  .weight-input, .score-input {
+    width: 64px; padding: 6px 4px;
+    text-align: center;
+    border: 1px solid var(--border);
+    border-radius: 4px; font-size: 14px;
+  }
+  .weight-input:disabled, .score-input:disabled { background: #f1f5f9; color: var(--muted); }
+  .weight-label { font-size: 12px; color: var(--text-light); width: 70px; }
+  /* 开关 */
+  .switch { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute; cursor: pointer; inset: 0;
+    background: #cbd5e1; border-radius: 22px; transition: 0.3s;
+  }
+  .slider:before {
+    content: ""; position: absolute;
+    height: 16px; width: 16px; left: 3px; bottom: 3px;
+    background: #fff; border-radius: 50%; transition: 0.3s;
+  }
+  .switch input:checked + .slider { background: var(--success); }
+  .switch input:checked + .slider:before { transform: translateX(18px); }
+  /* 按钮 */
+  .btn {
+    padding: 9px 16px; border: none; border-radius: 6px;
+    font-size: 14px; cursor: pointer; text-align: center;
+  }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-success { background: var(--success); color: #fff; }
+  .btn-warn { background: var(--warn); color: #fff; }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-outline { background: #fff; color: var(--primary); border: 1px solid var(--primary); }
+  .btn:active { opacity: 0.8; }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  /* 总权重提示 */
+  .total-weight {
+    font-size: 14px; font-weight: 600;
+    padding: 8px 12px; border-radius: 6px; margin-top: 8px;
+  }
+  .total-weight.ok { background: #dcfce7; color: var(--success); }
+  .total-weight.warn { background: #fef3c7; color: var(--warn); }
+  /* 导师列表 */
+  .tutor-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 12px;
+    background: var(--card); border-radius: 8px;
+    margin-bottom: 6px; cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    transition: transform 0.1s;
+  }
+  .tutor-item:active { transform: scale(0.98); }
+  .tutor-item.selected { border: 2px solid var(--primary); }
+  .tutor-rank {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600; flex-shrink: 0;
+  }
+  .tutor-rank.top1 { background: #f59e0b; }
+  .tutor-rank.top2 { background: #94a3b8; }
+  .tutor-rank.top3 { background: #b45309; }
+  .tutor-name { flex: 1; font-size: 15px; font-weight: 500; }
+  .tutor-score { font-size: 16px; font-weight: 700; color: var(--primary); }
+  .tutor-score.none { color: var(--muted); }
+  /* 空状态 */
+  .empty {
+    text-align: center; padding: 40px 20px;
+    color: var(--text-light);
+  }
+  .empty p { margin-bottom: 12px; }
+  /* 详情区 */
+  .detail-header { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--primary); }
+  .detail-section { margin-bottom: 16px; }
+  .detail-section-title {
+    font-size: 14px; font-weight: 600; color: var(--text-light);
+    margin-bottom: 8px; padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .data-label { width: 100px; font-size: 13px; color: var(--text-light); flex-shrink: 0; }
+  .data-input {
+    flex: 1; padding: 6px 8px;
+    border: 1px solid var(--border); border-radius: 4px;
+    font-size: 14px;
+  }
+  /* 状态栏 */
+  .statusbar {
+    position: sticky; bottom: 0;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 6px 12px;
+    font-size: 12px; color: var(--text-light);
+    text-align: center;
+  }
+  /* 隐藏文件输入 */
+  #csvFile { display: none; }
+  /* 提示框 */
+  .toast {
+    position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.8); color: #fff;
+    padding: 10px 20px; border-radius: 6px;
+    font-size: 14px; z-index: 200;
+    animation: fadein 0.3s;
+    max-width: 90%; text-align: center;
+  }
+  @keyframes fadein { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; } }
+  /* 桌面端两栏 */
+  @media (min-width: 768px) {
+    .desktop-split { display: flex; gap: 12px; }
+    .desktop-split > * { flex: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 工具栏 -->
+<div class="toolbar">
+  <h1>导师加权打分</h1>
+  <button onclick="document.getElementById('csvFile').click()">导入CSV</button>
+  <button onclick="exportCSV()">导出</button>
+  <button onclick="saveAll()">保存</button>
+  <input type="file" id="csvFile" accept=".csv,text/csv" onchange="importCSV(event)">
+</div>
+
+<!-- 标签页 -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('weights')">权重设置</button>
+  <button class="tab-btn" onclick="switchTab('list')">导师列表</button>
+  <button class="tab-btn" onclick="switchTab('detail')">打分详情</button>
+</div>
+
+<!-- 内容区 -->
+<div class="content">
+
+  <!-- 权重设置面板 -->
+  <div class="panel active" id="panel-weights">
+    <div class="card">
+      <div class="card-title">指标权重与启用开关</div>
+      <div style="margin-bottom:8px;">
+        <label style="font-size:13px;color:var(--text-light);">标识字段：</label>
+        <select id="nameFieldSelect" onchange="onNameFieldChange()" style="padding:5px;border-radius:4px;border:1px solid var(--border);font-size:14px;"></select>
+      </div>
+      <div id="weightList"></div>
+      <div class="total-weight ok" id="totalWeightLabel"></div>
+      <div class="btn-row" style="margin-top:10px;">
+        <button class="btn btn-outline" onclick="normalizeWeights()">归一化</button>
+        <button class="btn btn-outline" onclick="averageWeights()">平均分配</button>
+        <button class="btn btn-danger" onclick="clearAllScores()">清空评分</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 导师列表面板 -->
+  <div class="panel" id="panel-list">
+    <div class="card" style="padding:8px;">
+      <div class="btn-row">
+        <button class="btn btn-success" onclick="addTutor()">+ 新增导师</button>
+        <button class="btn btn-danger" onclick="deleteCurrentTutor()">删除当前</button>
+      </div>
+    </div>
+    <div id="tutorList"></div>
+  </div>
+
+  <!-- 打分详情面板 -->
+  <div class="panel" id="panel-detail">
+    <div id="detailContent"></div>
+  </div>
+
+</div>
+
+<!-- 状态栏 -->
+<div class="statusbar" id="statusbar">就绪</div>
+
+<script>
+// ============================================================
+// 数据管理器
+// ============================================================
+const STORAGE_KEY = 'tutorScoringData';
+const CONFIG_KEY = 'tutorScoringConfig';
+
+const DEFAULT_FIELDS = [
+  "导师姓名","招生名额","研究方向","在研项目体量",
+  "是否有推送浙大读博先例","往届毕业生去向","导师指导风格",
+  "名额稳定性","课题组饱和程度","指导时间投入","毕业文章门槛"
+];
+const DEFAULT_WEIGHTS = {
+  "招生名额":10,"研究方向":8,"在研项目体量":15,
+  "是否有推送浙大读博先例":10,"往届毕业生去向":12,
+  "导师指导风格":10,"名额稳定性":10,"课题组饱和程度":10,
+  "指导时间投入":8,"毕业文章门槛":7
+};
+const NAME_KEYWORDS = ["导师姓名","姓名","name","导师","teacher"];
+
+let state = {
+  fields: [],
+  nameField: "导师姓名",
+  weights: {},
+  enabled: {},
+  tutors: [],
+  currentIdx: null
+};
+
+// ---------- 初始化 ----------
+function initDefaults() {
+  state.fields = [...DEFAULT_FIELDS];
+  state.nameField = "导师姓名";
+  state.weights = {};
+  state.enabled = {};
+  for (let f of state.fields) {
+    if (f === state.nameField) {
+      state.weights[f] = 0;
+      state.enabled[f] = false;
+    } else {
+      state.weights[f] = DEFAULT_WEIGHTS[f] || 10;
+      state.enabled[f] = true;
+    }
+  }
+}
+
+function loadState() {
+  try {
+    const cfg = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}');
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    if (cfg.fields && cfg.fields.length) {
+      state.fields = cfg.fields;
+      state.nameField = cfg.nameField || "导师姓名";
+      state.weights = cfg.weights || {};
+      state.enabled = cfg.enabled || {};
+      for (let f of state.fields) {
+        if (state.weights[f] === undefined) state.weights[f] = (f === state.nameField ? 0 : 10);
+        if (state.enabled[f] === undefined) state.enabled[f] = (f !== state.nameField);
+      }
+    } else {
+      initDefaults();
+    }
+    state.tutors = data.tutors || [];
+    state.currentIdx = null;
+    reconcileTutors();
+  } catch(e) {
+    console.error('加载失败', e);
+    initDefaults();
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(CONFIG_KEY, JSON.stringify({
+      fields: state.fields, nameField: state.nameField,
+      weights: state.weights, enabled: state.enabled
+    }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({tutors: state.tutors}));
+  } catch(e) { console.error('保存失败', e); }
+}
+
+function reconcileTutors() {
+  for (let t of state.tutors) {
+    if (!t.data) t.data = {};
+    if (!t.scores) t.scores = {};
+    for (let f of state.fields) {
+      if (t.data[f] === undefined) t.data[f] = '';
+      if (t.scores[f] === undefined) t.scores[f] = null;
+    }
+  }
+}
+
+// ---------- CSV 解析 ----------
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], next = text[i+1];
+    if (inQuotes) {
+      if (c === '"' && next === '"') { field += '"'; i++; }
+      else if (c === '"') { inQuotes = false; }
+      else { field += c; }
+    } else {
+      if (c === '"') { inQuotes = true; }
+      else if (c === ',') { row.push(field); field = ''; }
+      else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+      else if (c === '\r') { /* skip */ }
+      else { field += c; }
+    }
+  }
+  if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
+  return rows.filter(r => r.some(c => c.trim() !== ''));
+}
+
+function detectNameField(headers) {
+  for (let h of headers) {
+    for (let kw of NAME_KEYWORDS) {
+      if (h.toLowerCase().includes(kw.toLowerCase())) return h;
+    }
+  }
+  return headers[0] || "导师姓名";
+}
+
+function importCSV(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const text = e.target.result.replace(/^\uFEFF/, ''); // 去BOM
+      const rows = parseCSV(text);
+      if (rows.length < 2) { showToast('CSV无有效数据'); return; }
+      const headers = rows[0].map(h => h.trim());
+      state.fields = headers;
+      state.nameField = detectNameField(headers);
+      for (let h of headers) {
+        if (state.weights[h] === undefined) state.weights[h] = (h === state.nameField ? 0 : 10);
+        if (state.enabled[h] === undefined) state.enabled[h] = (h !== state.nameField);
+      }
+      for (let key of Object.keys(state.weights)) {
+        if (!headers.includes(key)) { delete state.weights[key]; delete state.enabled[key]; }
+      }
+      state.tutors = [];
+      for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const data = {}, scores = {};
+        for (let j = 0; j < headers.length; j++) {
+          data[headers[j]] = (row[j] || '').trim();
+          scores[headers[j]] = null;
+        }
+        state.tutors.push({data, scores});
+      }
+      normalizeWeights();
+      saveState();
+      renderAll();
+      showToast('导入成功：' + state.tutors.length + ' 位导师');
+    } catch(err) {
+      showToast('导入失败：' + err.message);
+    }
+    event.target.value = ''; // 允许重复导入同一文件
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+// ---------- 权重操作 ----------
+function getActiveFields() {
+  return state.fields.filter(f => f !== state.nameField && state.enabled[f]);
+}
+function getTotalWeight() {
+  let sum = 0;
+  for (let f of getActiveFields()) sum += state.weights[f] || 0;
+  return Math.round(sum * 10) / 10;
+}
+function normalizeWeights() {
+  const active = getActiveFields();
+  const total = active.reduce((s,f) => s + (state.weights[f]||0), 0);
+  if (total > 0) {
+    const factor = 100 / total;
+    for (let f of active) state.weights[f] = Math.round((state.weights[f]||0) * factor * 10) / 10;
+  }
+  saveState(); renderWeights(); renderDetail(); renderList(); updateStatus();
+}
+function adjustWeights(changedField, newVal) {
+  newVal = Math.max(0, Math.min(100, parseFloat(newVal) || 0));
+  state.weights[changedField] = newVal;
+  const remaining = 100 - newVal;
+  const others = state.fields.filter(f => f !== changedField && f !== state.nameField && state.enabled[f]);
+  if (others.length === 0) return;
+  const otherSum = others.reduce((s,f) => s + (state.weights[f]||0), 0);
+  if (otherSum > 0) {
+    for (let f of others) state.weights[f] = Math.round(remaining * ((state.weights[f]||0) / otherSum) * 10) / 10;
+  } else {
+    const per = Math.round(remaining / others.length * 10) / 10;
+    for (let f of others) state.weights[f] = per;
+  }
+}
+function toggleField(field, enabled) {
+  state.enabled[field] = enabled;
+  if (!enabled) {
+    const freed = state.weights[field] || 0;
+    state.weights[field] = 0;
+    const others = getActiveFields().filter(f => f !== field);
+    if (others.length && freed > 0) {
+      const otherSum = others.reduce((s,f) => s + (state.weights[f]||0), 0);
+      if (otherSum > 0) {
+        for (let f of others) state.weights[f] = Math.round((state.weights[f] + freed * (state.weights[f]/otherSum)) * 10) / 10;
+      } else {
+        const per = Math.round(freed / others.length * 10) / 10;
+        for (let f of others) state.weights[f] = per;
+      }
+    }
+  } else {
+    const others = getActiveFields().filter(f => f !== field);
+    if (others.length) {
+      const avg = Math.round(100 / (others.length + 1) * 10) / 10;
+      state.weights[field] = avg;
+      const remaining = 100 - avg;
+      const otherSum = others.reduce((s,f) => s + (state.weights[f]||0), 0);
+      if (otherSum > 0) {
+        for (let f of others) state.weights[f] = Math.round(remaining * (state.weights[f]/otherSum) * 10) / 10;
+      } else {
+        const per = Math.round(remaining / others.length * 10) / 10;
+        for (let f of others) state.weights[f] = per;
+      }
+    } else {
+      state.weights[field] = 100;
+    }
+  }
+  saveState(); renderWeights(); renderDetail(); renderList(); updateStatus();
+}
+function averageWeights() {
+  const active = getActiveFields();
+  if (active.length) {
+    const per = Math.round(100 / active.length * 10) / 10;
+    for (let f of active) state.weights[f] = per;
+  }
+  saveState(); renderWeights(); renderDetail(); renderList(); updateStatus();
+}
+function onNameFieldChange() {
+  const newField = document.getElementById('nameFieldSelect').value;
+  if (!newField || newField === state.nameField) return;
+  state.weights[state.nameField] = 10;
+  state.enabled[state.nameField] = true;
+  state.nameField = newField;
+  state.weights[newField] = 0;
+  state.enabled[newField] = false;
+  normalizeWeights();
+}
+function onWeightInput(field, value) {
+  const v = parseFloat(value);
+  if (isNaN(v) || v < 0 || v > 100) {
+    renderWeights(); return;
+  }
+  adjustWeights(field, v);
+  saveState(); renderWeights(); renderDetail(); renderList(); updateStatus();
+}
+
+// ---------- 分数计算 ----------
+function calcTotal(tutor) {
+  let totalW = 0, sum = 0;
+  for (let f of state.fields) {
+    if (f === state.nameField) continue;
+    if (!state.enabled[f]) continue;
+    const s = tutor.scores[f];
+    if (s === null || s === '' || s === undefined) continue;
+    const v = parseFloat(s);
+    if (isNaN(v) || v < 0 || v > 10) continue;
+    const w = state.weights[f] || 0;
+    totalW += w; sum += v * w;
+  }
+  return totalW > 0 ? Math.round((sum / totalW) * 100) / 100 : 0;
+}
+function getSortedTutors() {
+  return state.tutors.map((t, i) => ({t, i}))
+    .sort((a, b) => calcTotal(b.t) - calcTotal(a.t));
+}
+
+// ---------- 导师操作 ----------
+function addTutor() {
+  const name = prompt('请输入导师姓名：');
+  if (!name || !name.trim()) return;
+  const data = {}, scores = {};
+  for (let f of state.fields) {
+    data[f] = (f === state.nameField) ? name.trim() : '';
+    scores[f] = null;
+  }
+  state.tutors.push({data, scores});
+  state.currentIdx = state.tutors.length - 1;
+  saveState(); renderAll(); switchTab('detail');
+  showToast('已新增导师');
+}
+function deleteCurrentTutor() {
+  if (state.currentIdx === null) { showToast('请先选择导师'); return; }
+  const name = state.tutors[state.currentIdx].data[state.nameField] || '';
+  if (!confirm('确定删除导师「' + name + '」？')) return;
+  state.tutors.splice(state.currentIdx, 1);
+  state.currentIdx = null;
+  saveState(); renderAll();
+}
+function selectTutor(idx) {
+  state.currentIdx = idx;
+  renderList(); renderDetail(); updateStatus();
+  switchTab('detail');
+}
+function clearAllScores() {
+  if (state.tutors.length === 0) { showToast('暂无导师数据'); return; }
+  if (!confirm('确定清空所有导师的全部评分？')) return;
+  for (let t of state.tutors) {
+    for (let f in t.scores) t.scores[f] = null;
+  }
+  saveState(); renderAll();
+}
+function saveDataValue(field, value) {
+  if (state.currentIdx === null) return;
+  state.tutors[state.currentIdx].data[field] = value;
+  if (field === state.nameField) renderList();
+  saveState();
+}
+function saveScoreValue(field, value) {
+  if (state.currentIdx === null) return;
+  if (value === '') {
+    state.tutors[state.currentIdx].scores[field] = null;
+  } else {
+    const v = parseFloat(value);
+    if (isNaN(v) || v < 0 || v > 10) {
+      showToast('请输入0-10的数字'); renderDetail(); return;
+    }
+    state.tutors[state.currentIdx].scores[field] = v;
+  }
+  saveState(); renderList(); renderDetail(); updateStatus();
+}
+
+// ---------- CSV 导出 ----------
+function exportCSV() {
+  if (state.tutors.length === 0) { showToast('暂无数据可导出'); return; }
+  const sorted = getSortedTutors();
+  const headers = [...state.fields, '综合得分', '排名'];
+  const lines = [headers.join(',')];
+  sorted.forEach((item, rank) => {
+    const row = state.fields.map(f => {
+      let v = item.t.data[f] || '';
+      if (v.includes(',') || v.includes('"')) v = '"' + v.replace(/"/g,'""') + '"';
+      return v;
+    });
+    row.push(calcTotal(item.t));
+    row.push(rank + 1);
+    lines.push(row.join(','));
+  });
+  const csv = '\uFEFF' + lines.join('\n');
+  const blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '导师排名表.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('已导出 导师排名表.csv');
+}
+function saveAll() {
+  saveState();
+  showToast('数据已保存');
+}
+
+// ============================================================
+// UI 渲染
+// ============================================================
+function fmtNum(v) {
+  v = parseFloat(v) || 0;
+  return v === Math.floor(v) ? String(v) : v.toFixed(1);
+}
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const btns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+  const idx = {weights:0, list:1, detail:2}[name];
+  if (btns[idx]) btns[idx].classList.add('active');
+  if (panels[idx]) panels[idx].classList.add('active');
+  if (name === 'detail') renderDetail();
+}
+function renderAll() {
+  renderWeights(); renderList(); renderDetail(); updateStatus();
+}
+
+// ---------- 权重面板 ----------
+function renderWeights() {
+  const select = document.getElementById('nameFieldSelect');
+  select.innerHTML = state.fields.map(f =>
+    `<option value="${f}" ${f===state.nameField?'selected':''}>${f}</option>`).join('');
+  const list = document.getElementById('weightList');
+  list.innerHTML = state.fields.map(f => {
+    const isId = f === state.nameField;
+    const en = state.enabled[f];
+    const w = state.weights[f] || 0;
+    return `<div class="field-row">
+      <div class="field-name ${isId?'is-id':''} ${!en&&!isId?'disabled':''}">${isId?'[标识] ':''}${f}</div>
+      <input class="weight-input" type="number" min="0" max="100" step="0.1"
+        value="${fmtNum(w)}" ${isId||!en?'disabled':''}
+        onchange="onWeightInput('${f}', this.value)">
+      <label class="switch">
+        <input type="checkbox" ${en?'checked':''} ${isId?'disabled':''}
+          onchange="toggleField('${f}', this.checked)">
+        <span class="slider"></span>
+      </label>
+    </div>`;
+  }).join('');
+  const tw = getTotalWeight();
+  const label = document.getElementById('totalWeightLabel');
+  if (Math.abs(tw - 100) < 0.5) {
+    label.className = 'total-weight ok';
+    label.textContent = '启用项权重总和：' + tw + '% ✓';
+  } else {
+    label.className = 'total-weight warn';
+    label.textContent = '启用项权重总和：' + tw + '% ⚠ 需归一化';
+  }
+}
+
+// ---------- 导师列表 ----------
+function renderList() {
+  const container = document.getElementById('tutorList');
+  if (state.tutors.length === 0) {
+    container.innerHTML = `<div class="empty">
+      <p>暂无导师数据</p>
+      <p>点击上方"导入CSV"导入数据<br>或点击"+ 新增导师"手动添加</p>
+    </div>`;
+    return;
+  }
+  const sorted = getSortedTutors();
+  container.innerHTML = sorted.map((item, rank) => {
+    const name = item.t.data[state.nameField] || '';
+    const score = calcTotal(item.t);
+    const rankClass = rank === 0 ? 'top1' : rank === 1 ? 'top2' : rank === 2 ? 'top3' : '';
+    const selected = item.i === state.currentIdx ? 'selected' : '';
+    return `<div class="tutor-item ${selected}" onclick="selectTutor(${item.i})">
+      <div class="tutor-rank ${rankClass}">${rank+1}</div>
+      <div class="tutor-name">${name}</div>
+      <div class="tutor-score ${score===0?'none':''}">${score>0?score.toFixed(2):'-'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ---------- 详情面板 ----------
+function renderDetail() {
+  const container = document.getElementById('detailContent');
+  if (state.currentIdx === null || state.currentIdx >= state.tutors.length) {
+    container.innerHTML = `<div class="empty">
+      <p>未选择导师</p>
+      <p>请在"导师列表"中选择一位导师进行打分</p>
+    </div>`;
+    return;
+  }
+  const tutor = state.tutors[state.currentIdx];
+  const name = tutor.data[state.nameField] || '';
+  const total = calcTotal(tutor);
+  let html = `<div class="card">
+    <div class="detail-header">当前导师：${name}</div>
+    <div class="detail-section">
+      <div class="detail-section-title">基本信息</div>`;
+  for (let f of state.fields) {
+    const v = tutor.data[f] || '';
+    html += `<div class="data-row">
+      <div class="data-label">${f}</div>
+      <input class="data-input" value="${v.replace(/"/g,'&quot;')}"
+        onchange="saveDataValue('${f}', this.value)">
+    </div>`;
+  }
+  html += `</div><div class="detail-section">
+    <div class="detail-section-title">打分（0-10分，留空=不计分）</div>`;
+  for (let f of state.fields) {
+    if (f === state.nameField) continue;
+    const s = tutor.scores[f];
+    const en = state.enabled[f];
+    const w = state.weights[f] || 0;
+    html += `<div class="field-row">
+      <div class="field-name ${!en?'disabled':''}">${f}</div>
+      <input class="score-input" type="number" min="0" max="10" step="0.1"
+        value="${s!==null&&s!==undefined?fmtNum(s):''}"
+        ${!en?'disabled':''}
+        onchange="saveScoreValue('${f}', this.value)">
+      <div class="weight-label">${en?'权重'+fmtNum(w)+'%':'(已停用)'}</div>
+    </div>`;
+  }
+  html += `</div><div class="total-weight ok" style="text-align:center;font-size:16px;">
+    综合得分：${total.toFixed(2)} / 10
+  </div></div>`;
+  container.innerHTML = html;
+}
+
+// ---------- 状态栏 ----------
+function updateStatus() {
+  const n = state.tutors.length;
+  const tw = getTotalWeight();
+  let sel = '';
+  if (state.currentIdx !== null && state.currentIdx < state.tutors.length) {
+    const name = state.tutors[state.currentIdx].data[state.nameField] || '';
+    const score = calcTotal(state.tutors[state.currentIdx]);
+    sel = ' | 当前: ' + name + ' 得分 ' + score.toFixed(2);
+  }
+  document.getElementById('statusbar').textContent =
+    `导师 ${n} 人 | 启用项权重 ${tw}%${sel}`;
+}
+
+// ---------- 提示 ----------
+let toastTimer = null;
+function showToast(msg) {
+  let el = document.querySelector('.toast');
+  if (el) el.remove();
+  el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.remove(), 2500);
+}
+
+// ============================================================
+// 启动
+// ============================================================
+loadState();
+renderAll();
+</script>
+</body>
+</html>
