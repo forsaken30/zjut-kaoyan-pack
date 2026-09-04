@@ -76,12 +76,11 @@ async function doLogin(event) {
         
         var data = await response.json();
         
-        if (data.ok && data.encryptedKey) {
-            // 用返回的salt和encryptedKey解密内容密钥
-            var key = await deriveKey(password, data.salt);
-            var contentKeyBytes = await decryptBlob(key, data.encryptedKey);
-            var contentKeyB64 = bytesToB64(new Uint8Array(contentKeyBytes));
-            
+        if (data.ok && data.token) {
+            // 直接使用后端返回的主密钥解密内容
+            var contentKeyBytes = b64ToBytes(data.token);
+            var contentKeyB64 = data.token;
+
             // 创建会话并显示内容
             var sessionData = {
                 username: data.username,
@@ -90,6 +89,43 @@ async function doLogin(event) {
             };
             createSession(sessionData, contentKeyB64);
             await showContent(contentKeyBytes);
+        } else if (data.ok) {
+            // 后端认证成功但未返回密钥，回退到本地ACCOUNTS查找加密密钥
+            var localAccount = null;
+            var uname = (username || '').trim().toLowerCase();
+            for (var i = 0; i < ACCOUNTS.length; i++) {
+                if (ACCOUNTS[i].u.toLowerCase() === uname) {
+                    localAccount = ACCOUNTS[i];
+                    break;
+                }
+            }
+            if (localAccount && localAccount.k) {
+                var key = await deriveKey(password, localAccount.s);
+                var contentKeyBytes = await decryptBlob(key, localAccount.k);
+                var contentKeyB64 = bytesToB64(new Uint8Array(contentKeyBytes));
+                var sessionData = {
+                    username: data.username,
+                    role: data.role,
+                    type: data.type
+                };
+                createSession(sessionData, contentKeyB64);
+                await showContent(contentKeyBytes);
+            } else if (data.encryptedKey) {
+                var key2 = await deriveKey(password, data.salt);
+                var contentKeyBytes2 = await decryptBlob(key2, data.encryptedKey);
+                var contentKeyB64_2 = bytesToB64(new Uint8Array(contentKeyBytes2));
+                var sessionData2 = {
+                    username: data.username,
+                    role: data.role,
+                    type: data.type
+                };
+                createSession(sessionData2, contentKeyB64_2);
+                await showContent(contentKeyBytes2);
+            } else {
+                showError('认证异常：未返回解密密钥');
+                btn.disabled = false;
+                btn.textContent = '登 录';
+            }
         } else {
             showError(data.error || '登录失败');
             btn.disabled = false;
