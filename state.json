@@ -1,4 +1,6 @@
 {
   "trial_activations": {},
-  "account_overrides": {}
+  "account_overrides": {
+    "vip_perm": "inactive"
+  }
 }
