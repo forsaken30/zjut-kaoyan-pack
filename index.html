@@ -2610,6 +2610,10 @@ function checkMaster(){
 
       window.__SCF_TOKEN = data.token;
 
+      if(data.adminToken){
+        sessionStorage.setItem('scf_admin_token',data.adminToken);
+        window.__SCF_ADMIN_TOKEN = data.adminToken;
+      }
 
       recordLoginFail(true);
 
@@ -19823,6 +19827,8 @@ var SCF_API_URL = 'https://1471815268-kfxq13ymgt.ap-guangzhou.tencentscf.com';
 
 
 window.__SCF_TOKEN = sessionStorage.getItem('scf_token') || null;
+window.__SCF_ADMIN_TOKEN = sessionStorage.getItem('scf_admin_token') || null;
+function getAdminToken(){ return window.__SCF_ADMIN_TOKEN || sessionStorage.getItem('scf_admin_token'); }
 
 
 
@@ -19852,7 +19858,7 @@ if(typeof window.toggleAccountStatus === 'function'){
     fetch(SCF_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
 
 
-      body:JSON.stringify({action:action,token:window.__SCF_TOKEN,username:username})
+      body:JSON.stringify({action:action,adminToken:getAdminToken(),username:username})
 
 
     }).then(function(r){return r.json();}).then(function(d){
@@ -19906,7 +19912,7 @@ if(typeof window.refreshTrialAccount === 'function'){
     fetch(SCF_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
 
 
-      body:JSON.stringify({action:'refresh_trial',token:window.__SCF_TOKEN,username:username})
+      body:JSON.stringify({action:'refresh_trial',adminToken:getAdminToken(),username:username})
 
 
     }).then(function(r){return r.json();}).then(function(d){
@@ -19966,7 +19972,7 @@ if(typeof window.updateAccountStatus === 'function'){
     fetch(SCF_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
 
 
-      body:JSON.stringify({action:action,token:window.__SCF_TOKEN,username:username})
+      body:JSON.stringify({action:action,adminToken:getAdminToken(),username:username})
 
 
     }).then(function(r){return r.json();}).then(function(d){
@@ -20005,16 +20011,16 @@ if(typeof window.updateAccountStatus === 'function'){
 function syncAccountsFromSCF(callback){
 
 
-  var token = sessionStorage.getItem('scf_token') || window.__SCF_TOKEN;
+  var adminToken = getAdminToken();
 
 
-  if(!token){ if(callback) callback(); return; }
+  if(!adminToken){ if(callback) callback(); return; }
 
 
   fetch(SCF_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
 
 
-    body:JSON.stringify({action:'list_accounts',token:token})
+    body:JSON.stringify({action:'list_accounts',adminToken:adminToken})
 
 
   }).then(function(r){return r.json();}).then(function(d){
