@@ -3,5 +3,7 @@
     "trial_24h": 1790589439.1881237,
     "trial_1h": 1790589447.6446123
   },
-  "account_overrides": {}
+  "account_overrides": {
+    "vip005": "inactive"
+  }
 }
