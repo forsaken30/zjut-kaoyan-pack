@@ -1118,6 +1118,8 @@ async function fetchLatestData(){
     var result = await resp.json();
     if(result && result.data){
       APP_DATA = result.data;
+      DATA_MASKED = !!result.masked;
+      setTimeout(function(){ if(typeof wrapTables==='function') wrapTables(); }, 50);
       // 如果返回 masked=true 且用户以为已登录，说明 session 过期了
       if(result.masked && result.role !== 'subscriber' && result.role !== 'trial' && result.role !== 'master'){
         // token 可能失效，清除让用户重新登录
@@ -5649,8 +5651,9 @@ function $(id){ return document.getElementById(id); }
 function el(tag, cls, html){ var e=document.createElement(tag); if(cls)e.className=cls; if(html!==undefined)e.innerHTML=html; return e; }
 
 
+var DATA_MASKED = true;
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function fmtVal(v){ if(typeof hasFullAccess==='function' && !hasFullAccess()) return '订阅可查看'; return (v===null || v===undefined || v==='') ? '订阅可查看' : esc(v); }
+function fmtVal(v){ if(typeof DATA_MASKED!=='undefined' && DATA_MASKED) return '订阅可查看'; return (v===null || v===undefined || v==='') ? '订阅可查看' : esc(v); }
 function wrapTables(){ var ts=document.querySelectorAll('table'); for(var i=0;i<ts.length;i++){ var t=ts[i]; if(t.parentNode && t.parentNode.classList && t.parentNode.classList.contains('data-table-wrap')) continue; var w=document.createElement('div'); w.className='data-table-wrap'; t.parentNode.insertBefore(w,t); w.appendChild(t); } }
 document.addEventListener('DOMContentLoaded', function(){ setTimeout(wrapTables, 300); });
 
