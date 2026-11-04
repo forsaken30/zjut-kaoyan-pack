@@ -3752,7 +3752,7 @@ function applyRoleUI(){
   var sb = $('statusbar');
 
 
-  if(sb) sb.textContent = roleTag + ' · 就绪';
+  if(sb) sb.textContent = roleTag + ' · 就绪' + versionTag();
 
 
   // 游客隐藏部分标签页
@@ -5615,6 +5615,9 @@ function el(tag, cls, html){ var e=document.createElement(tag); if(cls)e.classNa
 
 
 var DATA_MASKED = true;
+
+
+function versionTag(){ try{ var m=APP_DATA&&APP_DATA.meta; return (m&&m.version)?(' · 数据 '+m.version):''; }catch(e){ return ''; } }
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function fmtVal(v){ if(typeof DATA_MASKED!=='undefined' && DATA_MASKED) return '订阅可查看'; return (v===null || v===undefined || v==='') ? '订阅可查看' : esc(v); }
 function wrapTables(){ var ts=document.querySelectorAll('table'); for(var i=0;i<ts.length;i++){ var t=ts[i]; if(t.parentNode && t.parentNode.classList && t.parentNode.classList.contains('data-table-wrap')) continue; var w=document.createElement('div'); w.className='data-table-wrap'; t.parentNode.insertBefore(w,t); w.appendChild(t); } }
