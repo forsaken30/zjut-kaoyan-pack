@@ -13445,7 +13445,7 @@ function buildPositionData(score, cat, dir){
 
 function buildPositionLines(d){
   var L = [];
-  L.push('分数 ' + d.score + ' 分 · ' + (d.cat||'不限类别') + ' · ' + (d.dir||'未选方向'));
+  L.push('分数 ' + d.score + ' 分 · ' + (d.cat||'未选类别') + ' · ' + (d.dir||'未选方向'));
   if(!d.cat || !d.dir){
     L.push('分数段 ' + d.range + ' · 该段 2026 级 ' + d.dist + ' 人');
     L.push('选择报考类别与方向后，可查看对应的录取对比与导师');
