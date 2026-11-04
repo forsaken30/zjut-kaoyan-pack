@@ -7,6 +7,7 @@
   "password_hashes": {
     "master": "v1_6dab1c424ad3af143704a824c7ad34b4675c9374f20f613104bab7b92b9350e4.c1e6c0bd62cd7231",
     "vip_perm": "v1_b24197d1f38aff3b4b67795b213220c5e1a85f956078feaec5e78addcf51b7ed.3cacc12a17935bf5",
-    "trial_1h": "v1_4b3ae276a2a73607c0dec1bf29588a9de9871b926d50c8dec2b3e42cf18bf0a6.5f11831ce014e995"
+    "trial_1h": "v1_4b3ae276a2a73607c0dec1bf29588a9de9871b926d50c8dec2b3e42cf18bf0a6.5f11831ce014e995",
+    "trial_24h": "v1_fabc4b03b5bc339229d05e0ddaad10b20c0e2a4a2e7d50bc37eabfd54b848872.697e9ef17336b247"
   }
 }
