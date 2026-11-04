@@ -8827,7 +8827,7 @@ function renderDecision(){
   h += '<input class="data-ip" type="number" id="myScore" oninput="locateScore(this.value)" placeholder="如 330"></div>';
 
 
-  h += '<div class="data-row"><span class="data-lb">报考类别</span><select class="data-ip" id="locateCat" onchange="locateScore($(\'myScore\')?$(\'myScore\').value:\'\')"><option value="">不限</option><option value="学硕">学硕</option><option value="专硕">专硕</option></select></div>';
+  h += '<div class="data-row"><span class="data-lb">报考类别</span><select class="data-ip" id="locateCat" onchange="locateScore($(\'myScore\')?$(\'myScore\').value:\'\')"><option value="">请选择报考类别</option><option value="学硕">学硕</option><option value="专硕">专硕</option></select></div>';
 
 
   h += '<div class="data-row"><span class="data-lb">方向（必选）</span><select class="data-ip" id="locateDir" onchange="locateScore($(\'myScore\')?$(\'myScore\').value:\'\')"><option value="">请选择方向</option><option value="高分子">高分子</option><option value="材料科学">材料科学</option></select></div>';
@@ -13215,7 +13215,7 @@ function renderDecision(){
     gh += '<div class="rec-form"><div class="rec-form-row"><label>我的总分</label>';
     gh += '<input type="number" id="guestScore" placeholder="如 330" min="0" max="500" style="width:110px" value="' + esc(window.__scanScore||'') + '" oninput="guestLocate(this.value)">';
     gh += '<label style="margin-left:12px">报考类别</label>';
-    gh += '<select id="guestCat" onchange="guestLocate()"><option value="">不限</option><option value="学硕">学硕</option><option value="专硕">专硕</option></select>';
+    gh += '<select id="guestCat" onchange="guestLocate()"><option value="">请选择报考类别</option><option value="学硕">学硕</option><option value="专硕">专硕</option></select>';
     gh += '<label style="margin-left:12px">方向（必选）</label>';
     gh += '<select id="guestDir" onchange="guestLocate()"><option value="">请选择方向</option><option value="高分子">高分子</option><option value="材料科学">材料科学</option></select>';
     gh += '</div></div>';
@@ -13446,13 +13446,13 @@ function buildPositionData(score, cat, dir){
 function buildPositionLines(d){
   var L = [];
   L.push('分数 ' + d.score + ' 分 · ' + (d.cat||'不限类别') + ' · ' + (d.dir||'未选方向'));
-  if(!d.dir){
+  if(!d.cat || !d.dir){
     L.push('分数段 ' + d.range + ' · 该段 2026 级 ' + d.dist + ' 人');
-    L.push('选择报考方向后，可查看该方向的录取对比与导师');
+    L.push('选择报考类别与方向后，可查看对应的录取对比与导师');
     return L;
   }
   if(d.agg){
-    L.push('2026 级录取' + (d.cat?'':'（学硕+专硕）') + ' ' + d.agg.count + ' 人 · 均分 ' + d.agg.avg.toFixed(1)
+    L.push('2026 级录取 ' + d.agg.count + ' 人 · 均分 ' + d.agg.avg.toFixed(1)
       + ' · 最低 ' + d.agg.min + ' · 最高 ' + d.agg.max);
     var da = d.score - d.agg.avg, dm = d.score - d.agg.min;
     L.push('与均分差 ' + (da>=0?'+':'') + da.toFixed(1) + ' 分 · 与最低分差 ' + (dm>=0?'+':'') + dm + ' 分');
@@ -14652,7 +14652,7 @@ function renderScoreLocator(m){
     '<input class="data-ip" type="number" id="myScore" oninput="locateScore(this.value)" placeholder="如 330"></div>' +
 
 
-    '<div class="data-row"><span class="data-lb">报考类别</span><select class="data-ip" id="locateCat" onchange="locateScore($(\'myScore\')?$(\'myScore\').value:\'\')"><option value="">不限</option><option value="学硕">学硕</option><option value="专硕">专硕</option></select></div>' +
+    '<div class="data-row"><span class="data-lb">报考类别</span><select class="data-ip" id="locateCat" onchange="locateScore($(\'myScore\')?$(\'myScore\').value:\'\')"><option value="">请选择报考类别</option><option value="学硕">学硕</option><option value="专硕">专硕</option></select></div>' +
 
 
     '<div class="data-row"><span class="data-lb">方向（必选）</span><select class="data-ip" id="locateDir" onchange="locateScore($(\'myScore\')?$(\'myScore\').value:\'\')"><option value="">请选择方向</option><option value="高分子">高分子</option><option value="材料科学">材料科学</option></select></div>' +
