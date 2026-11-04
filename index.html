@@ -922,7 +922,7 @@ tr:hover{background:#eff6ff}
 <button class="tab-btn" onclick="switchTab('tutors',this)">导师名额</button>
 
 
-<button class="tab-btn" onclick="switchTab('scoring',this)">导师评价</button>
+<button class="tab-btn" onclick="switchTab('scoring',this)">招生与方向</button>
 
 
 <button class="tab-btn" onclick="switchTab('admission',this)">导师招生</button>
@@ -6960,28 +6960,16 @@ function renderTutorCard(tu){
   var h = '<div class="tutor-card">';
 
 
-  // 等级标签
-
-
-  var gr = tu.grade || '';
-
-
-  if(gr){
-
-
-    var gc = gr==='S'?'grade-s':gr==='A'?'grade-a':gr==='B'?'grade-b':gr==='C'?'grade-c':'';
-
-
-    h += '<span class="badge '+gc+'">'+esc(gr)+'</span>';
-
-
-  }
+  // 分级仅用于内部排序，不对外展示
 
 
   h += '<span class="tutor-name">'+esc(tu.name)+'</span>';
 
 
   h += '<span class="tutor-inst">'+esc(tu.institute)+'</span>';
+
+
+  if(tu.role) h += '<span class="badge" style="background:#ecfdf5;color:#047857">'+esc(tu.role)+'</span>';
 
 
   if(tu.joint){ h += '<span class="badge" style="background:#ede9fe;color:#6d28d9">联合培养</span>'; }
@@ -7026,37 +7014,14 @@ function renderTutorCard(tu){
   if(tu.role) h += '<span class="tutor-role">'+esc(tu.role)+'</span>';
 
 
-  // 评价标签：延毕、横向项目
+  // 延毕/横向等评价性标签不再对外展示
 
 
-  if(hasFullAccess()){
-
-
-    if(tu.delay) h += '<span class="badge" style="background:'+('有延毕'===tu.delay?'#fee2e2':'#dcfce1')+';color:'+('有延毕'===tu.delay?'#991b1b':'#166534')+'">'+esc(tu.delay)+'</span>';
-
-
-    if(tu.horizontal) h += '<span class="badge" style="background:#e0f2fe;color:#075985">横向:'+esc(tu.horizontal)+'</span>';
-
-
-  }
-
-
-  // 评级理由（优先reason字段，其次field字段）
-
-
-  var reason = tu.reason || '';
-
-
-  if(!reason || reason==='nan' || reason==='NaN') reason = tu.field || '';
-
-
-  if(reason && reason!=='nan' && reason!=='NaN') h += '<div class="tutor-reason">'+esc(reason)+'</div>';
 
 
   // 评价备注
 
 
-  if(hasFullAccess() && tu.evalNote && tu.evalNote!=='nan' && tu.evalNote!=='NaN') h += '<div class="tutor-reason" style="color:#475569;font-size:12px;border-left:3px solid #cbd5e1">📝 '+esc(tu.evalNote)+'</div>';
 
 
   h += '</div>';
@@ -7200,31 +7165,7 @@ function renderScoring(){
   var h = '';
 
 
-  h += '<div style="margin-bottom:10px;padding:10px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;color:#64748b;line-height:1.7">免责说明：等级由公开信息（职称、博导资格、招生名额、公开荣誉）综合整理，仅供参考，不代表对导师的评价。</div>';
-
-
-  h += '<div class="card"><div class="card-title">评级体系说明（按学术实力头衔评级）</div>';
-
-
-  h += '<div style="padding:8px 0;font-size:13px;color:#475569;line-height:1.8">';
-
-
-  h += '<b>S级</b>：学术权威/领军人物，国家级人才称号，公认大拿（如陶新永）<br>';
-
-
-  h += '<b>A级</b>：教授/博导，学术实力强，有一定行业影响力<br>';
-
-
-  h += '<b>B级</b>：副教授或普通教授，常规水平导师<br>';
-
-
-  h += '<b>C级</b>：新晋导师或学术积累较少（尽量少评此级）<br>';
-
-
-  h += '<span style="color:#94a3b8;font-size:12px">定性评价（S/A/B/C+延毕+横向项目）在管理后台「导师评价」模块编辑，下方量化打分作为补充参考</span>';
-
-
-  h += '</div></div>';
+  h += '<div style="margin-bottom:10px;padding:10px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;color:#64748b;line-height:1.7">说明：本模块展示导师的职称、2026 年招生名额与研究方向，信息来自公开资料整理，仅供参考。</div>';
 
 
   if(guest){
@@ -7590,28 +7531,10 @@ function renderScoringList(){
     var grTag = '';
 
 
-    if(t.grade){
-
-
-      var gc = t.grade==='S'?'grade-s':t.grade==='A'?'grade-a':t.grade==='B'?'grade-b':t.grade==='C'?'grade-c':'';
-
-
-      grTag = '<span class="badge '+gc+'" style="margin-right:4px">'+esc(t.grade)+'</span>';
-
-
-    }
-
-
     var dirTag = t.direction ? '<span style="font-size:12px;color:#5b21b6;margin-left:4px">'+esc(t.direction)+'</span>' : '';
 
 
     var delayTag = '';
-
-
-    if(t.delay==='有延毕') delayTag = '<span style="font-size:12px;color:#dc2626;margin-left:4px">⚠️延毕</span>';
-
-
-    else if(t.delay==='无延毕') delayTag = '<span style="font-size:12px;color:#16a34a;margin-left:4px">✅无延毕</span>';
 
 
     h += '<div class="tutor-item '+sel+'" onclick="selectTutor(this.getAttribute(\'data-k\'))" data-k="'+esc(t.key)+'">';
@@ -7710,55 +7633,22 @@ function renderScoringDetail(){
     h += '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px;margin-bottom:12px">';
 
 
-    h += '<div style="font-size:12px;color:#64748b;margin-bottom:6px;font-weight:600">📋 定性评价</div>';
+    h += '<div style="font-size:12px;color:#64748b;margin-bottom:6px;font-weight:600">📋 招生情况与研究方向</div>';
 
 
     h += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px">';
 
 
-    if(t.grade){
-
-
-      var gc = t.grade==='S'?'grade-s':t.grade==='A'?'grade-a':t.grade==='B'?'grade-b':t.grade==='C'?'grade-c':'';
-
-
-      h += '<span class="badge '+gc+'">等级 '+esc(t.grade)+'</span>';
-
-
-    }
+    if(t.role) h += '<span class="badge" style="background:#ecfdf5;color:#047857">'+esc(t.role)+'</span>';
 
 
     if(t.direction) h += '<span class="badge" style="background:#ede9fe;color:#5b21b6">'+esc(t.direction)+'</span>';
 
 
-    if(t.delay) h += '<span class="badge" style="background:'+('有延毕'===t.delay?'#fee2e2':'无延毕'===t.delay?'#dcfce1':'#f1f5f9')+';color:'+('有延毕'===t.delay?'#991b1b':'无延毕'===t.delay?'#166534':'#475569')+'">延毕: '+esc(t.delay)+'</span>';
-
-
-    if(t.horizontal) h += '<span class="badge" style="background:#e0f2fe;color:#075985">横向: '+esc(t.horizontal)+'</span>';
+    h += '<span class="badge" style="background:#e0e7ff;color:#1d4ed8">2026 名额 '+esc(t.total)+'</span>';
 
 
     h += '</div>';
-
-
-    var reason = t.field || t.reason || '';
-
-
-    if(reason && reason!=='nan' && reason!=='NaN'){
-
-
-      h += '<div style="font-size:12px;color:#475569;margin-bottom:4px"><b>评级理由：</b>'+esc(reason)+'</div>';
-
-
-    }
-
-
-    if(t.evalNote && t.evalNote!=='nan' && t.evalNote!=='NaN'){
-
-
-      h += '<div style="font-size:12px;color:#475569"><b>备注：</b>'+esc(t.evalNote)+'</div>';
-
-
-    }
 
 
     h += '</div>';
@@ -8937,6 +8827,12 @@ function renderDecision(){
   h += '<input class="data-ip" type="number" id="myScore" oninput="locateScore(this.value)" placeholder="如 330"></div>';
 
 
+  h += '<div class="data-row"><span class="data-lb">报考类别</span><select class="data-ip" id="locateCat" onchange="locateScore($(\'myScore\')?$(\'myScore\').value:\'\')"><option value="">不限</option><option value="学硕">学硕</option><option value="专硕">专硕</option></select></div>';
+
+
+  h += '<div class="data-row"><span class="data-lb">方向（必选）</span><select class="data-ip" id="locateDir" onchange="locateScore($(\'myScore\')?$(\'myScore\').value:\'\')"><option value="">请选择方向</option><option value="高分子">高分子</option><option value="材料科学">材料科学</option></select></div>';
+
+
   h += '<div id="locateResult"></div>';
 
 
@@ -8993,7 +8889,9 @@ function locateScore(val){
   if(!c) return;
   var score = parseFloat(val);
   if(!score || isNaN(score)){ c.innerHTML = ''; return; }
-  c.innerHTML = buildPositionBlock(Math.round(score), '', '');
+  var _cat = $('locateCat') ? $('locateCat').value : '';
+  var _dir = $('locateDir') ? $('locateDir').value : '';
+  c.innerHTML = buildPositionBlock(Math.round(score), _cat, _dir);
   if(typeof trackEvent==='function'){
     trackEvent('locate_score', {score: Math.round(score)});
     if(DATA_MASKED) trackEvent('free_card_generated', {score: Math.round(score)});
@@ -12428,31 +12326,7 @@ function renderAdminSettings(c){
     '</div>' +
 
 
-    '<div class="module-card">' +
-
-
-    '<h4 style="margin-bottom:8px">📝 评价数据代码导出</h4>' +
-
-
-    '<p style="color:#64748b;margin-bottom:12px;font-size:13px">将当前所有导师评价数据导出为 JS 代码，替换源码中的 TUTOR_EVAL_DATA 后重新部署，所有访客即可看到最新评价。</p>' +
-
-
-    '<button class="btn btn-pri" onclick="exportEvalCode()">📋 生成评价数据代码</button>' +
-
-
-    '<div id="evalCodeOutput" style="margin-top:10px;display:none">' +
-
-
-    '<p style="font-size:12px;color:#16a34a;margin-bottom:6px">✅ 代码已生成，复制后替换源码中的 TUTOR_EVAL_DATA 对象：</p>' +
-
-
-    '<textarea id="evalCodeText" style="width:100%;height:200px;font-family:monospace;font-size:12px;padding:8px;border:1px solid #cbd5e1;border-radius:6px;resize:vertical" readonly></textarea>' +
-
-
-    '<button class="btn btn-sec" style="margin-top:8px" onclick="copyEvalCode()">📋 复制代码</button>' +
-
-
-    '</div>' +
+    
 
 
     '</div>' +
@@ -12534,165 +12408,6 @@ function exportAdminData(){
 
 
 // 导出评价数据代码（用于替换源码中的 TUTOR_EVAL_DATA）
-
-
-function exportEvalCode(){
-
-
-  if(!APP_DATA.tutors){ alert('暂无导师数据'); return; }
-
-
-  var lines = [];
-
-
-  // 按研究所分组输出，便于阅读
-
-
-  var groups = {};
-
-
-  for(var i=0;i<APP_DATA.tutors.length;i++){
-
-
-    var t = APP_DATA.tutors[i];
-
-
-    var inst = t.institute || '其他';
-
-
-    if(!groups[inst]) groups[inst] = [];
-
-
-    // 只导出有评价数据的导师
-
-
-    var hasData = t.grade || t.role || t.delay || t.horizontal || (t.reason && t.reason!=='nan' && t.reason!=='NaN') || t.evalNote;
-
-
-    if(hasData){
-
-
-      var fields = [];
-
-
-      if(t.grade) fields.push("grade:'"+t.grade+"'");
-
-
-      if(t.role) fields.push("role:'"+t.role+"'");
-
-
-      if(t.delay) fields.push("delay:'"+t.delay+"'");
-
-
-      if(t.horizontal) fields.push("horizontal:'"+t.horizontal+"'");
-
-
-      if(t.reason && t.reason!=='nan' && t.reason!=='NaN'){
-
-
-        var r = t.reason.replace(/'/g, "\\'");
-
-
-        fields.push("");
-
-
-      }
-
-
-      if(t.evalNote){
-
-
-        var n = t.evalNote.replace(/'/g, "\\'").replace(/\n/g, '\\n');
-
-
-        fields.push("evalNote:'"+n+"'");
-
-
-      }
-
-
-      groups[inst].push("  '"+t.tutor+"':{"+fields.join(',')+"}");
-
-
-    }
-
-
-  }
-
-
-  var groupLines = [];
-
-
-  for(var g in groups){
-
-
-    if(groups[g].length > 0){
-
-
-      groupLines.push("  // "+g);
-
-
-      groupLines.push(groups[g].join(',\n'));
-
-
-    }
-
-
-  }
-
-
-  var code = "var TUTOR_EVAL_DATA = {\n" + groupLines.join(',\n') + "\n};";
-
-
-  var out = document.getElementById('evalCodeOutput');
-
-
-  var txt = document.getElementById('evalCodeText');
-
-
-  if(out && txt){
-
-
-    txt.value = code;
-
-
-    out.style.display = 'block';
-
-
-  }
-
-
-}
-
-
-
-
-
-function copyEvalCode(){
-
-
-  var txt = document.getElementById('evalCodeText');
-
-
-  if(txt){
-
-
-    txt.select();
-
-
-    document.execCommand('copy');
-
-
-    alert('代码已复制到剪贴板');
-
-
-  }
-
-
-}
-
-
-
 
 
 function importAdminData(e){
@@ -13501,8 +13216,8 @@ function renderDecision(){
     gh += '<input type="number" id="guestScore" placeholder="如 330" min="0" max="500" style="width:110px" value="' + esc(window.__scanScore||'') + '" oninput="guestLocate(this.value)">';
     gh += '<label style="margin-left:12px">报考类别</label>';
     gh += '<select id="guestCat" onchange="guestLocate()"><option value="">不限</option><option value="学硕">学硕</option><option value="专硕">专硕</option></select>';
-    gh += '<label style="margin-left:12px">方向</label>';
-    gh += '<select id="guestDir" onchange="guestLocate()"><option value="">不限</option><option value="高分子">高分子</option><option value="材料科学">材料科学</option></select>';
+    gh += '<label style="margin-left:12px">方向（必选）</label>';
+    gh += '<select id="guestDir" onchange="guestLocate()"><option value="">请选择方向</option><option value="高分子">高分子</option><option value="材料科学">材料科学</option></select>';
     gh += '</div></div>';
     gh += '<div id="guestLocateResult"></div>';
     gh += '</div>';
@@ -13510,8 +13225,15 @@ function renderDecision(){
     p.innerHTML = gh;
     if(window.__scanScore){
       var _gs=$('guestScore');
-      if(_gs){ _gs.value=window.__scanScore; guestLocate(String(window.__scanScore)); }
-      window.__scanScore=0;
+      if(_gs){ _gs.value=window.__scanScore; }
+      if(window.__scanDir){
+        var _gd=$('guestDir'); var _dv = (window.__scanDir==='gaoxin'?'高分子':window.__scanDir==='cailiao'?'材料科学':'');
+        if(_gd && _dv) _gd.value=_dv;
+      }
+      if(!window.__scanApplied){
+        window.__scanApplied=1;
+        if(_gs) guestLocate(String(window.__scanScore));
+      }
     }
     return;
 
@@ -13723,9 +13445,14 @@ function buildPositionData(score, cat, dir){
 
 function buildPositionLines(d){
   var L = [];
-  L.push('分数 ' + d.score + ' 分 · ' + (d.cat||'不限类别') + ' · ' + (d.dir||'不限方向'));
+  L.push('分数 ' + d.score + ' 分 · ' + (d.cat||'不限类别') + ' · ' + (d.dir||'未选方向'));
+  if(!d.dir){
+    L.push('分数段 ' + d.range + ' · 该段 2026 级 ' + d.dist + ' 人');
+    L.push('选择报考方向后，可查看该方向的录取对比与导师');
+    return L;
+  }
   if(d.agg){
-    L.push('2026 级录取 ' + d.agg.count + ' 人 · 均分 ' + d.agg.avg.toFixed(1)
+    L.push('2026 级录取' + (d.cat?'':'（学硕+专硕）') + ' ' + d.agg.count + ' 人 · 均分 ' + d.agg.avg.toFixed(1)
       + ' · 最低 ' + d.agg.min + ' · 最高 ' + d.agg.max);
     var da = d.score - d.agg.avg, dm = d.score - d.agg.min;
     L.push('与均分差 ' + (da>=0?'+':'') + da.toFixed(1) + ' 分 · 与最低分差 ' + (dm>=0?'+':'') + dm + ' 分');
@@ -14923,6 +14650,12 @@ function renderScoreLocator(m){
 
 
     '<input class="data-ip" type="number" id="myScore" oninput="locateScore(this.value)" placeholder="如 330"></div>' +
+
+
+    '<div class="data-row"><span class="data-lb">报考类别</span><select class="data-ip" id="locateCat" onchange="locateScore($(\'myScore\')?$(\'myScore\').value:\'\')"><option value="">不限</option><option value="学硕">学硕</option><option value="专硕">专硕</option></select></div>' +
+
+
+    '<div class="data-row"><span class="data-lb">方向（必选）</span><select class="data-ip" id="locateDir" onchange="locateScore($(\'myScore\')?$(\'myScore\').value:\'\')"><option value="">请选择方向</option><option value="高分子">高分子</option><option value="材料科学">材料科学</option></select></div>' +
 
 
     '<div id="locateResult"></div>' +
