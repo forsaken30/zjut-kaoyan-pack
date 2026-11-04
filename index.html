@@ -5651,6 +5651,8 @@ function el(tag, cls, html){ var e=document.createElement(tag); if(cls)e.classNa
 
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function fmtVal(v){ if(typeof hasFullAccess==='function' && !hasFullAccess()) return '订阅可查看'; return (v===null || v===undefined || v==='') ? '订阅可查看' : esc(v); }
+function wrapTables(){ var ts=document.querySelectorAll('table'); for(var i=0;i<ts.length;i++){ var t=ts[i]; if(t.parentNode && t.parentNode.classList && t.parentNode.classList.contains('data-table-wrap')) continue; var w=document.createElement('div'); w.className='data-table-wrap'; t.parentNode.insertBefore(w,t); w.appendChild(t); } }
+document.addEventListener('DOMContentLoaded', function(){ setTimeout(wrapTables, 300); });
 
 
 function showToast(msg){ var t=el('div','toast',msg); document.body.appendChild(t); setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); },2500); }
@@ -6049,6 +6051,9 @@ function switchTab(name, btn){
   if(p) p.classList.add('active');
 
 
+  if(typeof wrapTables==='function') wrapTables();
+
+
 }
 
 
@@ -6328,7 +6333,7 @@ function renderOverview(){
   h += '<div class="card"><div class="card-title">调剂情况</div>';
 
 
-  h += '<table><thead><tr><th>年份</th><th>批次</th><th>类别</th><th>方向</th><th>人数</th><th>均分</th></tr></thead><tbody>';
+  h += '<div class="data-table-wrap"><table><thead><tr><th>年份</th><th>批次</th><th>类别</th><th>方向</th><th>人数</th><th>均分</th></tr></thead><tbody>';
 
 
   for(var tr=0;tr<APP_DATA.transfer.length;tr++){
@@ -6340,7 +6345,7 @@ function renderOverview(){
     if(tf.batch==='合计' || tf.batch==='调剂复试名单' || tf.batch==='调剂有复试成绩'){
 
 
-      h += '<tr><td>'+tf.year+'</td><td>'+esc(tf.batch)+'</td><td>'+esc(tf.category)+'</td><td>'+esc(tf.direction)+'</td><td>'+tf.count+'</td><td>'+tf.avgScore+'</td></tr>';
+      h += '<tr><td>'+esc(tf.year)+'</td><td>'+esc(tf.batch)+'</td><td>'+esc(tf.category)+'</td><td>'+esc(tf.direction)+'</td><td>'+fmtVal(tf.count)+'</td><td>'+fmtVal(tf.avgScore)+'</td></tr>';
 
 
     }
