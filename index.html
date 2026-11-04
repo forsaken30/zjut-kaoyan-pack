@@ -761,7 +761,6 @@ tr:hover{background:#eff6ff}
   .tabs{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .tabs::-webkit-scrollbar{display:none}
   .tab-btn{flex:1 1 auto;min-width:0;padding:10px 4px;font-size:12px}
-  table{min-width:0}
   .card-content,.admin-table-wrap,.data-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 }
 </style>
@@ -5982,7 +5981,7 @@ function init(){
   if(ci) ci.addEventListener('change', handleCSV);
 
 
-  if(typeof DATA_FAILED!=='undefined' && DATA_FAILED){ setStatus('数据加载失败，请刷新重试'); } else { setStatus('就绪 · 共 ' + tutorHeadcount() + ' 位导师' + (APP_DATA.meta&&APP_DATA.meta.jointRows?'（含'+APP_DATA.meta.jointRows+'条联合培养行）':'')); }
+  if(typeof DATA_FAILED!=='undefined' && DATA_FAILED){ setStatus('数据加载失败，请刷新重试'); } else { setStatus('就绪 · 共 ' + tutorHeadcount() + ' 位导师' + (APP_DATA.meta&&APP_DATA.meta.jointRows?'（含'+APP_DATA.meta.jointRows+'条联合培养行）':'') + (APP_DATA.meta&&APP_DATA.meta.version?' · 数据 '+APP_DATA.meta.version:'')); }
   if(typeof wrapTables==='function') setTimeout(wrapTables, 30);
 
 
@@ -12559,7 +12558,7 @@ function renderAll2(){
   if(typeof renderDecision==='function') renderDecision();
 
 
-  if(typeof DATA_FAILED!=='undefined' && DATA_FAILED){ setStatus('数据加载失败，请刷新重试'); } else { setStatus('就绪 · 共 ' + tutorHeadcount() + ' 位导师' + (APP_DATA.meta&&APP_DATA.meta.jointRows?'（含'+APP_DATA.meta.jointRows+'条联合培养行）':'')); }
+  if(typeof DATA_FAILED!=='undefined' && DATA_FAILED){ setStatus('数据加载失败，请刷新重试'); } else { setStatus('就绪 · 共 ' + tutorHeadcount() + ' 位导师' + (APP_DATA.meta&&APP_DATA.meta.jointRows?'（含'+APP_DATA.meta.jointRows+'条联合培养行）':'') + (APP_DATA.meta&&APP_DATA.meta.version?' · 数据 '+APP_DATA.meta.version:'')); }
   if(typeof wrapTables==='function') setTimeout(wrapTables, 30);
 
 
