@@ -760,7 +760,8 @@ tr:hover{background:#eff6ff}
   body{overflow-x:hidden}
   .tabs{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .tabs::-webkit-scrollbar{display:none}
-  .tab-btn{flex:0 0 auto;min-width:auto;padding:11px 10px;font-size:12.5px}
+  .tab-btn{flex:1 1 auto;min-width:0;padding:10px 4px;font-size:12px}
+  table{min-width:0}
   .card-content,.admin-table-wrap,.data-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 }
 </style>
@@ -1125,6 +1126,7 @@ async function fetchLatestData(){
         // token 可能失效，清除让用户重新登录
         if(sessionStorage.getItem('scf_token')){
           sessionStorage.removeItem('scf_token');
+          showToast('登录已过期，请重新登录');
         }
       }
       return true;
@@ -1139,7 +1141,8 @@ function tutorHeadcount(){ var m=APP_DATA.meta||{}; return m.tutorCount || APP_D
 function quotaTotal(){ var m=APP_DATA.meta||{}; if(m.quotaTotal) return m.quotaTotal; var s=0; (APP_DATA.tutors||[]).forEach(function(t){ s+=(t.total||0); }); return s; }
 
 var _dataFailNotified=false;
-function notifyDataFail(){ if(_dataFailNotified) return; _dataFailNotified=true; setStatus('数据加载失败，请刷新重试'); showToast('数据加载失败，请检查网络后重试'); }
+var DATA_FAILED=false;
+function notifyDataFail(){ if(_dataFailNotified) return; _dataFailNotified=true; DATA_FAILED=true; setStatus('数据加载失败，请刷新重试'); showToast('数据加载失败，请检查网络后重试'); }
 
 
 var ACCOUNTS_KEY = 'decision_accounts'; // 订阅账号存储键
@@ -2659,6 +2662,7 @@ function checkMaster(){
 
       window.__SCF_TOKEN = data.token;
 
+      if(data.dailyCode){ sessionStorage.setItem('daily_code',data.dailyCode); }
       if(data.adminToken){
         sessionStorage.setItem('scf_admin_token',data.adminToken);
         window.__SCF_ADMIN_TOKEN = data.adminToken;
@@ -2898,7 +2902,7 @@ function showDailyPanel(){
   var panel = document.getElementById('dailyPanel');
 
 
-  var code = getDailyPassword();
+  var code = sessionStorage.getItem('daily_code') || getDailyPassword();
 
 
   var today = getTodayStr();
@@ -2937,7 +2941,7 @@ function showDailyPanel(){
 function copyDailyCode(){
 
 
-  var code = getDailyPassword();
+  var code = sessionStorage.getItem('daily_code') || getDailyPassword();
 
 
   var ta = document.createElement('textarea');
@@ -3010,7 +3014,7 @@ async function unlockApp(){
     }
 
 
-  }, 350);
+  });
 
 
 }
@@ -3259,34 +3263,23 @@ function checkLock(){
     // 访客模式：验证今日动态密码
 
 
-    var daily = getDailyPassword();
-
-
-    if(pwd === daily){
-
-
+    var _dailyBody = JSON.stringify({password:pwd, type:'daily'});
+fetch(SCF_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:_dailyBody})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(data && data.ok && data.token){
+      sessionStorage.setItem(LOCK_SESSION_KEY,'1');
+      sessionStorage.setItem(LOCK_DATE_KEY,today);
+      sessionStorage.setItem(LOCK_ROLE_KEY,'visitor');
+      sessionStorage.setItem('scf_token',data.token);
+      window.__SCF_TOKEN = data.token;
       recordLoginFail(true);
-
-
-      sessionStorage.setItem(LOCK_SESSION_KEY, '1');
-
-
-      sessionStorage.setItem(LOCK_DATE_KEY, today);
-
-
-      sessionStorage.setItem(LOCK_ROLE_KEY, 'visitor'); // 记录为访客
-
-
       unlockApp();
-
-
     } else {
-
-
+      recordLoginFail(false);
       lockError('今日密码错误或已过期');
-
-
     }
+  });
 
 
   }
@@ -3358,7 +3351,7 @@ function showDailyPanel(){
   var panel = document.getElementById('dailyPanel');
 
 
-  var code = getDailyPassword();
+  var code = sessionStorage.getItem('daily_code') || getDailyPassword();
 
 
   var today = getTodayStr();
@@ -3397,7 +3390,7 @@ function showDailyPanel(){
 function copyDailyCode(){
 
 
-  var code = getDailyPassword();
+  var code = sessionStorage.getItem('daily_code') || getDailyPassword();
 
 
   if(navigator.clipboard){
@@ -3484,10 +3477,10 @@ function unlockApp(){
   if(ls){ ls.style.transition='opacity 0.3s'; ls.style.opacity='0'; setTimeout(function(){ ls.remove(); }, 300); }
 
 
-  // 解锁后应用权限
+  // 解锁后先拉完整数据，再应用权限
 
 
-  setTimeout(function(){
+  fetchLatestData().then(function(){
 
 
     if(typeof applyRoleUI === 'function') applyRoleUI();
@@ -5006,364 +4999,364 @@ let APP_DATA = {
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "240-259",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "260-279",
-   "count": 4
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "280-299",
-   "count": 17
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "300-319",
-   "count": 13
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "320-339",
-   "count": 10
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "340-359",
-   "count": 2
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "360-379",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "380-399",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "400+",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "240-259",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "260-279",
-   "count": 1
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "280-299",
-   "count": 6
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "300-319",
-   "count": 5
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "320-339",
-   "count": 5
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "340-359",
-   "count": 4
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "360-379",
-   "count": 3
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "380-399",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "400+",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "240-259",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "260-279",
-   "count": 22
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "280-299",
-   "count": 56
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "300-319",
-   "count": 37
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "320-339",
-   "count": 29
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "340-359",
-   "count": 12
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "360-379",
-   "count": 8
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "380-399",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "400+",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "240-259",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "260-279",
-   "count": 3
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "280-299",
-   "count": 8
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "300-319",
-   "count": 8
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "320-339",
-   "count": 4
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "340-359",
-   "count": 3
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "360-379",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "380-399",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "400+",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "240-259",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "260-279",
-   "count": 18
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "280-299",
-   "count": 19
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "300-319",
-   "count": 12
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "320-339",
-   "count": 12
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "340-359",
-   "count": 4
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "360-379",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "380-399",
-   "count": 2
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "400+",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "240-259",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "260-279",
-   "count": 3
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "280-299",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "300-319",
-   "count": 4
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "320-339",
-   "count": 7
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "340-359",
-   "count": 0
+   "count": "订阅可查看"
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "360-379",
-   "count": 1
+   "count": "订阅可查看"
   }
  ],
  "transfer": [
@@ -5483,7 +5476,7 @@ let APP_DATA = {
     "check": "订阅可查看",
     "xueShuo": "订阅可查看",
     "zhuanShuo": "订阅可查看",
-    "note": "学硕专硕分两天复试"
+    "note": "订阅可查看"
    },
    {
     "year": "2025年",
@@ -5491,90 +5484,61 @@ let APP_DATA = {
     "check": "订阅可查看",
     "xueShuo": "订阅可查看",
     "zhuanShuo": "订阅可查看",
-    "note": "学硕专硕分两天复试"
-   },
-   {
-    "year": "2024年",
-    "notice": "订阅可查看",
-    "check": "订阅可查看",
-    "xueShuo": "订阅可查看",
-    "zhuanShuo": "订阅可查看",
-    "note": "学硕专硕同天复试，线下莫干山校区"
+    "note": "订阅可查看"
    }
   ],
   "process": [
    {
-    "step": "1. 发布复试通知",
-    "time": "3月下旬",
-    "desc": "学院官网发布复试通知及复试名单，含一志愿和调剂考生"
+    "step": "订阅可查看",
+    "time": "订阅可查看",
+    "desc": "订阅可查看"
    },
    {
-    "step": "2. 资格审查",
-    "time": "复试前1-2天",
-    "desc": "提交身份证、学历证书、成绩单、毕业论文等材料原件及复印件，学硕专硕分开审查"
-   },
-   {
-    "step": "3. 学硕复试",
-    "time": "3月30日",
-    "desc": "学硕考生面试，面试时间每生不少于20分钟"
+    "step": "订阅可查看",
+    "time": "订阅可查看",
+    "desc": "订阅可查看"
    }
   ],
   "flow": [
    {
-    "order": 1,
-    "name": "读承诺书",
-    "desc": "宣读诚信复试承诺书，确认遵守复试纪律"
+    "order": 0,
+    "name": "订阅可查看",
+    "desc": "订阅可查看"
    },
    {
-    "order": 2,
-    "name": "自我介绍",
-    "desc": "中文或英文自我介绍，展示个人基本情况、学习经历和科研兴趣"
-   },
-   {
-    "order": 3,
-    "name": "政策问题问答",
-    "desc": "思想政治素质考察，政治态度、道德品质、遵纪守法、诚实守信等"
+    "order": 0,
+    "name": "订阅可查看",
+    "desc": "订阅可查看"
    }
   ],
   "content": [
    {
-    "item": "英语听说能力",
-    "detail": "日常英语听说，自我介绍、问答交流",
-    "weight": "10%"
+    "item": "订阅可查看",
+    "detail": "订阅可查看",
+    "weight": "订阅可查看"
    },
    {
-    "item": "专业英语阅读翻译",
-    "detail": "专业英文文献现场阅读翻译",
-    "weight": "20%"
-   },
-   {
-    "item": "专业综合",
-    "detail": "理论知识与应用能力、发现/分析/解决问题能力、学科发展动态了解、发展潜力、思想政治素质和品德、创新精神/事业心/责任感/协作性/心理健康",
-    "weight": "70%"
+    "item": "订阅可查看",
+    "detail": "订阅可查看",
+    "weight": "订阅可查看"
    }
   ],
   "requirements": [
-   "复试采用面试形式，无笔试环节",
-   "复试成绩总分为100分，面试时间每生不少于20分钟",
-   "英语听说能力占10%，专业英语阅读翻译占20%，专业综合占70%"
+   "订阅可查看",
+   "订阅可查看"
   ],
   "tips": [
-   "一志愿保护到位，初试过线+复试合格基本录取",
-   "复试不看本科出身，双非/二本完全平等，全凭实力",
-   "英语听说能力仅占10%，但专业英语阅读翻译占20%，需重点准备英文文献翻译"
+   "订阅可查看",
+   "订阅可查看"
   ],
   "strategy": [
    {
-    "phase": "初试阶段",
-    "tasks": "数学/英语强化训练（2026拉分关键）、专业课以教材+真题为核心、政治稳扎稳打"
+    "phase": "订阅可查看",
+    "tasks": "订阅可查看"
    },
    {
-    "phase": "复试准备期",
-    "tasks": "准备中英文自我介绍、强化专业英语阅读翻译能力、复习专业核心知识、了解导师研究方向、整理大学成绩单/毕业论文/科研成果等补充材料"
-   },
-   {
-    "phase": "复试当天",
-    "tasks": "着装得体、自信从容、如实回答、20分钟内充分展现科研热情和学习能力、读承诺书时认真严肃"
+    "phase": "订阅可查看",
+    "tasks": "订阅可查看"
    }
   ]
  },
@@ -6018,7 +5982,8 @@ function init(){
   if(ci) ci.addEventListener('change', handleCSV);
 
 
-  setStatus('就绪 · 共 ' + tutorHeadcount() + ' 位导师' + (APP_DATA.meta&&APP_DATA.meta.jointRows?'（含'+APP_DATA.meta.jointRows+'条联合培养行）':''));
+  if(typeof DATA_FAILED!=='undefined' && DATA_FAILED){ setStatus('数据加载失败，请刷新重试'); } else { setStatus('就绪 · 共 ' + tutorHeadcount() + ' 位导师' + (APP_DATA.meta&&APP_DATA.meta.jointRows?'（含'+APP_DATA.meta.jointRows+'条联合培养行）':'')); }
+  if(typeof wrapTables==='function') setTimeout(wrapTables, 30);
 
 
 }
@@ -12591,7 +12556,8 @@ function renderAll2(){
   if(typeof renderDecision==='function') renderDecision();
 
 
-  setStatus('就绪 · 共 ' + tutorHeadcount() + ' 位导师' + (APP_DATA.meta&&APP_DATA.meta.jointRows?'（含'+APP_DATA.meta.jointRows+'条联合培养行）':''));
+  if(typeof DATA_FAILED!=='undefined' && DATA_FAILED){ setStatus('数据加载失败，请刷新重试'); } else { setStatus('就绪 · 共 ' + tutorHeadcount() + ' 位导师' + (APP_DATA.meta&&APP_DATA.meta.jointRows?'（含'+APP_DATA.meta.jointRows+'条联合培养行）':'')); }
+  if(typeof wrapTables==='function') setTimeout(wrapTables, 30);
 
 
 }
