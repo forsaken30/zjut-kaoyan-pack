@@ -8371,6 +8371,20 @@ function renderAdmission(){
   // 可以查看：显示完整数据
 
 
+  // 兜底：服务端尚未下发考生明细时，用 tutors 名额表渲染，避免空白
+  if(!ADMISSION_DATA.length){
+    h = '<div class="card"><div class="card-title">2026级导师名额（服务端明细加载中）</div>';
+    h += '<table class="data-table" style="width:100%;border-collapse:collapse;font-size:13px">';
+    h += '<tr style="background:#f1f5f9"><th style="padding:8px;text-align:left">导师</th><th style="padding:8px">研究所</th><th style="padding:8px">学硕</th><th style="padding:8px">专硕</th><th style="padding:8px">合计</th></tr>';
+    var ts2 = (APP_DATA && APP_DATA.tutors) || [];
+    for(var ti=0;ti<ts2.length;ti++){
+      h += '<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px">'+esc(ts2[ti].name)+'</td><td style="padding:8px">'+esc(ts2[ti].institute)+'</td><td style="padding:8px;text-align:center">'+ (ts2[ti].xueShuo||0) +'</td><td style="padding:8px;text-align:center">'+ (ts2[ti].zhuanShuo||0) +'</td><td style="padding:8px;text-align:center">'+ (ts2[ti].total||0) +'</td></tr>';
+    }
+    h += '</table></div>';
+    p.innerHTML = h;
+    return;
+  }
+
   var totalAll = 0, totalXue = 0, totalZhuan = 0;
 
 
