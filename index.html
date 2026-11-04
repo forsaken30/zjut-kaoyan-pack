@@ -4965,37 +4965,37 @@ let APP_DATA = {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
-   "count": 46,
-   "avgScore": null,
-   "minScore": null,
-   "maxScore": null,
-   "courseAvg": null,
-   "courseMin": null,
-   "courseMax": null
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看",
+   "minScore": "订阅可查看",
+   "maxScore": "订阅可查看",
+   "courseAvg": "订阅可查看",
+   "courseMin": "订阅可查看",
+   "courseMax": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
-   "count": 24,
-   "avgScore": null,
-   "minScore": null,
-   "maxScore": null,
-   "courseAvg": null,
-   "courseMin": null,
-   "courseMax": null
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看",
+   "minScore": "订阅可查看",
+   "maxScore": "订阅可查看",
+   "courseAvg": "订阅可查看",
+   "courseMin": "订阅可查看",
+   "courseMax": "订阅可查看"
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
-   "count": 164,
-   "avgScore": null,
-   "minScore": null,
-   "maxScore": null,
-   "courseAvg": null,
-   "courseMin": null,
-   "courseMax": null
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看",
+   "minScore": "订阅可查看",
+   "maxScore": "订阅可查看",
+   "courseAvg": "订阅可查看",
+   "courseMin": "订阅可查看",
+   "courseMax": "订阅可查看"
   }
  ],
  "scoreDist": [
@@ -5370,40 +5370,40 @@ let APP_DATA = {
    "batch": "合计",
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
-   "count": 35,
-   "avgScore": 335.3
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
   },
   {
    "year": 2024,
    "batch": "合计",
    "category": "专硕",
    "direction": "高分子",
-   "count": 78,
-   "avgScore": 311.4
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
   },
   {
    "year": 2024,
    "batch": "合计",
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
-   "count": 32,
-   "avgScore": 332.3
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
   },
   {
    "year": 2024,
    "batch": "合计",
    "category": "学硕",
    "direction": "高分子",
-   "count": 6,
-   "avgScore": 313.8
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
   },
   {
    "year": 2024,
    "batch": "第一批调剂",
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
-   "count": 19,
-   "avgScore": 336.2
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
   }
  ],
  "targets": [
@@ -5582,15 +5582,10 @@ let APP_DATA = {
   "tutorCount": 71,
   "jointRows": 15,
   "evalCount": 83,
-  "quotaTotal": 0,
+  "quotaTotal": 260,
   "note": "71 位导师（含 15 条中科院联合培养行，名额单列）；13 位仅有评价、未公布名额的导师不列入名额表，见评价页"
  }
 };
-
-
-
-
-
 // ===== 数据库覆盖逻辑 =====
 
 
@@ -5655,6 +5650,7 @@ function el(tag, cls, html){ var e=document.createElement(tag); if(cls)e.classNa
 
 
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function fmtVal(v){ if(typeof hasFullAccess==='function' && !hasFullAccess()) return '订阅可查看'; return (v===null || v===undefined || v==='') ? '订阅可查看' : esc(v); }
 
 
 function showToast(msg){ var t=el('div','toast',msg); document.body.appendChild(t); setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); },2500); }
@@ -6176,7 +6172,7 @@ function renderOverview(){
     h += '<div class="sub-title">'+y+' 年</div>';
 
 
-    h += '<table><thead><tr><th>类别</th><th>方向</th><th>人数</th><th>总分均</th><th>总分最低</th><th>总分最高</th><th>专业课均</th><th>专业课最低</th><th>专业课最高</th></tr></thead><tbody>';
+    h += '<div class="data-table-wrap"><table><thead><tr><th>类别</th><th>方向</th><th>人数</th><th>总分均</th><th>总分最低</th><th>总分最高</th><th>专业课均</th><th>专业课最低</th><th>专业课最高</th></tr></thead><tbody>';
 
 
     for(var k=0;k<APP_DATA.overview.length;k++){
@@ -6188,13 +6184,13 @@ function renderOverview(){
       if(o.year!==y) continue;
 
 
-      h += '<tr><td>'+esc(o.category)+'</td><td>'+esc(o.direction)+'</td><td>'+o.count+'</td><td>'+o.avgScore+'</td><td>'+o.minScore+'</td><td>'+o.maxScore+'</td><td>'+o.courseAvg+'</td><td>'+o.courseMin+'</td><td>'+o.courseMax+'</td></tr>';
+      h += '<tr><td>'+esc(o.category)+'</td><td>'+esc(o.direction)+'</td><td>'+fmtVal(o.count)+'</td><td>'+fmtVal(o.avgScore)+'</td><td>'+fmtVal(o.minScore)+'</td><td>'+fmtVal(o.maxScore)+'</td><td>'+fmtVal(o.courseAvg)+'</td><td>'+fmtVal(o.courseMin)+'</td><td>'+fmtVal(o.courseMax)+'</td></tr>';
 
 
     }
 
 
-    h += '</tbody></table>';
+    h += '</tbody></table></div>';
 
 
   }
