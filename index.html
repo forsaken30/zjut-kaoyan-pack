@@ -13493,12 +13493,27 @@ function renderDecision(){
 
   if(isGuest()){
 
-
-    p.innerHTML = '<div class="card"><div class="card-title">智能推荐</div><div style="padding:40px;text-align:center"><div style="font-size:48px;margin-bottom:16px">🔒</div><div style="font-size:15px;color:#64748b;margin-bottom:12px">智能推荐引擎仅限订阅用户使用</div><div style="font-size:13px;color:#94a3b8">请返回登录页选择「订阅登录」</div></div></div>';
-
-
+    // 游客免费版：分数定位卡片（分段+2位导师姓名），完整推荐引擎锁定
+    var gh = '';
+    gh += '<div class="card"><div class="card-title">📍 分数定位</div>';
+    gh += '<div style="font-size:13px;color:#64748b;line-height:1.8;margin-bottom:10px">输入总分，查看你在 2026 级录取统计中的位置（分段、均分/最低分差）。</div>';
+    gh += '<div class="rec-form"><div class="rec-form-row"><label>我的总分</label>';
+    gh += '<input type="number" id="guestScore" placeholder="如 330" min="0" max="500" style="width:110px" value="' + esc(window.__scanScore||'') + '" oninput="guestLocate(this.value)">';
+    gh += '<label style="margin-left:12px">报考类别</label>';
+    gh += '<select id="guestCat" onchange="guestLocate()"><option value="">不限</option><option value="学硕">学硕</option><option value="专硕">专硕</option></select>';
+    gh += '<label style="margin-left:12px">方向</label>';
+    gh += '<select id="guestDir" onchange="guestLocate()"><option value="">不限</option><option value="高分子">高分子</option><option value="材料科学">材料科学</option></select>';
+    gh += '</div></div>';
+    gh += '<div id="guestLocateResult"></div>';
+    gh += '</div>';
+    gh += '<div class="card" style="background:#fffbeb;border:1px solid #fde68a"><div style="font-size:13px;color:#92400e;line-height:1.9">🔒 <b>完整版智能推荐引擎</b>（按名额匹配导师、权重调节、对比）仅限订阅用户。<br><a href="#" onclick="if(typeof trackEvent===\'function\')trackEvent(\'cta_unlock_click\');goLogin();return false" style="color:#2563eb;font-weight:600">订阅登录</a> 后解锁。</div></div>';
+    p.innerHTML = gh;
+    if(window.__scanScore){
+      var _gs=$('guestScore');
+      if(_gs){ _gs.value=window.__scanScore; guestLocate(String(window.__scanScore)); }
+      window.__scanScore=0;
+    }
     return;
-
 
   }
 
@@ -13748,6 +13763,20 @@ function buildPositionBlock(score, cat, dir){
   return h;
 }
 
+function guestLocate(val){
+  var c = $('guestLocateResult');
+  if(!c) return;
+  var score = parseFloat(val !== undefined ? val : ($('guestScore') ? $('guestScore').value : ''));
+  if(!score || isNaN(score)){ c.innerHTML=''; return; }
+  var cat = $('guestCat') ? $('guestCat').value : '';
+  var dir = $('guestDir') ? $('guestDir').value : '';
+  c.innerHTML = buildPositionBlock(Math.round(score), cat, dir);
+  if(typeof trackEvent==='function'){
+    trackEvent('locate_score', {score:Math.round(score), guest:1});
+    trackEvent('free_card_generated', {score:Math.round(score)});
+  }
+}
+
 function copyPositionText(){
   var lines = window.__lastPositionLines || [];
   if(!lines.length) return;
@@ -13850,7 +13879,10 @@ function sharePositionImage(){
   ctx.fillStyle = '#94a3b8'; ctx.font = '20px -apple-system, sans-serif';
   var note = '数据来自 2026 级录取统计，仅供参考，不构成录取承诺。';
   y = canvasWrapText(ctx, note, 60, 1240, 620, 30);
-  drawQRCode(ctx, SITE_URL, 760, 1030, 240);
+  // 二维码带落地参数：扫码进来直接看到对应分数的定位卡片
+  var _lp = window.__lastPosition || {};
+  var shareUrl = SITE_URL + '?s=' + (_lp.score||'') + (_lp.dir ? '&d='+encodeURIComponent(_lp.dir==='高分子'?'gaoxin':'cailiao') : '');
+  drawQRCode(ctx, shareUrl, 760, 1030, 240);
   ctx.fillStyle = '#94a3b8'; ctx.font = '20px -apple-system, sans-serif';
   ctx.fillText('浙工大材料学院 · 考研决策包', 60, 1390);
 
