@@ -1,0 +1,4 @@
+*.zip
+data_full.json
+data_full_*.json
+*_full.json
