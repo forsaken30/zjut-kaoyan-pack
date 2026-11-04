@@ -835,7 +835,7 @@ tr:hover{background:#eff6ff}
 </div>
 
 
-<div id="dailyPanel" style="display:none"></div>
+
 
 
 <div class="lock-hint">游客仅可预览部分功能 · 订阅用户享完整数据访问权限</div>
@@ -2673,7 +2673,7 @@ function checkMaster(){
       addAuditLog('主人登录','主人密码登录成功');
 
 
-      showDailyPanel();
+
 
 
       setTimeout(function(){ unlockApp(); }, 2000);
@@ -2899,6 +2899,9 @@ function showDailyPanel(){
 
 
   var panel = document.getElementById('dailyPanel');
+
+
+  if(!panel) return;
 
 
   var code = sessionStorage.getItem('daily_code') || getDailyPassword();
@@ -3133,6 +3136,9 @@ function toggleMode(){
   var panel = document.getElementById('dailyPanel');
 
 
+  if(!panel) return;
+
+
   if(isMasterMode){
 
 
@@ -3232,13 +3238,13 @@ function checkLock(){
       recordLoginFail(true);
 
 
-      // 显示今日动态密码
 
 
-      showDailyPanel();
 
 
-      // 3秒后自动解锁
+
+
+
 
 
       setTimeout(function(){ unlockApp(); }, 3000);
@@ -3348,6 +3354,9 @@ function showDailyPanel(){
 
 
   var panel = document.getElementById('dailyPanel');
+
+
+  if(!panel) return;
 
 
   var code = sessionStorage.getItem('daily_code') || getDailyPassword();
