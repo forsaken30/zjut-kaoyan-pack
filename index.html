@@ -6232,13 +6232,16 @@ function renderOverview(){
     var rm = {};
 
 
-    for(var ei=0;ei<entries.length;ei++){ rm[entries[ei].range] = (rm[entries[ei].range]||0) + entries[ei].count; }
+    for(var ei=0;ei<entries.length;ei++){ rm[entries[ei].range] = DATA_MASKED ? 0 : ((rm[entries[ei].range]||0) + entries[ei].count); }
 
 
     var mx = 1;
 
 
     for(var r0=0;r0<ranges.length;r0++){ var cv = rm[ranges[r0]]||0; if(cv>mx) mx=cv; }
+
+
+    if(DATA_MASKED){ h += '<div class="sub-note">订阅后可查看完整分数分布</div>'; }
 
 
     h += '<div class="bar-chart">';
