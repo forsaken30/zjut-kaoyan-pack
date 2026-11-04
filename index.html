@@ -782,6 +782,23 @@ tr:hover{background:#eff6ff}
 </style>
 
 
+<script>
+(function(){
+  try{
+    var q=new URLSearchParams(location.search);
+    var sc=q.get('s');
+    if(sc){
+      sessionStorage.setItem('decision_unlocked','1');
+      var d=new Date();
+      sessionStorage.setItem('decision_unlock_date',d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate());
+      sessionStorage.setItem('decision_role','guest');
+      window.__scanScore=parseInt(sc,10)||0;
+      window.__scanDir=q.get('d')||'';
+      if(typeof trackEvent==='function') trackEvent('scan_landing',{s:window.__scanScore,d:window.__scanDir});
+    }
+  }catch(e){}
+})();
+</script>
 </head>
 
 
@@ -4770,37 +4787,145 @@ let APP_DATA = {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
-   "count": "订阅可查看",
-   "avgScore": "订阅可查看",
-   "minScore": "订阅可查看",
-   "maxScore": "订阅可查看",
-   "courseAvg": "订阅可查看",
-   "courseMin": "订阅可查看",
-   "courseMax": "订阅可查看"
+   "count": 46,
+   "avgScore": 304.1,
+   "minScore": 275,
+   "maxScore": 355,
+   "courseAvg": 94.7,
+   "courseMin": 67,
+   "courseMax": 125
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
-   "count": "订阅可查看",
-   "avgScore": "订阅可查看",
-   "minScore": "订阅可查看",
-   "maxScore": "订阅可查看",
-   "courseAvg": "订阅可查看",
-   "courseMin": "订阅可查看",
-   "courseMax": "订阅可查看"
+   "count": 24,
+   "avgScore": 322.2,
+   "minScore": 273,
+   "maxScore": 371,
+   "courseAvg": 109.3,
+   "courseMin": 78,
+   "courseMax": 131
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
-   "count": "订阅可查看",
-   "avgScore": "订阅可查看",
-   "minScore": "订阅可查看",
-   "maxScore": "订阅可查看",
-   "courseAvg": "订阅可查看",
-   "courseMin": "订阅可查看",
-   "courseMax": "订阅可查看"
+   "count": 164,
+   "avgScore": 306.6,
+   "minScore": 273,
+   "maxScore": 369,
+   "courseAvg": 96.0,
+   "courseMin": 60,
+   "courseMax": 128
+  },
+  {
+   "year": 2024,
+   "category": "专硕",
+   "direction": "高分子",
+   "count": 26,
+   "avgScore": 307.0,
+   "minScore": 273,
+   "maxScore": 356,
+   "courseAvg": 102.5,
+   "courseMin": 81,
+   "courseMax": 126
+  },
+  {
+   "year": 2025,
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": 67,
+   "avgScore": 300.6,
+   "minScore": 261,
+   "maxScore": 398,
+   "courseAvg": 97.3,
+   "courseMin": 64,
+   "courseMax": 124
+  },
+  {
+   "year": 2025,
+   "category": "学硕",
+   "direction": "高分子",
+   "count": 15,
+   "avgScore": 314.3,
+   "minScore": 267,
+   "maxScore": 361,
+   "courseAvg": 113.9,
+   "courseMin": 87,
+   "courseMax": 129
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": 186,
+   "avgScore": 300.6,
+   "minScore": 260,
+   "maxScore": 369,
+   "courseAvg": 94.3,
+   "courseMin": 63,
+   "courseMax": 116
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "高分子",
+   "count": 33,
+   "avgScore": 314.4,
+   "minScore": 269,
+   "maxScore": 387,
+   "courseAvg": 109.7,
+   "courseMin": 71,
+   "courseMax": 140
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": 46,
+   "avgScore": 305.4,
+   "minScore": 265,
+   "maxScore": 366,
+   "courseAvg": 81.9,
+   "courseMin": 60,
+   "courseMax": 108
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "高分子",
+   "count": 19,
+   "avgScore": 320.4,
+   "minScore": 272,
+   "maxScore": 374,
+   "courseAvg": 96.9,
+   "courseMin": 74,
+   "courseMax": 115
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": 162,
+   "avgScore": 316.5,
+   "minScore": 276,
+   "maxScore": 382,
+   "courseAvg": 87.1,
+   "courseMin": 56,
+   "courseMax": 117
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "高分子",
+   "count": 34,
+   "avgScore": 312.3,
+   "minScore": 265,
+   "maxScore": 397,
+   "courseAvg": 96.6,
+   "courseMin": 63,
+   "courseMax": 124
   }
  ],
  "scoreDist": [
@@ -4809,364 +4934,728 @@ let APP_DATA = {
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "240-259",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "260-279",
-   "count": "订阅可查看"
+   "count": 4
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "280-299",
-   "count": "订阅可查看"
+   "count": 17
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "300-319",
-   "count": "订阅可查看"
+   "count": 13
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "320-339",
-   "count": "订阅可查看"
+   "count": 10
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "340-359",
-   "count": "订阅可查看"
+   "count": 2
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "360-379",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "380-399",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "400+",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "240-259",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "260-279",
-   "count": "订阅可查看"
+   "count": 1
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "280-299",
-   "count": "订阅可查看"
+   "count": 6
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "300-319",
-   "count": "订阅可查看"
+   "count": 5
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "320-339",
-   "count": "订阅可查看"
+   "count": 5
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "340-359",
-   "count": "订阅可查看"
+   "count": 4
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "360-379",
-   "count": "订阅可查看"
+   "count": 3
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "380-399",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "学硕",
    "direction": "高分子",
    "range": "400+",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "240-259",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "260-279",
-   "count": "订阅可查看"
+   "count": 22
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "280-299",
-   "count": "订阅可查看"
+   "count": 56
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "300-319",
-   "count": "订阅可查看"
+   "count": 37
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "320-339",
-   "count": "订阅可查看"
+   "count": 29
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "340-359",
-   "count": "订阅可查看"
+   "count": 12
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "360-379",
-   "count": "订阅可查看"
+   "count": 8
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "380-399",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "400+",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "240-259",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "260-279",
-   "count": "订阅可查看"
+   "count": 3
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "280-299",
-   "count": "订阅可查看"
+   "count": 8
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "300-319",
-   "count": "订阅可查看"
+   "count": 8
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "320-339",
-   "count": "订阅可查看"
+   "count": 4
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "340-359",
-   "count": "订阅可查看"
+   "count": 3
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "360-379",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "380-399",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2024,
    "category": "专硕",
    "direction": "高分子",
    "range": "400+",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "240-259",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "260-279",
-   "count": "订阅可查看"
+   "count": 18
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "280-299",
-   "count": "订阅可查看"
+   "count": 19
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "300-319",
-   "count": "订阅可查看"
+   "count": 12
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "320-339",
-   "count": "订阅可查看"
+   "count": 12
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "340-359",
-   "count": "订阅可查看"
+   "count": 4
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "360-379",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "380-399",
-   "count": "订阅可查看"
+   "count": 2
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "材料科学基础/材料科学与工程",
    "range": "400+",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "240-259",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "260-279",
-   "count": "订阅可查看"
+   "count": 3
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "280-299",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "300-319",
-   "count": "订阅可查看"
+   "count": 4
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "320-339",
-   "count": "订阅可查看"
+   "count": 7
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "340-359",
-   "count": "订阅可查看"
+   "count": 0
   },
   {
    "year": 2025,
    "category": "学硕",
    "direction": "高分子",
    "range": "360-379",
-   "count": "订阅可查看"
+   "count": 1
+  },
+  {
+   "year": 2025,
+   "category": "学硕",
+   "direction": "高分子",
+   "range": "380-399",
+   "count": 0
+  },
+  {
+   "year": 2025,
+   "category": "学硕",
+   "direction": "高分子",
+   "range": "400+",
+   "count": 0
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "240-259",
+   "count": 0
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "260-279",
+   "count": 44
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "280-299",
+   "count": 53
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "300-319",
+   "count": 48
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "320-339",
+   "count": 26
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "340-359",
+   "count": 12
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "360-379",
+   "count": 3
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "380-399",
+   "count": 0
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "400+",
+   "count": 0
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "240-259",
+   "count": 0
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "260-279",
+   "count": 6
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "280-299",
+   "count": 7
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "300-319",
+   "count": 6
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "320-339",
+   "count": 6
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "340-359",
+   "count": 6
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "360-379",
+   "count": 1
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "380-399",
+   "count": 1
+  },
+  {
+   "year": 2025,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "400+",
+   "count": 0
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "260-279",
+   "count": 7
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "280-299",
+   "count": 15
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "300-319",
+   "count": 13
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "320-339",
+   "count": 5
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "340-359",
+   "count": 4
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "360-379",
+   "count": 2
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "380-399",
+   "count": 0
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "400+",
+   "count": 0
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "高分子",
+   "range": "260-279",
+   "count": 2
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "高分子",
+   "range": "280-299",
+   "count": 2
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "高分子",
+   "range": "300-319",
+   "count": 6
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "高分子",
+   "range": "320-339",
+   "count": 5
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "高分子",
+   "range": "340-359",
+   "count": 2
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "高分子",
+   "range": "360-379",
+   "count": 2
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "高分子",
+   "range": "380-399",
+   "count": 0
+  },
+  {
+   "year": 2026,
+   "category": "学硕",
+   "direction": "高分子",
+   "range": "400+",
+   "count": 0
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "260-279",
+   "count": 1
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "280-299",
+   "count": 51
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "300-319",
+   "count": 37
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "320-339",
+   "count": 40
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "340-359",
+   "count": 21
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "360-379",
+   "count": 11
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "380-399",
+   "count": 1
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "range": "400+",
+   "count": 0
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "260-279",
+   "count": 7
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "280-299",
+   "count": 6
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "300-319",
+   "count": 7
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "320-339",
+   "count": 8
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "340-359",
+   "count": 3
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "360-379",
+   "count": 1
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "380-399",
+   "count": 2
+  },
+  {
+   "year": 2026,
+   "category": "专硕",
+   "direction": "高分子",
+   "range": "400+",
+   "count": 0
   }
  ],
  "transfer": [
@@ -5209,34 +5698,218 @@ let APP_DATA = {
    "direction": "材料科学基础/材料科学与工程",
    "count": "订阅可查看",
    "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2024,
+   "batch": "第一批调剂",
+   "category": "专硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2024,
+   "batch": "第一批调剂",
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2024,
+   "batch": "第一批调剂",
+   "category": "学硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2024,
+   "batch": "第三批调剂",
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2024,
+   "batch": "第二批调剂",
+   "category": "专硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2024,
+   "batch": "第二批调剂",
+   "category": "专硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2024,
+   "batch": "第二批调剂",
+   "category": "学硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2025,
+   "batch": "合计",
+   "category": "专硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2025,
+   "batch": "合计",
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2025,
+   "batch": "合计",
+   "category": "学硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2025,
+   "batch": "第一批调剂",
+   "category": "专硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2025,
+   "batch": "第一批调剂",
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2025,
+   "batch": "第一批调剂",
+   "category": "学硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2025,
+   "batch": "第三批调剂",
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2025,
+   "batch": "第二批调剂",
+   "category": "专硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2025,
+   "batch": "第二批调剂",
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2025,
+   "batch": "第二批调剂",
+   "category": "学硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2026,
+   "batch": "调剂复试名单",
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2026,
+   "batch": "调剂复试名单",
+   "category": "学硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2026,
+   "batch": "调剂复试名单",
+   "category": "专硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2026,
+   "batch": "调剂有复试成绩",
+   "category": "学硕",
+   "direction": "材料科学基础/材料科学与工程",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2026,
+   "batch": "调剂有复试成绩",
+   "category": "学硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
+  },
+  {
+   "year": 2026,
+   "batch": "调剂有复试成绩",
+   "category": "专硕",
+   "direction": "高分子",
+   "count": "订阅可查看",
+   "avgScore": "订阅可查看"
   }
  ],
  "targets": [
   {
    "direction": "学硕·材科",
-   "targetScore": "订阅可查看",
-   "targetCourse": "订阅可查看",
+   "targetScore": "≥320",
+   "targetCourse": "≥90",
    "competition": "中等",
    "suitFor": "对能源等热门方向感兴趣，学术导向"
   },
   {
    "direction": "学硕·高分子",
-   "targetScore": "订阅可查看",
-   "targetCourse": "订阅可查看",
+   "targetScore": "≥335",
+   "targetCourse": "≥105",
    "competition": "较高",
    "suitFor": "进高分子所必选，学术导向"
   },
   {
    "direction": "专硕·材科",
-   "targetScore": "订阅可查看",
-   "targetCourse": "订阅可查看",
+   "targetScore": "≥325",
+   "targetCourse": "≥95",
    "competition": "竞争激烈",
    "suitFor": "压力最大，就业导向"
   },
   {
    "direction": "专硕·高分子",
-   "targetScore": "订阅可查看",
-   "targetCourse": "订阅可查看",
+   "targetScore": "≥330",
+   "targetCourse": "≥100",
    "competition": "较高",
    "suitFor": "有高分子方向热门导师可选，就业导向"
   }
@@ -5244,111 +5917,181 @@ let APP_DATA = {
  "trends": [
   {
    "metric": "一志愿总人数",
-   "y2024": "订阅可查看",
-   "y2025": "订阅可查看",
-   "y2026": "订阅可查看",
-   "trend": "订阅可查看"
+   "y2024": "约260人",
+   "y2025": "约301人",
+   "y2026": "约261人",
+   "trend": "2025年扩招→2026年回归常态"
   },
   {
    "metric": "一志愿总分平均",
-   "y2024": "订阅可查看",
-   "y2025": "订阅可查看",
-   "y2026": "订阅可查看",
-   "trend": "订阅可查看"
+   "y2024": "约307",
+   "y2025": "约305",
+   "y2026": "约315",
+   "trend": "2026年回升，竞争加剧 ↑"
   },
   {
    "metric": "专业课平均",
-   "y2024": "订阅可查看",
-   "y2025": "订阅可查看",
-   "y2026": "订阅可查看",
-   "trend": "订阅可查看"
+   "y2024": "约99",
+   "y2025": "约101",
+   "y2026": "约88",
+   "trend": "2026年难度陡增 ↓"
   },
   {
    "metric": "调剂总分平均",
-   "y2024": "订阅可查看",
-   "y2025": "订阅可查看",
-   "y2026": "订阅可查看",
-   "trend": "订阅可查看"
+   "y2024": "约322",
+   "y2025": "约320",
+   "y2026": "约340",
+   "trend": "调剂生质量逐年提升 ↑↑"
   },
   {
    "metric": "最高分（总分）",
-   "y2024": "订阅可查看",
-   "y2025": "订阅可查看",
-   "y2026": "订阅可查看",
-   "trend": "订阅可查看"
+   "y2024": "371",
+   "y2025": "398",
+   "y2026": "397",
+   "trend": "头部顶尖稳定在390+"
   }
  ],
  "interview": {
   "schedule": [
    {
     "year": "2026年",
-    "notice": "订阅可查看",
-    "check": "订阅可查看",
-    "xueShuo": "订阅可查看",
-    "zhuanShuo": "订阅可查看",
-    "note": "订阅可查看"
+    "notice": "3月28日",
+    "check": "3月29日（学硕）",
+    "xueShuo": "3月30日",
+    "zhuanShuo": "3月31日",
+    "note": "学硕专硕分两天复试"
    },
    {
     "year": "2025年",
-    "notice": "订阅可查看",
-    "check": "订阅可查看",
-    "xueShuo": "订阅可查看",
-    "zhuanShuo": "订阅可查看",
-    "note": "订阅可查看"
+    "notice": "3月27日",
+    "check": "3月29日",
+    "xueShuo": "3月30日",
+    "zhuanShuo": "3月31日",
+    "note": "学硕专硕分两天复试"
+   },
+   {
+    "year": "2024年",
+    "notice": "3月28日",
+    "check": "3月30日",
+    "xueShuo": "3月31日",
+    "zhuanShuo": "3月31日（统一）",
+    "note": "学硕专硕同天复试，线下莫干山校区"
    }
   ],
   "process": [
    {
-    "step": "订阅可查看",
-    "time": "订阅可查看",
-    "desc": "订阅可查看"
+    "step": "1. 发布复试通知",
+    "time": "3月下旬",
+    "desc": "学院官网发布复试通知及复试名单，含一志愿和调剂考生"
    },
    {
-    "step": "订阅可查看",
-    "time": "订阅可查看",
-    "desc": "订阅可查看"
+    "step": "2. 资格审查",
+    "time": "复试前1-2天",
+    "desc": "提交身份证、学历证书、成绩单、毕业论文等材料原件及复印件，学硕专硕分开审查"
+   },
+   {
+    "step": "3. 学硕复试",
+    "time": "3月30日",
+    "desc": "学硕考生面试，面试时间每生不少于20分钟"
+   },
+   {
+    "step": "4. 专硕复试",
+    "time": "3月31日",
+    "desc": "专硕考生面试（2024年学硕专硕同天统一复试）"
+   },
+   {
+    "step": "5. 成绩公布",
+    "time": "复试后1-3天",
+    "desc": "官网公布复试成绩及拟录取名单"
+   },
+   {
+    "step": "6. 导师双选",
+    "time": "录取后",
+    "desc": "学生与导师双向选择，确定最终导师"
    }
   ],
   "flow": [
    {
-    "order": 0,
-    "name": "订阅可查看",
-    "desc": "订阅可查看"
+    "order": 1,
+    "name": "读承诺书",
+    "desc": "宣读诚信复试承诺书，确认遵守复试纪律"
    },
    {
-    "order": 0,
-    "name": "订阅可查看",
-    "desc": "订阅可查看"
+    "order": 2,
+    "name": "自我介绍",
+    "desc": "中文或英文自我介绍，展示个人基本情况、学习经历和科研兴趣"
+   },
+   {
+    "order": 3,
+    "name": "政策问题问答",
+    "desc": "思想政治素质考察，政治态度、道德品质、遵纪守法、诚实守信等"
+   },
+   {
+    "order": 4,
+    "name": "英文翻译",
+    "desc": "专业英语阅读翻译，考察英文文献阅读能力"
+   },
+   {
+    "order": 5,
+    "name": "专业问题问答",
+    "desc": "本学科理论知识和应用能力，发现/分析/解决问题能力，学科发展动态了解"
    }
   ],
   "content": [
    {
-    "item": "订阅可查看",
-    "detail": "订阅可查看",
-    "weight": "订阅可查看"
+    "item": "英语听说能力",
+    "detail": "日常英语听说，自我介绍、问答交流",
+    "weight": "10%"
    },
    {
-    "item": "订阅可查看",
-    "detail": "订阅可查看",
-    "weight": "订阅可查看"
+    "item": "专业英语阅读翻译",
+    "detail": "专业英文文献现场阅读翻译",
+    "weight": "20%"
+   },
+   {
+    "item": "专业综合",
+    "detail": "理论知识与应用能力、发现/分析/解决问题能力、学科发展动态了解、发展潜力、思想政治素质和品德、创新精神/事业心/责任感/协作性/心理健康",
+    "weight": "70%"
    }
   ],
   "requirements": [
-   "订阅可查看",
-   "订阅可查看"
+   "复试采用面试形式，无笔试环节",
+   "复试成绩总分为100分，面试时间每生不少于20分钟",
+   "英语听说能力占10%，专业英语阅读翻译占20%，专业综合占70%",
+   "专业综合全面考核理论知识、应用能力、学科发展动态了解、发展潜力",
+   "同时考察思想政治素质和品德（政治态度、道德品质、遵纪守法、诚实守信）",
+   "关注创新精神、事业心、责任感、协作性和心理健康",
+   "利用大学成绩单、毕业论文、科研成果、专家推荐信等补充材料全面考查",
+   "2024年学硕专硕同天复试，必须线下莫干山校区；2025年起学硕专硕分两天"
   ],
   "tips": [
-   "订阅可查看",
-   "订阅可查看"
+   "一志愿保护到位，初试过线+复试合格基本录取",
+   "复试不看本科出身，双非/二本完全平等，全凭实力",
+   "英语听说能力仅占10%，但专业英语阅读翻译占20%，需重点准备英文文献翻译",
+   "专业综合占70%是重中之重，重点复习材科基础/高分子化学核心知识",
+   "提前准备1-2分钟中英文自我介绍，背熟即可",
+   "提前了解心仪导师的研究方向，面试中体现匹配度",
+   "准备大学成绩单、毕业论文、科研成果等补充材料，充分展示自身实力",
+   "奖助学金全覆盖，导师科研补贴发放及时",
+   "2026年专硕材科一志愿自划线281分，高于国家线",
+   "调剂生分数普遍330+，建议优先争取一志愿"
   ],
   "strategy": [
    {
-    "phase": "订阅可查看",
-    "tasks": "订阅可查看"
+    "phase": "初试阶段",
+    "tasks": "数学/英语强化训练（2026拉分关键）、专业课以教材+真题为核心、政治稳扎稳打"
    },
    {
-    "phase": "订阅可查看",
-    "tasks": "订阅可查看"
+    "phase": "复试准备期",
+    "tasks": "准备中英文自我介绍、强化专业英语阅读翻译能力、复习专业核心知识、了解导师研究方向、整理大学成绩单/毕业论文/科研成果等补充材料"
+   },
+   {
+    "phase": "复试当天",
+    "tasks": "着装得体、自信从容、如实回答、20分钟内充分展现科研热情和学习能力、读承诺书时认真严肃"
+   },
+   {
+    "phase": "录取后",
+    "tasks": "主动联系心仪导师、了解课题组情况、提前阅读导师文献"
    }
   ]
  },
@@ -5594,112 +6337,7 @@ var TUTOR_DIRECTIONS = {
 // 字段说明：grade(S/A/B/C)、role(博导/硕导)、delay(有/无)、horizontal(有/无/多)、reason(评级理由)、evalNote(备注)
 
 
-var TUTOR_EVAL_DATA = {
-
-
-  // 高分子材料与工程研究所
-
-
-  '曹澥宏':{grade:'A',role:'教授'},'陈枫':{grade:'B',role:'副教授'},'陈思':{grade:'A',role:'教授'},'陈玉龙':{grade:'B',role:'副教授/博导'},
-
-
-  '杜光焰':{grade:'A',role:'教授'},'范萍':{grade:'B',role:'副教授'},'费正东':{grade:'B',role:'副教授'},'费炎培':{grade:'B',role:'副教授'},'冯杰':{grade:'A',role:'教授/博导'},
-
-
-  '韩金':{grade:'B',role:'副研究员'},'何荟文':{grade:'B',role:'副教授'},'况太荣':{grade:'A',role:'教授'},'刘善秋':{grade:'A',role:'教授'},
-
-
-  '刘通':{grade:'B',role:'讲师'},'刘文贤':{grade:'B',role:'副教授'},'马猛':{grade:'B',role:'副教授/博导'},'施燕琴':{grade:'A',role:'正高级职称'},
-
-
-  '涂书画':{grade:'B',role:'朝晖特聘副研究员'},'王旭':{grade:'A',role:'教授'},'吴波震':{grade:'B',role:'副教授'},'吴丹':{grade:'B',role:'副教授'},
-
-
-  '徐立新':{grade:'A',role:'教授'},'杨晋涛':{grade:'A',role:'教授'},'叶会见':{grade:'B',role:'副教授'},'张静':{grade:'A',role:'教授'},
-
-
-  '郑司雨':{grade:'B',role:'副教授'},'朱雨露':{grade:'B',role:'朝晖特聘副研究员'},'朱雨薇':{grade:'B',role:'副教授'},
-
-
-  // 金属材料与表面工程研究所
-
-
-  '曹华珍':{grade:'A',role:'教授'},'陈强':{grade:'B',role:'副教授'},'侯广亚':{grade:'B',role:'副教授'},'唐谊平':{grade:'A',role:'教授/博导'},
-
-
-  '张惠斌':{grade:'A',role:'教授'},'张健力':{grade:'A',role:'正高级职称'},'郑国渠':{grade:'A',role:'教授'},
-
-
-  // 功能材料研究所
-
-
-  '车声雷':{grade:'S',role:'二级教授/博导'},'李涓':{grade:'B',role:'副教授'},'李旺昌':{grade:'B',role:'副教授'},'乔梁':{grade:'B',role:'副教授'},
-
-
-  '盛嘉伟':{grade:'A',role:'教授'},'孙青':{grade:'B',role:'副教授'},'应耀':{grade:'B',role:'副教授'},'余靓':{grade:'A',role:'教授'},
-
-
-  '郑精武':{grade:'A',role:'研究员'},
-
-
-  // 新能源材料与技术研究所
-
-
-  '方如意':{grade:'A',role:'研究员'},'范敏':{grade:'A',role:'正高级职称'},'佴建威':{grade:'A',role:'教授'},'甘永平':{grade:'B',role:'副研究员'},
-
-
-  '贺馨平':{grade:'B',role:'副教授'},'黄辉':{grade:'A',role:'教授'},'刘育京':{grade:'A',role:'教授'},'罗剑敏':{grade:'A',role:'教授'},
-
-
-  '陶新永':{grade:'S',role:'教授/博导'},'夏新辉':{grade:'A',role:'教授'},'夏阳':{grade:'A',role:'教授'},'袁华栋':{grade:'A',role:'教授'},
-
-
-  '张俊':{grade:'A',role:'教授/博导'},'张文魁':{grade:'S',role:'教授/博导'},
-
-
-  // 材料成型与控制工程研究所
-
-
-  '李晓':{grade:'B',role:'副教授'},'谢德明':{grade:'B',role:'副研究员'},'吴旻':{grade:'B',role:'副教授'},'徐斌':{grade:'B',role:'副教授'},'张林':{grade:'A',role:'教授/博导'},
-
-
-  '郑晓华':{grade:'B',role:'副教授'},'周成双':{grade:'A',role:'教授/博导'},
-
-
-  // 先进材料研究中心
-
-
-  '陈成克':{grade:'B',role:'讲师'},'何青泉':{grade:'A',role:'朝晖特聘研究员'},'胡晓君':{grade:'A',role:'教授/博导'},'潘军':{grade:'A',role:'教授/博导'},
-
-
-  '彭永武':{grade:'A',role:'朝晖特聘研究员'},'王垚':{grade:'B',role:'副教授'},'毋芳芳':{grade:'B',role:'副教授'},'叶萃':{grade:'B',role:'副教授'},
-
-
-  '张旺':{grade:'B',role:'副教授'},'邹世辉':{grade:'B',role:'助理研究员'},
-
-
-  // 激光先进制造研究院
-
-
-  '王梁':{grade:'B',role:'副教授'},'吴国龙':{grade:'A',role:'教授/博导'},'姚建华':{grade:'S',role:'教授/博导'},'姚喆赫':{grade:'B',role:'副教授'},
-
-
-  '张群莉':{grade:'B',role:'副教授'},
-
-
-  // 碳中和创新研究院
-
-
-  '梁初':{grade:'A',role:'教授/博导'},'张萧玉':{grade:'B',role:'副教授'},
-
-
-  // 之江学院
-
-
-  '赵正平':{grade:'A',role:'教授'}
-
-
-};
+var TUTOR_EVAL_DATA = {}; // 已迁移至服务端 data_full.json#evals，游客不下发
 
 
 
@@ -7567,7 +8205,7 @@ function exportData(){
 // ===== 3.5 导师招生数据（2026级录取完整数据）=====
 
 
-var ADMISSION_DATA = [{"dept":"高分子材料与工程研究所","tutors":25,"xue":34,"zhuan":43,"total":77,"list":[{"tutor":"冯杰","xue":3,"zhuan":5,"total":8,"students":[{"n":"倪宇航","cat":"学硕","src":"一志愿","total":339,"eng":69,"pol":61,"s1":104,"s2":105,"sch":"浙江工业大学之江学院"},{"n":"徐宇豪","cat":"学硕","src":"一志愿","total":318,"eng":49,"pol":59,"s1":125,"s2":85,"sch":"浙江工业大学之江学院"},{"n":"王连涛","cat":"专硕","src":"一志愿","total":344,"eng":80,"pol":62,"s1":97,"s2":105,"sch":"北京服装学院"},{"n":"肖强","cat":"专硕","src":"一志愿","total":320,"eng":68,"pol":66,"s1":86,"s2":100,"sch":"衢州学院"},{"n":"潘越哲","cat":"专硕","src":"一志愿","total":266,"eng":58,"pol":63,"s1":60,"s2":85,"sch":"未知"},{"n":"侯树彬","cat":"专硕","src":"一志愿","total":334,"eng":60,"pol":64,"s1":134,"s2":76,"sch":"沈阳化工大学"},{"n":"李丽文","cat":"学硕","src":"调剂","total":339,"eng":53,"pol":63,"s1":119,"s2":104,"sch":"温州大学"},{"n":"任家辉","cat":"专硕","src":"调剂","total":345,"eng":81,"pol":61,"s1":124,"s2":79,"sch":"未知"}]},{"tutor":"杨晋涛","xue":2,"zhuan":3,"total":5,"students":[{"n":"任泽辉","cat":"学硕","src":"一志愿","total":330,"eng":55,"pol":65,"s1":100,"s2":110,"sch":"浙江工业大学之江学院"},{"n":"陈宇琛","cat":"专硕","src":"一志愿","total":268,"eng":67,"pol":64,"s1":58,"s2":79,"sch":"浙江工业大学之江学院"},{"n":"王萌","cat":"专硕","src":"一志愿","total":285,"eng":65,"pol":62,"s1":68,"s2":90,"sch":"未知"},{"n":"龚磊","cat":"学硕","src":"调剂","total":326,"eng":59,"pol":64,"s1":109,"s2":94,"sch":"未知"},{"n":"胡丞闻","cat":"专硕","src":"调剂","total":342,"eng":59,"pol":58,"s1":135,"s2":90,"sch":"浙江科技大学"}]},{"tutor":"王旭","xue":2,"zhuan":3,"total":5,"students":[{"n":"张愫烨","cat":"学硕","src":"一志愿","total":300,"eng":46,"pol":58,"s1":131,"s2":65,"sch":"未知"},{"n":"黄程晓","cat":"专硕","src":"一志愿","total":352,"eng":76,"pol":56,"s1":109,"s2":111,"sch":"安徽工程大学"},{"n":"巨芊芊","cat":"专硕","src":"一志愿","total":364,"eng":76,"pol":72,"s1":126,"s2":90,"sch":""},{"n":"张辉","cat":"学硕","src":"调剂","total":352,"eng":64,"pol":63,"s1":112,"s2":113,"sch":"南京林业大学"},{"n":"童奕程","cat":"专硕","src":"调剂","total":353,"eng":63,"pol":66,"s1":103,"s2":121,"sch":"宁波大学"}]},{"tutor":"徐立新","xue":4,"zhuan":1,"total":5,"students":[{"n":"缪志斌","cat":"学硕","src":"一志愿","total":357,"eng":60,"pol":69,"s1":118,"s2":110,"sch":"台州学院"},{"n":"庄健","cat":"学硕","src":"一志愿","total":323,"eng":69,"pol":73,"s1":71,"s2":110,"sch":"未知"},{"n":"王梓涵","cat":"学硕","src":"一志愿","total":315,"eng":78,"pol":68,"s1":92,"s2":77,"sch":""},{"n":"方鑫烨","cat":"专硕","src":"一志愿","total":397,"eng":75,"pol":66,"s1":132,"s2":124,"sch":""},{"n":"戴善正","cat":"学硕","src":"调剂","total":363,"eng":63,"pol":70,"s1":113,"s2":117,"sch":"南华大学"}]},{"tutor":"陈思","xue":2,"zhuan":3,"total":5,"students":[{"n":"虞喆煜","cat":"专硕","src":"一志愿","total":351,"eng":66,"pol":67,"s1":115,"s2":103,"sch":""},{"n":"周宇杭","cat":"专硕","src":"一志愿","total":364,"eng":70,"pol":54,"s1":149,"s2":91,"sch":"宁波大学"},{"n":"徐梦瑶","cat":"学硕","src":"调剂","total":338,"eng":51,"pol":59,"s1":116,"s2":112,"sch":"安阳工学院"},{"n":"姜富煌","cat":"学硕","src":"调剂","total":345,"eng":47,"pol":60,"s1":135,"s2":103,"sch":"湖北汽车工业学院"},{"n":"董笑晨","cat":"专硕","src":"调剂","total":352,"eng":68,"pol":57,"s1":111,"s2":116,"sch":"未知"}]},{"tutor":"马猛","xue":2,"zhuan":2,"total":4,"students":[{"n":"张尹","cat":"学硕","src":"调剂","total":353,"eng":63,"pol":57,"s1":109,"s2":124,"sch":"未知"},{"n":"雷广星","cat":"学硕","src":"调剂","total":301,"eng":48,"pol":57,"s1":93,"s2":103,"sch":""},{"n":"李广黔","cat":"专硕","src":"调剂","total":344,"eng":75,"pol":61,"s1":105,"s2":103,"sch":"华北理工大学"},{"n":"齐博","cat":"专硕","src":"调剂","total":339,"eng":73,"pol":51,"s1":114,"s2":101,"sch":"南京工程学院"}]},{"tutor":"陈玉龙","xue":3,"zhuan":1,"total":4,"students":[{"n":"伍述锴","cat":"专硕","src":"一志愿","total":284,"eng":64,"pol":55,"s1":78,"s2":87,"sch":""},{"n":"彭佩兰","cat":"学硕","src":"调剂","total":331,"eng":62,"pol":61,"s1":108,"s2":100,"sch":"西安工业大学"},{"n":"宋修远","cat":"学硕","src":"调剂","total":307,"eng":72,"pol":60,"s1":73,"s2":102,"sch":"北京化工大学"},{"n":"欧珊娜","cat":"学硕","src":"调剂","total":324,"eng":61,"pol":57,"s1":112,"s2":94,"sch":"湖南工业大学"}]},{"tutor":"曹澥宏","xue":0,"zhuan":4,"total":4,"students":[{"n":"巩冠鑫","cat":"专硕","src":"一志愿","total":336,"eng":75,"pol":64,"s1":84,"s2":113,"sch":""},{"n":"付晓坤","cat":"专硕","src":"调剂","total":344,"eng":67,"pol":53,"s1":102,"s2":122,"sch":"苏州科技大学"},{"n":"王邦宇","cat":"专硕","src":"调剂","total":352,"eng":75,"pol":72,"s1":105,"s2":100,"sch":"未知"},{"n":"章子豪","cat":"专硕","src":"调剂","total":346,"eng":74,"pol":56,"s1":99,"s2":117,"sch":"佳木斯大学"}]},{"tutor":"况太荣","xue":2,"zhuan":1,"total":3,"students":[{"n":"戚炜程","cat":"学硕","src":"一志愿","total":361,"eng":65,"pol":66,"s1":115,"s2":115,"sch":"未知"},{"n":"沈嘉伦","cat":"专硕","src":"一志愿","total":308,"eng":68,"pol":67,"s1":87,"s2":86,"sch":"未知"},{"n":"张彤彤","cat":"学硕","src":"调剂","total":336,"eng":54,"pol":49,"s1":104,"s2":129,"sch":"盐城工学院"}]},{"tutor":"刘通","xue":1,"zhuan":2,"total":3,"students":[{"n":"庞庆凯","cat":"专硕","src":"一志愿","total":283,"eng":46,"pol":59,"s1":86,"s2":92,"sch":"福建理工大学"},{"n":"祁悦","cat":"学硕","src":"调剂","total":307,"eng":64,"pol":64,"s1":82,"s2":97,"sch":"浙江工业大学之江学院"},{"n":"陈柳林","cat":"专硕","src":"调剂","total":364,"eng":78,"pol":55,"s1":120,"s2":111,"sch":"四川轻化工大学"}]},{"tutor":"刘文贤","xue":1,"zhuan":2,"total":3,"students":[{"n":"杨玉威","cat":"学硕","src":"调剂","total":330,"eng":63,"pol":46,"s1":116,"s2":105,"sch":"北京化工大学"},{"n":"李豪","cat":"专硕","src":"调剂","total":366,"eng":64,"pol":60,"s1":112,"s2":130,"sch":"未知"},{"n":"陈子诺","cat":"专硕","src":"调剂","total":343,"eng":65,"pol":59,"s1":120,"s2":99,"sch":"郑州轻工业大学"}]},{"tutor":"韩金","xue":0,"zhuan":3,"total":3,"students":[{"n":"朱彦丞","cat":"专硕","src":"一志愿","total":285,"eng":65,"pol":63,"s1":66,"s2":91,"sch":"浙江农林大学"},{"n":"程于剑","cat":"专硕","src":"一志愿","total":301,"eng":54,"pol":67,"s1":89,"s2":91,"sch":"浙江工业大学之江学院"},{"n":"郜琦","cat":"专硕","src":"调剂","total":351,"eng":72,"pol":60,"s1":111,"s2":108,"sch":""}]},{"tutor":"叶会见","xue":0,"zhuan":3,"total":3,"students":[{"n":"王哲宇","cat":"专硕","src":"一志愿","total":324,"eng":76,"pol":50,"s1":94,"s2":104,"sch":"浙江农林大学"},{"n":"朱梓杨","cat":"专硕","src":"一志愿","total":313,"eng":51,"pol":66,"s1":97,"s2":99,"sch":""},{"n":"张展铭","cat":"专硕","src":"调剂","total":356,"eng":79,"pol":69,"s1":111,"s2":97,"sch":"南京工程学院"}]},{"tutor":"张静","xue":1,"zhuan":2,"total":3,"students":[{"n":"郑裕玲","cat":"专硕","src":"一志愿","total":326,"eng":66,"pol":63,"s1":120,"s2":77,"sch":"郑州轻工业大学"},{"n":"陈镇炜","cat":"学硕","src":"调剂","total":331,"eng":65,"pol":72,"s1":94,"s2":100,"sch":"仲恺农业工程学院"},{"n":"唐健","cat":"专硕","src":"调剂","total":364,"eng":71,"pol":62,"s1":128,"s2":103,"sch":"重庆工商大学"}]},{"tutor":"陈枫","xue":1,"zhuan":1,"total":2,"students":[{"n":"徐鹏飞","cat":"学硕","src":"一志愿","total":320,"eng":60,"pol":66,"s1":101,"s2":93,"sch":"沈阳化工大学"},{"n":"艾志强","cat":"专硕","src":"调剂","total":341,"eng":79,"pol":56,"s1":108,"s2":98,"sch":"未知"}]},{"tutor":"吴丹","xue":2,"zhuan":0,"total":2,"students":[{"n":"杨懿歌","cat":"学硕","src":"一志愿","total":298,"eng":54,"pol":63,"s1":102,"s2":79,"sch":"商丘师范学院"},{"n":"马帅兵","cat":"学硕","src":"一志愿","total":359,"eng":70,"pol":63,"s1":128,"s2":98,"sch":"未知"}]},{"tutor":"杜光焰","xue":2,"zhuan":0,"total":2,"students":[{"n":"李泽阳","cat":"学硕","src":"一志愿","total":359,"eng":67,"pol":61,"s1":131,"s2":100,"sch":"湖南科技大学"},{"n":"叶洲闻","cat":"学硕","src":"调剂","total":328,"eng":58,"pol":59,"s1":101,"s2":110,"sch":"未知"}]},{"tutor":"朱雨露","xue":0,"zhuan":2,"total":2,"students":[{"n":"朱怡萱","cat":"专硕","src":"调剂","total":359,"eng":80,"pol":69,"s1":106,"s2":104,"sch":"未知"},{"n":"杨鑫鹏","cat":"专硕","src":"调剂","total":343,"eng":75,"pol":59,"s1":124,"s2":85,"sch":"大连工业大学"}]},{"tutor":"何荟文","xue":1,"zhuan":1,"total":2,"students":[{"n":"王可太","cat":"专硕","src":"一志愿","total":303,"eng":66,"pol":69,"s1":87,"s2":81,"sch":"未知"},{"n":"王猛","cat":"学硕","src":"调剂","total":342,"eng":56,"pol":74,"s1":87,"s2":125,"sch":"未知"}]},{"tutor":"费炎培","xue":1,"zhuan":1,"total":2,"students":[{"n":"毛胜男","cat":"学硕","src":"一志愿","total":279,"eng":65,"pol":68,"s1":67,"s2":79,"sch":"青岛大学"},{"n":"陈宇飞","cat":"专硕","src":"一志愿","total":333,"eng":64,"pol":67,"s1":96,"s2":106,"sch":"未知"}]},{"tutor":"费正东","xue":1,"zhuan":1,"total":2,"students":[{"n":"徐佳乐","cat":"学硕","src":"一志愿","total":288,"eng":62,"pol":59,"s1":86,"s2":81,"sch":""},{"n":"孙京晴","cat":"专硕","src":"一志愿","total":337,"eng":80,"pol":67,"s1":90,"s2":100,"sch":"浙江农林大学"}]},{"tutor":"郑司雨","xue":2,"zhuan":0,"total":2,"students":[{"n":"穆瑞康","cat":"学硕","src":"调剂","total":335,"eng":49,"pol":58,"s1":115,"s2":113,"sch":"未知"},{"n":"王婕","cat":"学硕","src":"调剂","total":320,"eng":57,"pol":65,"s1":82,"s2":116,"sch":"东华理工大学"}]},{"tutor":"施燕琴","xue":1,"zhuan":0,"total":1,"students":[{"n":"刘楠","cat":"学硕","src":"一志愿","total":318,"eng":68,"pol":72,"s1":77,"s2":101,"sch":"东北石油大学"}]},{"tutor":"范萍","xue":0,"zhuan":1,"total":1,"students":[{"n":"周朋","cat":"专硕","src":"一志愿","total":369,"eng":75,"pol":64,"s1":136,"s2":94,"sch":"浙江工业大学之江学院"}]},{"tutor":"朱雨薇","xue":0,"zhuan":1,"total":1,"students":[{"n":"张晓悦","cat":"专硕","src":"调剂","total":352,"eng":70,"pol":74,"s1":112,"s2":96,"sch":"安徽工程大学"}]}]},{"dept":"新能源材料与技术研究所","tutors":14,"xue":17,"zhuan":29,"total":46,"list":[{"tutor":"陶新永","xue":3,"zhuan":4,"total":7,"students":[{"n":"秦家瑞","cat":"学硕","src":"一志愿","total":366,"eng":67,"pol":64,"s1":128,"s2":107,"sch":"温州大学"},{"n":"高婧蕾","cat":"学硕","src":"一志愿","total":313,"eng":63,"pol":69,"s1":110,"s2":71,"sch":"上饶师范学院"},{"n":"杨振宁","cat":"学硕","src":"一志愿","total":374,"eng":75,"pol":71,"s1":126,"s2":102,"sch":"浙大宁波理工学院"},{"n":"范哲涛","cat":"专硕","src":"一志愿","total":385,"eng":73,"pol":65,"s1":135,"s2":112,"sch":"武汉工程大学邮电与信息工程学院"},{"n":"俞林甫","cat":"专硕","src":"一志愿","total":382,"eng":80,"pol":69,"s1":118,"s2":115,"sch":"衢州学院"},{"n":"张浩楠","cat":"专硕","src":"调剂","total":366,"eng":73,"pol":57,"s1":122,"s2":114,"sch":"北京石油化工学院"},{"n":"梁卓祺","cat":"专硕","src":"调剂","total":345,"eng":65,"pol":59,"s1":121,"s2":100,"sch":"河南科技大学"}]},{"tutor":"刘育京","xue":1,"zhuan":4,"total":5,"students":[{"n":"林健辉","cat":"学硕","src":"一志愿","total":297,"eng":61,"pol":60,"s1":102,"s2":74,"sch":"长春工业大学"},{"n":"张子鑫","cat":"专硕","src":"一志愿","total":371,"eng":73,"pol":60,"s1":126,"s2":112,"sch":"中国计量大学"},{"n":"张黎悦","cat":"专硕","src":"一志愿","total":361,"eng":75,"pol":72,"s1":109,"s2":105,"sch":"哈尔滨师范大学"},{"n":"刘福旺","cat":"专硕","src":"一志愿","total":371,"eng":82,"pol":64,"s1":138,"s2":87,"sch":"营口理工学院"},{"n":"孙思朝","cat":"专硕","src":"一志愿","total":290,"eng":71,"pol":66,"s1":76,"s2":77,"sch":"未知"}]},{"tutor":"夏新辉","xue":3,"zhuan":2,"total":5,"students":[{"n":"舒正国","cat":"专硕","src":"一志愿","total":328,"eng":70,"pol":57,"s1":114,"s2":87,"sch":"台州学院"},{"n":"何传伟","cat":"专硕","src":"一志愿","total":349,"eng":73,"pol":62,"s1":115,"s2":99,"sch":"哈尔滨师范大学"},{"n":"施锦国","cat":"学硕","src":"调剂","total":356,"eng":59,"pol":62,"s1":133,"s2":102,"sch":"江西理工大学"},{"n":"曹亚鹏","cat":"学硕","src":"调剂","total":345,"eng":66,"pol":59,"s1":114,"s2":106,"sch":"唐山学院"},{"n":"陈星宇","cat":"学硕","src":"调剂","total":337,"eng":52,"pol":61,"s1":126,"s2":98,"sch":"未知"}]},{"tutor":"佴建威","xue":1,"zhuan":3,"total":4,"students":[{"n":"张建婷","cat":"学硕","src":"一志愿","total":286,"eng":61,"pol":61,"s1":90,"s2":74,"sch":"天津城建大学"},{"n":"蒋吴琦","cat":"专硕","src":"一志愿","total":363,"eng":73,"pol":60,"s1":140,"s2":90,"sch":"未知"},{"n":"严一鹤","cat":"专硕","src":"一志愿","total":367,"eng":78,"pol":65,"s1":134,"s2":90,"sch":"衢州学院"},{"n":"李智勇","cat":"专硕","src":"调剂","total":338,"eng":64,"pol":65,"s1":84,"s2":125,"sch":"洛阳理工学院"}]},{"tutor":"夏阳","xue":0,"zhuan":4,"total":4,"students":[{"n":"肖自恒","cat":"专硕","src":"一志愿","total":349,"eng":69,"pol":59,"s1":120,"s2":101,"sch":"湖北汽车工业学院"},{"n":"方前亿","cat":"专硕","src":"一志愿","total":342,"eng":64,"pol":73,"s1":122,"s2":83,"sch":"九江学院"},{"n":"干嘉洛","cat":"专硕","src":"一志愿","total":313,"eng":70,"pol":58,"s1":103,"s2":82,"sch":"浙江农林大学"},{"n":"仲安程","cat":"专硕","src":"一志愿","total":320,"eng":68,"pol":58,"s1":112,"s2":82,"sch":"中国计量大学"}]},{"tutor":"张俊","xue":1,"zhuan":2,"total":3,"students":[{"n":"陈浩哲","cat":"学硕","src":"一志愿","total":331,"eng":70,"pol":55,"s1":127,"s2":79,"sch":"台州学院"},{"n":"王承涛","cat":"专硕","src":"一志愿","total":356,"eng":77,"pol":66,"s1":100,"s2":113,"sch":"成都理工大学"},{"n":"程琬勤","cat":"专硕","src":"一志愿","total":332,"eng":79,"pol":68,"s1":91,"s2":94,"sch":"洛阳理工学院"}]},{"tutor":"黄辉","xue":1,"zhuan":2,"total":3,"students":[{"n":"洪明明","cat":"学硕","src":"一志愿","total":288,"eng":75,"pol":59,"s1":79,"s2":75,"sch":"未知"},{"n":"张亮","cat":"专硕","src":"一志愿","total":351,"eng":62,"pol":65,"s1":132,"s2":92,"sch":""},{"n":"叶李凌","cat":"专硕","src":"一志愿","total":325,"eng":54,"pol":61,"s1":125,"s2":85,"sch":""}]},{"tutor":"张文魁","xue":1,"zhuan":2,"total":3,"students":[{"n":"项晟磊","cat":"学硕","src":"一志愿","total":289,"eng":53,"pol":62,"s1":90,"s2":84,"sch":"温州大学"},{"n":"陈徐昊","cat":"专硕","src":"一志愿","total":340,"eng":78,"pol":64,"s1":91,"s2":107,"sch":"中国计量大学"},{"n":"郑瑶","cat":"专硕","src":"一志愿","total":334,"eng":75,"pol":65,"s1":106,"s2":88,"sch":"安徽工程大学"}]},{"tutor":"方如意","xue":2,"zhuan":1,"total":3,"students":[{"n":"陈韦翰","cat":"专硕","src":"一志愿","total":323,"eng":68,"pol":65,"s1":101,"s2":89,"sch":"宁波工程学院"},{"n":"王绍骅","cat":"学硕","src":"调剂","total":333,"eng":49,"pol":70,"s1":110,"s2":104,"sch":"河北工程大学"},{"n":"李沛颖","cat":"学硕","src":"调剂","total":338,"eng":59,"pol":69,"s1":88,"s2":122,"sch":"湖南科技大学"}]},{"tutor":"贺馨平","xue":1,"zhuan":1,"total":2,"students":[{"n":"杨麒洺","cat":"学硕","src":"一志愿","total":314,"eng":66,"pol":62,"s1":115,"s2":71,"sch":""},{"n":"黄上员","cat":"专硕","src":"一志愿","total":378,"eng":81,"pol":67,"s1":130,"s2":100,"sch":""}]},{"tutor":"范敏","xue":1,"zhuan":1,"total":2,"students":[{"n":"洪欣奕","cat":"学硕","src":"一志愿","total":326,"eng":56,"pol":55,"s1":118,"s2":97,"sch":"浙江工业大学之江学院"},{"n":"吴三峡","cat":"专硕","src":"一志愿","total":342,"eng":70,"pol":61,"s1":109,"s2":102,"sch":"未知"}]},{"tutor":"甘永平","xue":0,"zhuan":2,"total":2,"students":[{"n":"杨盈盈","cat":"专硕","src":"一志愿","total":330,"eng":70,"pol":70,"s1":97,"s2":93,"sch":"未知"},{"n":"徐晶晶","cat":"专硕","src":"一志愿","total":291,"eng":64,"pol":63,"s1":71,"s2":93,"sch":"辽宁科技大学"}]},{"tutor":"袁华栋","xue":2,"zhuan":0,"total":2,"students":[{"n":"孟宪骏","cat":"学硕","src":"调剂","total":347,"eng":55,"pol":65,"s1":121,"s2":106,"sch":"河北大学"},{"n":"蒋瑜","cat":"学硕","src":"调剂","total":351,"eng":57,"pol":59,"s1":120,"s2":115,"sch":"温州大学"}]},{"tutor":"罗剑敏","xue":0,"zhuan":1,"total":1,"students":[{"n":"黄昊","cat":"专硕","src":"一志愿","total":319,"eng":67,"pol":59,"s1":93,"s2":100,"sch":""}]}]},{"dept":"金属材料与表面工程研究所","tutors":7,"xue":15,"zhuan":15,"total":30,"list":[{"tutor":"郑国渠","xue":5,"zhuan":3,"total":8,"students":[{"n":"齐鹏坤","cat":"学硕","src":"一志愿","total":321,"eng":49,"pol":58,"s1":117,"s2":97,"sch":"东华理工大学"},{"n":"杨丰桥","cat":"学硕","src":"一志愿","total":303,"eng":39,"pol":59,"s1":110,"s2":95,"sch":"攀枝花学院"},{"n":"茅盛源","cat":"学硕","src":"一志愿","total":265,"eng":55,"pol":56,"s1":94,"s2":60,"sch":"未知"},{"n":"曾瑞","cat":"学硕","src":"一志愿","total":265,"eng":41,"pol":64,"s1":92,"s2":68,"sch":"未知"},{"n":"马超众","cat":"学硕","src":"一志愿","total":280,"eng":49,"pol":56,"s1":96,"s2":79,"sch":"江西理工大学"},{"n":"张庆泽","cat":"专硕","src":"一志愿","total":326,"eng":65,"pol":66,"s1":117,"s2":78,"sch":"安徽科技工程大学"},{"n":"尤圣冕","cat":"专硕","src":"一志愿","total":295,"eng":65,"pol":63,"s1":73,"s2":94,"sch":"温州大学"},{"n":"陈狄袁","cat":"专硕","src":"一志愿","total":307,"eng":70,"pol":62,"s1":91,"s2":84,"sch":"宁波职业技术大学"}]},{"tutor":"张惠斌","xue":2,"zhuan":3,"total":5,"students":[{"n":"徐佳","cat":"学硕","src":"一志愿","total":303,"eng":53,"pol":68,"s1":107,"s2":75,"sch":"佳木斯大学"},{"n":"曾勇","cat":"学硕","src":"一志愿","total":305,"eng":47,"pol":63,"s1":113,"s2":82,"sch":"衢州学院"},{"n":"倪晋","cat":"专硕","src":"一志愿","total":361,"eng":59,"pol":66,"s1":119,"s2":117,"sch":"宁波大学科学技术学院"},{"n":"李乐","cat":"专硕","src":"一志愿","total":324,"eng":53,"pol":59,"s1":119,"s2":93,"sch":"衢州学院"},{"n":"姜逢雨","cat":"专硕","src":"一志愿","total":293,"eng":59,"pol":61,"s1":97,"s2":76,"sch":"未知"}]},{"tutor":"唐谊平","xue":2,"zhuan":2,"total":4,"students":[{"n":"李家兴","cat":"学硕","src":"一志愿","total":307,"eng":49,"pol":69,"s1":81,"s2":108,"sch":"吉林建筑大学"},{"n":"崔龙","cat":"专硕","src":"一志愿","total":366,"eng":71,"pol":59,"s1":126,"s2":110,"sch":"未知"},{"n":"沈彤","cat":"专硕","src":"一志愿","total":329,"eng":63,"pol":55,"s1":123,"s2":88,"sch":"温州大学"},{"n":"王宇航","cat":"学硕","src":"调剂","total":344,"eng":60,"pol":61,"s1":102,"s2":121,"sch":"唐山学院"}]},{"tutor":"张健力","xue":2,"zhuan":2,"total":4,"students":[{"n":"陈家乐","cat":"专硕","src":"一志愿","total":290,"eng":59,"pol":56,"s1":101,"s2":74,"sch":"宁波工程学院"},{"n":"胡省园","cat":"专硕","src":"一志愿","total":318,"eng":76,"pol":61,"s1":94,"s2":87,"sch":"江苏科技大学苏州理工学院"},{"n":"杜东明","cat":"学硕","src":"调剂","total":336,"eng":48,"pol":64,"s1":84,"s2":140,"sch":"四川轻化工大学"},{"n":"曾培鑫","cat":"学硕","src":"调剂","total":335,"eng":49,"pol":57,"s1":128,"s2":101,"sch":"未知"}]},{"tutor":"陈强","xue":1,"zhuan":3,"total":4,"students":[{"n":"杨春宝","cat":"学硕","src":"一志愿","total":315,"eng":47,"pol":72,"s1":113,"s2":83,"sch":"未知"},{"n":"马念慈","cat":"专硕","src":"一志愿","total":311,"eng":66,"pol":66,"s1":77,"s2":102,"sch":"未知"},{"n":"杨婷","cat":"专硕","src":"一志愿","total":301,"eng":71,"pol":62,"s1":85,"s2":83,"sch":"浙江水利水电学院"},{"n":"王春义","cat":"专硕","src":"一志愿","total":327,"eng":66,"pol":66,"s1":102,"s2":93,"sch":"景德镇陶瓷大学"}]},{"tutor":"侯广亚","xue":2,"zhuan":1,"total":3,"students":[{"n":"赵晓天","cat":"学硕","src":"一志愿","total":312,"eng":59,"pol":68,"s1":116,"s2":69,"sch":"桂林理工大学"},{"n":"尹冰艳","cat":"专硕","src":"一志愿","total":329,"eng":76,"pol":64,"s1":103,"s2":86,"sch":"安徽信息工程学院"},{"n":"陆焱杨","cat":"学硕","src":"调剂","total":337,"eng":68,"pol":66,"s1":110,"s2":93,"sch":"未知"}]},{"tutor":"曹华珍","xue":1,"zhuan":1,"total":2,"students":[{"n":"吴佳娣","cat":"学硕","src":"一志愿","total":288,"eng":57,"pol":60,"s1":96,"s2":75,"sch":"未知"},{"n":"陈昶帆","cat":"专硕","src":"一志愿","total":335,"eng":68,"pol":71,"s1":106,"s2":90,"sch":""}]}]},{"dept":"功能材料研究所","tutors":8,"xue":8,"zhuan":20,"total":28,"list":[{"tutor":"车声雷","xue":2,"zhuan":3,"total":5,"students":[{"n":"仝乐天","cat":"学硕","src":"一志愿","total":353,"eng":60,"pol":63,"s1":128,"s2":102,"sch":"温州大学"},{"n":"袁航","cat":"学硕","src":"一志愿","total":319,"eng":64,"pol":60,"s1":105,"s2":90,"sch":"未知"},{"n":"鲁思怡","cat":"专硕","src":"一志愿","total":339,"eng":75,"pol":61,"s1":88,"s2":115,"sch":"应急管理大学"},{"n":"陈铭宇","cat":"专硕","src":"一志愿","total":318,"eng":76,"pol":67,"s1":97,"s2":78,"sch":"未知"},{"n":"刘士慧","cat":"专硕","src":"一志愿","total":296,"eng":73,"pol":61,"s1":92,"s2":70,"sch":"池州学院"}]},{"tutor":"李涓","xue":0,"zhuan":5,"total":5,"students":[{"n":"张熙","cat":"专硕","src":"一志愿","total":340,"eng":63,"pol":65,"s1":117,"s2":95,"sch":""},{"n":"郭奕","cat":"专硕","src":"一志愿","total":330,"eng":64,"pol":63,"s1":105,"s2":98,"sch":"中国计量大学"},{"n":"吕文浩","cat":"专硕","src":"一志愿","total":302,"eng":43,"pol":58,"s1":114,"s2":87,"sch":""},{"n":"赵腾慧","cat":"专硕","src":"一志愿","total":310,"eng":75,"pol":59,"s1":84,"s2":92,"sch":"潍坊学院"},{"n":"唐钲淳","cat":"专硕","src":"一志愿","total":289,"eng":70,"pol":68,"s1":80,"s2":71,"sch":"绍兴文理学院"}]},{"tutor":"余靓","xue":2,"zhuan":2,"total":4,"students":[{"n":"俞淑窈","cat":"学硕","src":"一志愿","total":353,"eng":71,"pol":68,"s1":113,"s2":101,"sch":"运城学院"},{"n":"郑馨钰","cat":"学硕","src":"一志愿","total":316,"eng":55,"pol":63,"s1":92,"s2":106,"sch":"天津理工大学"},{"n":"胡江晨","cat":"专硕","src":"一志愿","total":320,"eng":76,"pol":71,"s1":113,"s2":60,"sch":"未知"},{"n":"刘硕","cat":"专硕","src":"调剂","total":347,"eng":66,"pol":53,"s1":120,"s2":108,"sch":"安徽理工大学"}]},{"tutor":"盛嘉伟","xue":1,"zhuan":2,"total":3,"students":[{"n":"郭可欣","cat":"学硕","src":"一志愿","total":325,"eng":64,"pol":66,"s1":98,"s2":97,"sch":"天津商业大学"},{"n":"柏双双","cat":"专硕","src":"一志愿","total":316,"eng":67,"pol":62,"s1":95,"s2":92,"sch":"大连民族大学"},{"n":"田思宇","cat":"专硕","src":"一志愿","total":290,"eng":67,"pol":61,"s1":81,"s2":81,"sch":"安阳师范学院"}]},{"tutor":"应耀","xue":2,"zhuan":1,"total":3,"students":[{"n":"胡英喜","cat":"学硕","src":"一志愿","total":270,"eng":44,"pol":59,"s1":102,"s2":65,"sch":""},{"n":"徐涛","cat":"学硕","src":"调剂","total":361,"eng":67,"pol":75,"s1":123,"s2":96,"sch":"上海海事大学"},{"n":"程子涵","cat":"专硕","src":"调剂","total":356,"eng":71,"pol":64,"s1":118,"s2":103,"sch":"宁波工程学院"}]},{"tutor":"郑精武","xue":0,"zhuan":3,"total":3,"students":[{"n":"吴萌","cat":"专硕","src":"一志愿","total":346,"eng":75,"pol":53,"s1":119,"s2":99,"sch":"井冈山大学"},{"n":"李征乾","cat":"专硕","src":"一志愿","total":346,"eng":70,"pol":62,"s1":128,"s2":86,"sch":"未知"},{"n":"曹斌彬","cat":"专硕","src":"一志愿","total":282,"eng":71,"pol":61,"s1":78,"s2":72,"sch":"未知"}]},{"tutor":"孙青","xue":1,"zhuan":2,"total":3,"students":[{"n":"何炜兵","cat":"专硕","src":"一志愿","total":341,"eng":63,"pol":65,"s1":128,"s2":85,"sch":"安徽科技工程大学"},{"n":"龚珍平","cat":"专硕","src":"一志愿","total":304,"eng":62,"pol":65,"s1":89,"s2":88,"sch":"未知"},{"n":"丁昊文","cat":"学硕","src":"调剂","total":355,"eng":58,"pol":66,"s1":106,"s2":125,"sch":"洛阳理工学院"}]},{"tutor":"乔梁","xue":0,"zhuan":2,"total":2,"students":[{"n":"马佳宇","cat":"专硕","src":"一志愿","total":307,"eng":74,"pol":60,"s1":95,"s2":78,"sch":"晋中学院"},{"n":"熊圆杰","cat":"专硕","src":"一志愿","total":284,"eng":56,"pol":56,"s1":92,"s2":80,"sch":"未知"}]}]},{"dept":"中科院宁波材料所","tutors":16,"xue":0,"zhuan":25,"total":25,"list":[{"tutor":"冯杰","xue":0,"zhuan":4,"total":4,"students":[{"n":"李志铖","cat":"专硕","src":"一志愿","total":286,"eng":54,"pol":58,"s1":91,"s2":83,"sch":""},{"n":"童鑫","cat":"专硕","src":"一志愿","total":265,"eng":64,"pol":65,"s1":63,"s2":73,"sch":"宁波大学"},{"n":"徐国亮","cat":"专硕","src":"一志愿","total":306,"eng":49,"pol":58,"s1":111,"s2":88,"sch":"未知"},{"n":"陈佳柠","cat":"专硕","src":"调剂","total":373,"eng":75,"pol":61,"s1":139,"s2":98,"sch":"湖南工业大学"}]},{"tutor":"胡晓君","xue":0,"zhuan":3,"total":3,"students":[{"n":"周彩娅","cat":"专硕","src":"一志愿","total":305,"eng":67,"pol":66,"s1":100,"s2":72,"sch":"内蒙古科技大学"},{"n":"杨雯涛","cat":"专硕","src":"调剂","total":353,"eng":57,"pol":71,"s1":104,"s2":121,"sch":"未知"},{"n":"崔校铭","cat":"专硕","src":"调剂","total":368,"eng":77,"pol":65,"s1":106,"s2":120,"sch":"未知"}]},{"tutor":"应耀","xue":0,"zhuan":2,"total":2,"students":[{"n":"翁宇杰","cat":"专硕","src":"一志愿","total":339,"eng":75,"pol":63,"s1":121,"s2":80,"sch":"浙江树人学院"},{"n":"钱正荣","cat":"专硕","src":"一志愿","total":330,"eng":59,"pol":59,"s1":117,"s2":95,"sch":"温州大学"}]},{"tutor":"车声雷","xue":0,"zhuan":2,"total":2,"students":[{"n":"盛莘","cat":"专硕","src":"一志愿","total":279,"eng":46,"pol":55,"s1":83,"s2":95,"sch":"浙大宁波理工学院"},{"n":"徐浩洲","cat":"专硕","src":"一志愿","total":272,"eng":60,"pol":58,"s1":78,"s2":76,"sch":"衢州学院"}]},{"tutor":"李涓","xue":0,"zhuan":2,"total":2,"students":[{"n":"张梦燕","cat":"专硕","src":"一志愿","total":335,"eng":65,"pol":63,"s1":98,"s2":109,"sch":"未知"},{"n":"杨浩鑫","cat":"专硕","src":"调剂","total":347,"eng":69,"pol":65,"s1":102,"s2":111,"sch":"唐山师范学院"}]},{"tutor":"乔梁","xue":0,"zhuan":2,"total":2,"students":[{"n":"徐铭浩","cat":"专硕","src":"一志愿","total":294,"eng":69,"pol":65,"s1":89,"s2":71,"sch":"运城学院"},{"n":"袁鑫","cat":"专硕","src":"一志愿","total":344,"eng":77,"pol":63,"s1":105,"s2":99,"sch":"运城学院"}]},{"tutor":"杨晋涛","xue":0,"zhuan":1,"total":1,"students":[{"n":"陈艺","cat":"专硕","src":"一志愿","total":336,"eng":73,"pol":67,"s1":81,"s2":115,"sch":"安徽师范大学皖江学院"}]},{"tutor":"况太荣","xue":0,"zhuan":1,"total":1,"students":[{"n":"杨敬衡","cat":"专硕","src":"一志愿","total":305,"eng":76,"pol":69,"s1":60,"s2":100,"sch":"未知"}]},{"tutor":"徐立新","xue":0,"zhuan":1,"total":1,"students":[{"n":"徐凯玲","cat":"专硕","src":"一志愿","total":323,"eng":67,"pol":63,"s1":102,"s2":91,"sch":"未知"}]},{"tutor":"陈成克","xue":0,"zhuan":1,"total":1,"students":[{"n":"王梦楠","cat":"专硕","src":"一志愿","total":275,"eng":68,"pol":58,"s1":86,"s2":63,"sch":"嘉兴大学"}]},{"tutor":"陈思","xue":0,"zhuan":1,"total":1,"students":[{"n":"施昊然","cat":"专硕","src":"一志愿","total":270,"eng":57,"pol":64,"s1":63,"s2":86,"sch":"浙大宁波理工学院"}]},{"tutor":"方如意","xue":0,"zhuan":1,"total":1,"students":[{"n":"孟飞鸿","cat":"专硕","src":"一志愿","total":341,"eng":73,"pol":65,"s1":123,"s2":80,"sch":"未知"}]},{"tutor":"张林","xue":0,"zhuan":1,"total":1,"students":[{"n":"张兆毅","cat":"专硕","src":"一志愿","total":303,"eng":61,"pol":64,"s1":87,"s2":91,"sch":"鲁东大学"}]},{"tutor":"待定","xue":0,"zhuan":1,"total":1,"students":[{"n":"叶轩","cat":"专硕","src":"一志愿","total":291,"eng":62,"pol":66,"s1":86,"s2":77,"sch":"宁波工程学院"}]},{"tutor":"罗剑敏","xue":0,"zhuan":1,"total":1,"students":[{"n":"张靓婷","cat":"专硕","src":"一志愿","total":320,"eng":77,"pol":60,"s1":84,"s2":99,"sch":"湖南科技学院"}]},{"tutor":"王旭","xue":0,"zhuan":1,"total":1,"students":[{"n":"余作星","cat":"专硕","src":"调剂","total":366,"eng":80,"pol":51,"s1":117,"s2":118,"sch":"浙江工业大学之江学院"}]}]},{"dept":"先进材料研究中心","tutors":6,"xue":10,"zhuan":15,"total":25,"list":[{"tutor":"胡晓君","xue":3,"zhuan":9,"total":12,"students":[{"n":"高炀阳","cat":"学硕","src":"一志愿","total":295,"eng":58,"pol":61,"s1":97,"s2":79,"sch":"未知"},{"n":"柳浩然","cat":"学硕","src":"一志愿","total":277,"eng":51,"pol":67,"s1":94,"s2":65,"sch":"东南大学成贤学院"},{"n":"曹磊","cat":"学硕","src":"一志愿","total":310,"eng":40,"pol":56,"s1":126,"s2":88,"sch":"烟台南山学院"},{"n":"苏诗敏","cat":"专硕","src":"一志愿","total":309,"eng":74,"pol":65,"s1":66,"s2":104,"sch":"未知"},{"n":"韩天烁","cat":"专硕","src":"一志愿","total":323,"eng":84,"pol":68,"s1":84,"s2":87,"sch":"温州大学"},{"n":"程捷","cat":"专硕","src":"一志愿","total":325,"eng":72,"pol":63,"s1":93,"s2":97,"sch":"萍乡学院"},{"n":"粟伟俊","cat":"专硕","src":"一志愿","total":329,"eng":70,"pol":63,"s1":90,"s2":106,"sch":"运城学院"},{"n":"李翔宇","cat":"专硕","src":"一志愿","total":309,"eng":51,"pol":61,"s1":120,"s2":77,"sch":"宜春学院"},{"n":"卢奕宁","cat":"专硕","src":"一志愿","total":299,"eng":59,"pol":59,"s1":110,"s2":71,"sch":"宿迁学院"},{"n":"施子杰","cat":"专硕","src":"调剂","total":345,"eng":81,"pol":61,"s1":105,"s2":98,"sch":"宜春学院"},{"n":"张政行","cat":"专硕","src":"调剂","total":358,"eng":77,"pol":54,"s1":122,"s2":105,"sch":"河南科技大学"},{"n":"李丽","cat":"专硕","src":"调剂","total":360,"eng":79,"pol":53,"s1":109,"s2":119,"sch":""}]},{"tutor":"张旺","xue":3,"zhuan":2,"total":5,"students":[{"n":"阮莹莹","cat":"学硕","src":"一志愿","total":310,"eng":49,"pol":61,"s1":124,"s2":76,"sch":"淮南师范学院"},{"n":"戴亦晨","cat":"学硕","src":"一志愿","total":299,"eng":60,"pol":63,"s1":103,"s2":73,"sch":""},{"n":"余文婷","cat":"专硕","src":"一志愿","total":344,"eng":77,"pol":61,"s1":124,"s2":82,"sch":"淮南师范学院"},{"n":"徐智超","cat":"专硕","src":"一志愿","total":298,"eng":72,"pol":57,"s1":100,"s2":69,"sch":"安徽科技工程大学"},{"n":"陈桢","cat":"学硕","src":"调剂","total":360,"eng":55,"pol":63,"s1":126,"s2":116,"sch":"未知"}]},{"tutor":"毋芳芳","xue":1,"zhuan":2,"total":3,"students":[{"n":"吴楷靓","cat":"专硕","src":"一志愿","total":335,"eng":72,"pol":69,"s1":83,"s2":111,"sch":"浙大宁波理工学院"},{"n":"陈志翔","cat":"专硕","src":"一志愿","total":328,"eng":61,"pol":59,"s1":131,"s2":77,"sch":"浙江工业大学之江学院"},{"n":"吕云鹤","cat":"学硕","src":"调剂","total":307,"eng":50,"pol":59,"s1":86,"s2":112,"sch":"青岛大学"}]},{"tutor":"邹世辉","xue":1,"zhuan":1,"total":2,"students":[{"n":"金莹","cat":"学硕","src":"一志愿","total":363,"eng":81,"pol":61,"s1":115,"s2":106,"sch":"衢州学院"},{"n":"方柯清","cat":"专硕","src":"一志愿","total":317,"eng":79,"pol":61,"s1":99,"s2":78,"sch":"安徽工程大学"}]},{"tutor":"王垚","xue":1,"zhuan":1,"total":2,"students":[{"n":"颜宏宇","cat":"学硕","src":"一志愿","total":350,"eng":61,"pol":60,"s1":128,"s2":101,"sch":"未知"},{"n":"柳利娟","cat":"专硕","src":"一志愿","total":351,"eng":77,"pol":60,"s1":102,"s2":112,"sch":"淮南师范学院"}]},{"tutor":"陈成克","xue":1,"zhuan":0,"total":1,"students":[{"n":"于东健","cat":"学硕","src":"一志愿","total":330,"eng":57,"pol":59,"s1":130,"s2":84,"sch":"台州学院"}]}]},{"dept":"材料成型与控制工程研究所","tutors":7,"xue":8,"zhuan":12,"total":20,"list":[{"tutor":"张林","xue":3,"zhuan":2,"total":5,"students":[{"n":"陈伟康","cat":"学硕","src":"一志愿","total":278,"eng":36,"pol":57,"s1":115,"s2":70,"sch":"未知"},{"n":"李华凯","cat":"专硕","src":"一志愿","total":299,"eng":68,"pol":64,"s1":70,"s2":97,"sch":""},{"n":"王俊朝","cat":"专硕","src":"一志愿","total":324,"eng":77,"pol":61,"s1":110,"s2":76,"sch":"洛阳理工学院"},{"n":"杨兆伦","cat":"学硕","src":"调剂","total":312,"eng":71,"pol":62,"s1":79,"s2":100,"sch":"安徽理工大学"},{"n":"唐景超","cat":"学硕","src":"调剂","total":328,"eng":62,"pol":60,"s1":109,"s2":97,"sch":"鲁东大学"}]},{"tutor":"周成双","xue":2,"zhuan":2,"total":4,"students":[{"n":"韩益楠","cat":"学硕","src":"一志愿","total":290,"eng":61,"pol":69,"s1":89,"s2":71,"sch":""},{"n":"谢雨辰","cat":"专硕","src":"一志愿","total":339,"eng":81,"pol":56,"s1":116,"s2":86,"sch":""},{"n":"程司瀚","cat":"专硕","src":"一志愿","total":352,"eng":74,"pol":61,"s1":118,"s2":99,"sch":"湖州学院"},{"n":"夏守煜","cat":"学硕","src":"调剂","total":347,"eng":52,"pol":49,"s1":125,"s2":121,"sch":"安徽工业大学"}]},{"tutor":"郑晓华","xue":1,"zhuan":2,"total":3,"students":[{"n":"付京涛","cat":"学硕","src":"一志愿","total":291,"eng":45,"pol":54,"s1":102,"s2":90,"sch":"未知"},{"n":"吴诗丝","cat":"专硕","src":"一志愿","total":320,"eng":63,"pol":56,"s1":113,"s2":88,"sch":"南昌航空大学科技学院"},{"n":"高文杰","cat":"专硕","src":"一志愿","total":323,"eng":72,"pol":62,"s1":106,"s2":83,"sch":"广东石油化工学院"}]},{"tutor":"吴旻","xue":2,"zhuan":1,"total":3,"students":[{"n":"彭琳雅","cat":"学硕","src":"一志愿","total":301,"eng":55,"pol":57,"s1":96,"s2":93,"sch":"浙江工业大学之江学院"},{"n":"麻富健","cat":"学硕","src":"一志愿","total":301,"eng":59,"pol":63,"s1":78,"s2":101,"sch":"浙江树人学院"},{"n":"陈阳","cat":"专硕","src":"一志愿","total":281,"eng":62,"pol":58,"s1":90,"s2":71,"sch":"黄山学院"}]},{"tutor":"徐斌","xue":0,"zhuan":3,"total":3,"students":[{"n":"王名锗","cat":"专硕","src":"一志愿","total":336,"eng":61,"pol":71,"s1":124,"s2":80,"sch":"未知"},{"n":"邱星宇","cat":"专硕","src":"一志愿","total":311,"eng":64,"pol":62,"s1":110,"s2":75,"sch":"未知"},{"n":"周世龙","cat":"专硕","src":"调剂","total":342,"eng":66,"pol":66,"s1":104,"s2":106,"sch":"未知"}]},{"tutor":"李晓","xue":0,"zhuan":1,"total":1,"students":[{"n":"林正金","cat":"专硕","src":"一志愿","total":344,"eng":65,"pol":65,"s1":112,"s2":102,"sch":"伊犁师范大学"}]},{"tutor":"谢德明","xue":0,"zhuan":1,"total":1,"students":[{"n":"范于鑫","cat":"专硕","src":"一志愿","total":370,"eng":67,"pol":62,"s1":145,"s2":96,"sch":"安徽科技工程大学"}]}]},{"dept":"碳中和创新研究院","tutors":2,"xue":1,"zhuan":7,"total":8,"list":[{"tutor":"梁初","xue":0,"zhuan":5,"total":5,"students":[{"n":"郑宏宇","cat":"专硕","src":"一志愿","total":340,"eng":78,"pol":50,"s1":110,"s2":102,"sch":"华北理工大学"},{"n":"文嘉豪","cat":"专硕","src":"一志愿","total":340,"eng":76,"pol":67,"s1":109,"s2":88,"sch":"安徽理工大学"},{"n":"贾浩","cat":"专硕","src":"一志愿","total":306,"eng":63,"pol":62,"s1":84,"s2":97,"sch":"湖州师范学院"},{"n":"祝文浩","cat":"专硕","src":"一志愿","total":340,"eng":49,"pol":63,"s1":125,"s2":103,"sch":"景德镇陶瓷大学"},{"n":"李曾欣","cat":"专硕","src":"一志愿","total":317,"eng":65,"pol":62,"s1":99,"s2":91,"sch":"湖州师范学院"}]},{"tutor":"张箫玉","xue":1,"zhuan":2,"total":3,"students":[{"n":"管可强","cat":"专硕","src":"一志愿","total":300,"eng":47,"pol":63,"s1":100,"s2":90,"sch":"江苏理工学院"},{"n":"曹俊逸","cat":"专硕","src":"一志愿","total":346,"eng":75,"pol":66,"s1":105,"s2":100,"sch":"宁波工程学院"},{"n":"皮相相","cat":"学硕","src":"调剂","total":324,"eng":48,"pol":57,"s1":124,"s2":95,"sch":""}]}]},{"dept":"激光先进制造研究院","tutors":4,"xue":2,"zhuan":5,"total":7,"list":[{"tutor":"姚建华","xue":2,"zhuan":2,"total":4,"students":[{"n":"杨博蕃","cat":"学硕","src":"一志愿","total":291,"eng":43,"pol":63,"s1":79,"s2":106,"sch":"内蒙古科技大学"},{"n":"杨智","cat":"专硕","src":"一志愿","total":289,"eng":63,"pol":51,"s1":110,"s2":65,"sch":"徐州工程学院"},{"n":"何鑫","cat":"专硕","src":"一志愿","total":308,"eng":72,"pol":53,"s1":98,"s2":85,"sch":"河南农业大学"},{"n":"高峰","cat":"学硕","src":"调剂","total":335,"eng":53,"pol":53,"s1":106,"s2":123,"sch":"未知"}]},{"tutor":"王梁","xue":0,"zhuan":1,"total":1,"students":[{"n":"冯浩宇","cat":"专硕","src":"一志愿","total":316,"eng":76,"pol":63,"s1":103,"s2":74,"sch":"绍兴文理学院"}]},{"tutor":"张群莉","xue":0,"zhuan":1,"total":1,"students":[{"n":"祝禾才","cat":"专硕","src":"一志愿","total":299,"eng":74,"pol":66,"s1":81,"s2":78,"sch":"萍乡学院"}]},{"tutor":"吴国龙","xue":0,"zhuan":1,"total":1,"students":[{"n":"王博","cat":"专硕","src":"一志愿","total":307,"eng":58,"pol":56,"s1":111,"s2":82,"sch":"郑州轻工业大学"}]}]},{"dept":"中科院杭州医学所","tutors":3,"xue":0,"zhuan":5,"total":5,"list":[{"tutor":"张旺","xue":0,"zhuan":2,"total":2,"students":[{"n":"郑志垦","cat":"专硕","src":"一志愿","total":285,"eng":67,"pol":52,"s1":55,"s2":111,"sch":"未知"},{"n":"李林锋","cat":"专硕","src":"一志愿","total":301,"eng":69,"pol":66,"s1":81,"s2":85,"sch":"未知"}]},{"tutor":"张静","xue":0,"zhuan":2,"total":2,"students":[{"n":"叶静柔","cat":"专硕","src":"一志愿","total":317,"eng":68,"pol":67,"s1":80,"s2":102,"sch":"浙江树人学院"},{"n":"李静怡","cat":"专硕","src":"一志愿","total":281,"eng":60,"pol":59,"s1":84,"s2":78,"sch":"未知"}]},{"tutor":"郑司雨","xue":0,"zhuan":1,"total":1,"students":[{"n":"胡云海","cat":"专硕","src":"一志愿","total":276,"eng":43,"pol":67,"s1":69,"s2":97,"sch":"衢州学院"}]}]},{"dept":"前沿交叉研究院","tutors":1,"xue":1,"zhuan":2,"total":3,"list":[{"tutor":"刘善秋","xue":1,"zhuan":2,"total":3,"students":[{"n":"马靖毅","cat":"专硕","src":"一志愿","total":296,"eng":68,"pol":55,"s1":83,"s2":90,"sch":"太原工业学院"},{"n":"江晓东","cat":"学硕","src":"调剂","total":304,"eng":57,"pol":67,"s1":89,"s2":91,"sch":""},{"n":"胡棋文","cat":"专硕","src":"调剂","total":342,"eng":74,"pol":62,"s1":87,"s2":119,"sch":"安徽理工大学"}]}]},{"dept":"之江学院","tutors":1,"xue":0,"zhuan":1,"total":1,"list":[{"tutor":"赵正平","xue":0,"zhuan":1,"total":1,"students":[{"n":"何安楠","cat":"专硕","src":"一志愿","total":322,"eng":64,"pol":59,"s1":114,"s2":85,"sch":"景德镇陶瓷大学"}]}]}];
+var ADMISSION_DATA = [{"tutor":"冯杰","dept":"高分子材料与工程研究所","dir":"高分子","xue":3,"zhuan":5,"total":8},{"tutor":"杨晋涛","dept":"高分子材料与工程研究所","dir":"高分子","xue":2,"zhuan":3,"total":5},{"tutor":"王旭","dept":"高分子材料与工程研究所","dir":"高分子","xue":2,"zhuan":3,"total":5},{"tutor":"徐立新","dept":"高分子材料与工程研究所","dir":"高分子","xue":4,"zhuan":1,"total":5},{"tutor":"陈思","dept":"高分子材料与工程研究所","dir":"高分子","xue":2,"zhuan":3,"total":5},{"tutor":"马猛","dept":"高分子材料与工程研究所","dir":"高分子","xue":2,"zhuan":2,"total":4},{"tutor":"陈玉龙","dept":"高分子材料与工程研究所","dir":"高分子","xue":3,"zhuan":1,"total":4},{"tutor":"曹澥宏","dept":"高分子材料与工程研究所","dir":"高分子","xue":0,"zhuan":4,"total":4},{"tutor":"况太荣","dept":"高分子材料与工程研究所","dir":"高分子","xue":2,"zhuan":1,"total":3},{"tutor":"刘通","dept":"高分子材料与工程研究所","dir":"高分子","xue":1,"zhuan":2,"total":3},{"tutor":"刘文贤","dept":"高分子材料与工程研究所","dir":"高分子","xue":1,"zhuan":2,"total":3},{"tutor":"韩金","dept":"高分子材料与工程研究所","dir":"高分子","xue":0,"zhuan":3,"total":3},{"tutor":"叶会见","dept":"高分子材料与工程研究所","dir":"高分子","xue":0,"zhuan":3,"total":3},{"tutor":"张静","dept":"高分子材料与工程研究所","dir":"高分子","xue":1,"zhuan":2,"total":3},{"tutor":"陈枫","dept":"高分子材料与工程研究所","dir":"高分子","xue":1,"zhuan":1,"total":2},{"tutor":"吴丹","dept":"高分子材料与工程研究所","dir":"高分子","xue":2,"zhuan":0,"total":2},{"tutor":"杜光焰","dept":"高分子材料与工程研究所","dir":"高分子","xue":2,"zhuan":0,"total":2},{"tutor":"朱雨露","dept":"高分子材料与工程研究所","dir":"高分子","xue":0,"zhuan":2,"total":2},{"tutor":"何荟文","dept":"高分子材料与工程研究所","dir":"高分子","xue":1,"zhuan":1,"total":2},{"tutor":"费炎培","dept":"高分子材料与工程研究所","dir":"高分子","xue":1,"zhuan":1,"total":2},{"tutor":"费正东","dept":"高分子材料与工程研究所","dir":"高分子","xue":1,"zhuan":1,"total":2},{"tutor":"郑司雨","dept":"高分子材料与工程研究所","dir":"高分子","xue":2,"zhuan":0,"total":2},{"tutor":"施燕琴","dept":"高分子材料与工程研究所","dir":"高分子","xue":1,"zhuan":0,"total":1},{"tutor":"范萍","dept":"高分子材料与工程研究所","dir":"高分子","xue":0,"zhuan":1,"total":1},{"tutor":"朱雨薇","dept":"高分子材料与工程研究所","dir":"高分子","xue":0,"zhuan":1,"total":1},{"tutor":"陶新永","dept":"新能源材料与技术研究所","dir":"材料科学","xue":3,"zhuan":4,"total":7},{"tutor":"刘育京","dept":"新能源材料与技术研究所","dir":"材料科学","xue":1,"zhuan":4,"total":5},{"tutor":"夏新辉","dept":"新能源材料与技术研究所","dir":"材料科学","xue":3,"zhuan":2,"total":5},{"tutor":"佴建威","dept":"新能源材料与技术研究所","dir":"材料科学","xue":1,"zhuan":3,"total":4},{"tutor":"夏阳","dept":"新能源材料与技术研究所","dir":"材料科学","xue":0,"zhuan":4,"total":4},{"tutor":"张俊","dept":"新能源材料与技术研究所","dir":"材料科学","xue":1,"zhuan":2,"total":3},{"tutor":"黄辉","dept":"新能源材料与技术研究所","dir":"材料科学","xue":1,"zhuan":2,"total":3},{"tutor":"张文魁","dept":"新能源材料与技术研究所","dir":"材料科学","xue":1,"zhuan":2,"total":3},{"tutor":"方如意","dept":"新能源材料与技术研究所","dir":"材料科学","xue":2,"zhuan":1,"total":3},{"tutor":"贺馨平","dept":"新能源材料与技术研究所","dir":"材料科学","xue":1,"zhuan":1,"total":2},{"tutor":"范敏","dept":"新能源材料与技术研究所","dir":"材料科学","xue":1,"zhuan":1,"total":2},{"tutor":"甘永平","dept":"新能源材料与技术研究所","dir":"材料科学","xue":0,"zhuan":2,"total":2},{"tutor":"袁华栋","dept":"新能源材料与技术研究所","dir":"材料科学","xue":2,"zhuan":0,"total":2},{"tutor":"罗剑敏","dept":"新能源材料与技术研究所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"郑国渠","dept":"金属材料与表面工程研究所","dir":"材料科学","xue":5,"zhuan":3,"total":8},{"tutor":"张惠斌","dept":"金属材料与表面工程研究所","dir":"材料科学","xue":2,"zhuan":3,"total":5},{"tutor":"唐谊平","dept":"金属材料与表面工程研究所","dir":"材料科学","xue":2,"zhuan":2,"total":4},{"tutor":"张健力","dept":"金属材料与表面工程研究所","dir":"材料科学","xue":2,"zhuan":2,"total":4},{"tutor":"陈强","dept":"金属材料与表面工程研究所","dir":"材料科学","xue":1,"zhuan":3,"total":4},{"tutor":"侯广亚","dept":"金属材料与表面工程研究所","dir":"材料科学","xue":2,"zhuan":1,"total":3},{"tutor":"曹华珍","dept":"金属材料与表面工程研究所","dir":"材料科学","xue":1,"zhuan":1,"total":2},{"tutor":"车声雷","dept":"功能材料研究所","dir":"材料科学","xue":2,"zhuan":3,"total":5},{"tutor":"李涓","dept":"功能材料研究所","dir":"材料科学","xue":0,"zhuan":5,"total":5},{"tutor":"余靓","dept":"功能材料研究所","dir":"材料科学","xue":2,"zhuan":2,"total":4},{"tutor":"盛嘉伟","dept":"功能材料研究所","dir":"材料科学","xue":1,"zhuan":2,"total":3},{"tutor":"应耀","dept":"功能材料研究所","dir":"材料科学","xue":2,"zhuan":1,"total":3},{"tutor":"郑精武","dept":"功能材料研究所","dir":"材料科学","xue":0,"zhuan":3,"total":3},{"tutor":"孙青","dept":"功能材料研究所","dir":"材料科学","xue":1,"zhuan":2,"total":3},{"tutor":"乔梁","dept":"功能材料研究所","dir":"材料科学","xue":0,"zhuan":2,"total":2},{"tutor":"冯杰","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":4,"total":4},{"tutor":"胡晓君","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":3,"total":3},{"tutor":"应耀","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":2,"total":2},{"tutor":"车声雷","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":2,"total":2},{"tutor":"李涓","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":2,"total":2},{"tutor":"乔梁","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":2,"total":2},{"tutor":"杨晋涛","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"况太荣","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"徐立新","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"陈成克","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"陈思","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"方如意","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"张林","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"待定","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"罗剑敏","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"王旭","dept":"中科院宁波材料所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"胡晓君","dept":"先进材料研究中心","dir":"材料科学","xue":3,"zhuan":9,"total":12},{"tutor":"张旺","dept":"先进材料研究中心","dir":"材料科学","xue":3,"zhuan":2,"total":5},{"tutor":"毋芳芳","dept":"先进材料研究中心","dir":"材料科学","xue":1,"zhuan":2,"total":3},{"tutor":"邹世辉","dept":"先进材料研究中心","dir":"材料科学","xue":1,"zhuan":1,"total":2},{"tutor":"王垚","dept":"先进材料研究中心","dir":"材料科学","xue":1,"zhuan":1,"total":2},{"tutor":"陈成克","dept":"先进材料研究中心","dir":"材料科学","xue":1,"zhuan":0,"total":1},{"tutor":"张林","dept":"材料成型与控制工程研究所","dir":"材料科学","xue":3,"zhuan":2,"total":5},{"tutor":"周成双","dept":"材料成型与控制工程研究所","dir":"材料科学","xue":2,"zhuan":2,"total":4},{"tutor":"郑晓华","dept":"材料成型与控制工程研究所","dir":"材料科学","xue":1,"zhuan":2,"total":3},{"tutor":"吴旻","dept":"材料成型与控制工程研究所","dir":"材料科学","xue":2,"zhuan":1,"total":3},{"tutor":"徐斌","dept":"材料成型与控制工程研究所","dir":"材料科学","xue":0,"zhuan":3,"total":3},{"tutor":"李晓","dept":"材料成型与控制工程研究所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"谢德明","dept":"材料成型与控制工程研究所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"梁初","dept":"碳中和创新研究院","dir":"材料科学","xue":0,"zhuan":5,"total":5},{"tutor":"张箫玉","dept":"碳中和创新研究院","dir":"材料科学","xue":1,"zhuan":2,"total":3},{"tutor":"姚建华","dept":"激光先进制造研究院","dir":"材料科学","xue":2,"zhuan":2,"total":4},{"tutor":"王梁","dept":"激光先进制造研究院","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"张群莉","dept":"激光先进制造研究院","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"吴国龙","dept":"激光先进制造研究院","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"张旺","dept":"中科院杭州医学所","dir":"材料科学","xue":0,"zhuan":2,"total":2},{"tutor":"张静","dept":"中科院杭州医学所","dir":"材料科学","xue":0,"zhuan":2,"total":2},{"tutor":"郑司雨","dept":"中科院杭州医学所","dir":"材料科学","xue":0,"zhuan":1,"total":1},{"tutor":"刘善秋","dept":"前沿交叉研究院","dir":"材料科学","xue":1,"zhuan":2,"total":3},{"tutor":"赵正平","dept":"之江学院","dir":"材料科学","xue":0,"zhuan":1,"total":1}];
 
 
 
@@ -7738,7 +8376,7 @@ function renderAdmission(){
     h += '<div style="font-size:14px;color:#92400e;font-weight:600;margin-bottom:8px">🔒 敏感数据已加密</div>';
 
 
-    h += '<div style="font-size:13px;color:#78716c;line-height:1.8">导师具体招生名额（学硕/专硕人数）和考生成绩信息已加密保护。<br>如需查看完整数据，请<a href="#" onclick="goLogin();return false" style="color:#2563eb;font-weight:600">订阅登录</a>解锁。</div>';
+    h += '<div style="font-size:13px;color:#78716c;line-height:1.8">导师具体招生名额（学硕/专硕人数）和考生成绩信息已加密保护。<br>如需查看完整数据，请<a href="#" onclick=\"if(typeof trackEvent===&#39;function&#39;)trackEvent(&quot;cta_unlock_click&quot;);goLogin();return false\" style="color:#2563eb;font-weight:600">订阅登录</a>解锁。</div>';
 
 
     h += '</div>';
@@ -8302,7 +8940,7 @@ function renderDecision(){
   h += '<div id="locateResult"></div>';
 
 
-  h += '<div class="note-box">对照目标分数参考表，自动判断可报考方向（达到目标线即可报考，分数越高，高于均分的幅度越大）。</div></div>';
+  h += '<div class="note-box">输入分数后展示 2026 级录取统计中的位置（分段、均分/最低分差），仅作参考，不构成报考建议。</div></div>';
 
 
   // match table
@@ -8314,7 +8952,7 @@ function renderDecision(){
     h += '<div class="card"><div class="card-title">导师-学生匹配表</div>';
 
 
-    h += '<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:16px;font-size:13px;color:#92400e">🔒 智能匹配推荐仅限订阅用户使用<br><br><a href="#" onclick="goLogin();return false" style="color:#2563eb;font-weight:600">订阅登录</a> 后可使用导师-学生匹配功能</div>';
+    h += '<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:16px;font-size:13px;color:#92400e">🔒 智能匹配推荐仅限订阅用户使用<br><br><a href="#" onclick=\"if(typeof trackEvent===&#39;function&#39;)trackEvent(&quot;cta_unlock_click&quot;);goLogin();return false\" style="color:#2563eb;font-weight:600">订阅登录</a> 后可使用导师-学生匹配功能</div>';
 
 
     h += '</div>';
@@ -8351,59 +8989,16 @@ function renderDecision(){
 
 
 function locateScore(val){
-
-
   var c = $('locateResult');
-
-
   if(!c) return;
-
-
   var score = parseFloat(val);
-
-
   if(!score || isNaN(score)){ c.innerHTML = ''; return; }
-
-
-  var h = '';
-
-
-  for(var i=0;i<APP_DATA.targets.length;i++){
-
-
-    var t = APP_DATA.targets[i];
-
-
-    var th = parseInt(String(t.targetScore).replace(/\D/g,'')) || 0;
-
-
-    var ok = score >= th;
-
-
-    var cls = ok ? 'result-good' : 'result-bad';
-
-
-    h += '<div class="result-box '+cls+'">';
-
-
-    h += '<div class="result-title">'+esc(t.direction)+' '+(ok?'✓ 可报':'✗ 未达目标')+'</div>';
-
-
-    h += '<div class="result-detail">目标'+esc(t.targetScore)+'（专业课'+esc(t.targetCourse)+'） · 竞争'+esc(t.competition)+' · '+esc(t.suitFor)+'</div>';
-
-
-    h += '</div>';
-
-
+  c.innerHTML = buildPositionBlock(Math.round(score), '', '');
+  if(typeof trackEvent==='function'){
+    trackEvent('locate_score', {score: Math.round(score)});
+    if(DATA_MASKED) trackEvent('free_card_generated', {score: Math.round(score)});
   }
-
-
-  c.innerHTML = h;
-
-
 }
-
-
 
 
 
@@ -12535,6 +13130,20 @@ function getAllTutorAdmissions(){
 
   if(typeof ADMISSION_DATA === 'undefined') return [];
 
+  // 新版扁平精简结构（无 list/students 明细）
+  if(ADMISSION_DATA.length && !ADMISSION_DATA[0].list){
+    var out=[];
+    for(var ai2=0;ai2<ADMISSION_DATA.length;ai2++){
+      var ta2=ADMISSION_DATA[ai2];
+      out.push({
+        tutor: ta2.tutor, dept: ta2.dept,
+        xue: ta2.xue, zhuan: ta2.zhuan, total: ta2.total,
+        students: [], scores: [], avg: 0, min: 0, max: 0,
+        yizhi: 0, tiaoji: 0, studentCount: 0
+      });
+    }
+    return out;
+  }
 
   var result = [];
 
@@ -13045,7 +13654,7 @@ function buildPositionData(score, cat, dir){
     return Number(o.year) === 2026 && posDirMatch(o, cat, dir);
   });
   var agg = null;
-  if(rows.length && !DATA_MASKED){
+  if(rows.length){
     var cnt=0, avg=0, mn=1e9, mx=-1e9;
     for(var i=0;i<rows.length;i++){
       var r=rows[i], c=Number(r.count)||0;
@@ -13058,17 +13667,15 @@ function buildPositionData(score, cat, dir){
   }
   var range = posRangeOf(score);
   var dist = 0;
-  if(!DATA_MASKED){
-    (APP_DATA.scoreDist||[]).forEach(function(s){
-      if(Number(s.year) !== 2026) return;
-      if(!posDirMatch(s, cat, dir)) return;
-      if(s.range !== range) return;
-      dist += Number(s.count)||0;
-    });
-  }
+  (APP_DATA.scoreDist||[]).forEach(function(s){
+    if(Number(s.year) !== 2026) return;
+    if(!posDirMatch(s, cat, dir)) return;
+    if(s.range !== range) return;
+    dist += Number(s.count)||0;
+  });
   var tutors = [];
-  if(!DATA_MASKED && typeof getAllTutorAdmissions === 'function'){
-    tutors = getAllTutorAdmissions().filter(function(t){
+  if(typeof getAllTutorAdmissions === 'function'){
+    var pool = getAllTutorAdmissions().filter(function(t){
       var deptOk = !dir || (dir==='高分子' ? t.dept.indexOf('高分子')>=0 : t.dept.indexOf('高分子')<0);
       var q = cat==='学硕' ? t.xue : cat==='专硕' ? t.zhuan : t.total;
       return deptOk && q>0;
@@ -13076,10 +13683,25 @@ function buildPositionData(score, cat, dir){
       var qa = cat==='学硕'?a.xue:cat==='专硕'?a.zhuan:a.total;
       var qb = cat==='学硕'?b.xue:cat==='专硕'?b.zhuan:b.total;
       return qb-qa;
-    }).slice(0,5).map(function(t){
-      var q = cat==='学硕'?t.xue:cat==='专硕'?t.zhuan:t.total;
-      return t.tutor + ' ' + q;
     });
+    if(DATA_MASKED){
+      // 游客版：从服务端 roster（已按名额排序、不含数字）按方向取前 2 位姓名
+      var roster = APP_DATA.roster || [];
+      var seen = {};
+      for(var ri=0;ri<roster.length && tutors.length<2;ri++){
+        var rn = roster[ri];
+        if(dir==='高分子' && rn.institute.indexOf('高分子')<0) continue;
+        if(dir==='材料科学' && rn.institute.indexOf('高分子')>=0) continue;
+        if(seen[rn.name]) continue;
+        seen[rn.name]=1;
+        tutors.push(rn.name);
+      }
+    } else {
+      tutors = pool.slice(0,5).map(function(t){
+        var q = cat==='学硕'?t.xue:cat==='专硕'?t.zhuan:t.total;
+        return t.tutor + ' ' + q;
+      });
+    }
   }
   return {score:score, cat:cat, dir:dir, agg:agg, range:range, dist:dist, tutors:tutors};
 }
@@ -13096,10 +13718,16 @@ function buildPositionLines(d){
     L.push('该方向暂无 2026 级录取统计');
     L.push('差值：暂无基准');
   }
-  L.push('分数段 ' + d.range + ' · 该段 2026 级 ' + (DATA_MASKED?'订阅可查看':d.dist + ' 人'));
-  var tl = d.tutors.length ? d.tutors.join('、') : '该方向暂无名额记录';
-  L.push('该方向有名额的导师：' + (DATA_MASKED?'订阅可查看':tl));
-  L.push('数据来源：2026 级录取统计（' + ((APP_DATA.meta && APP_DATA.meta.version)||'2026.11') + '），仅供参考，不构成录取承诺');
+  L.push('分数段 ' + d.range + ' · 该段 2026 级 ' + d.dist + ' 人');
+  if(DATA_MASKED){
+    var tl2 = d.tutors.length ? d.tutors.join('、') : '该方向暂无记录';
+    L.push('该方向导师（名额需订阅）：' + tl2);
+    L.push('导师名额 · 招生明细 · 智能推荐：订阅后解锁');
+  } else {
+    var tl = d.tutors.length ? d.tutors.join('、') : '该方向暂无名额记录';
+    L.push('该方向有名额的导师：' + tl);
+    L.push('数据来源：2026 级录取统计（' + ((APP_DATA.meta && APP_DATA.meta.version)||'2026.11') + '），仅供参考，不构成录取承诺');
+  }
   return L;
 }
 
@@ -14268,7 +14896,7 @@ function renderScoreLocator(m){
     '<div id="locateResult"></div>' +
 
 
-    '<div class="note-box">对照目标分数参考表，自动判断可报考方向（达到目标线即可报考，分数越高，高于均分的幅度越大）。</div></div>';
+    '<div class="note-box">输入分数后展示 2026 级录取统计中的位置（分段、均分/最低分差），仅作参考，不构成报考建议。</div></div>';
 
 
 }
@@ -14329,6 +14957,40 @@ function rebuildTutorsFromAdmission(){
 
 
   if(typeof ADMISSION_DATA === 'undefined' || !ADMISSION_DATA || !ADMISSION_DATA.length) return;
+
+  // 新版 ADMISSION_DATA 为扁平精简结构（无 students 明细），直接用 tutors 数组
+  if(!ADMISSION_DATA[0].list){
+    // 保存旧的评级等字段
+    var oldMap2 = {};
+    if(APP_DATA.tutors){
+      for(var i2=0;i2<APP_DATA.tutors.length;i2++){
+        var ot2 = APP_DATA.tutors[i2];
+        oldMap2[ot2.name + '|' + ot2.institute] = { grade: ot2.grade, role: ot2.role, reason: ot2.reason, field: ot2.field, delay: ot2.delay, horizontal: ot2.horizontal, evalNote: ot2.evalNote, direction: ot2.direction };
+      }
+    }
+    var newTutors2 = [];
+    for(var ai=0;ai<ADMISSION_DATA.length;ai++){
+      var ta = ADMISSION_DATA[ai];
+      var noteParts2 = [];
+      if(ta.xue) noteParts2.push('学硕'+ta.xue);
+      if(ta.zhuan) noteParts2.push('专硕'+ta.zhuan);
+      var entry2 = {
+        name: ta.tutor,
+        institute: ta.dept,
+        xueShuo: ta.xue,
+        zhuanShuo: ta.zhuan,
+        total: ta.total,
+        note: noteParts2.join('、'),
+        direction: ta.dir || ''
+      };
+      var ok2 = oldMap2[entry2.name + '|' + entry2.institute];
+      if(!ok2){ for(var kk in oldMap2){ if(kk.indexOf(entry2.name+'|')===0){ ok2=oldMap2[kk]; break; } } }
+      if(ok2){ for(var ff in ok2){ if(ok2[ff]!==undefined && ok2[ff]!==null && ok2[ff]!=='') entry2[ff]=ok2[ff]; } }
+      newTutors2.push(entry2);
+    }
+    APP_DATA.tutors = newTutors2;
+    return;
+  }
 
 
   // 保存旧的评级等字段
@@ -14490,7 +15152,10 @@ function rebuildTutorsFromAdmission(){
       // 从基准评价数据表加载（硬编码数据，部署后所有访客可见）
 
 
-      var baseEval = TUTOR_EVAL_DATA[t.tutor];
+      // 评价分级已迁服务端：APP_DATA.evals 仅订阅/主人下发，游客为空
+      var baseEval = null;
+      var _evals = (typeof APP_DATA!=='undefined' && APP_DATA.evals) || [];
+      for(var _ei=0;_ei<_evals.length;_ei++){ if(_evals[_ei].name===t.tutor){ baseEval=_evals[_ei]; break; } }
 
 
       if(baseEval){
