@@ -1,7 +1,8 @@
 {
   "trial_activations": {
     "qa_test": 1793781827.9550068,
-    "trial_1h": 1793807372.0362399
+    "trial_1h": 1793807372.0362399,
+    "trial_24h": 1793807388.2023065
   },
   "account_overrides": {},
   "password_hashes": {
