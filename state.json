@@ -6,6 +6,7 @@
   },
   "account_overrides": {},
   "password_hashes": {
-    "master": "v1_6dab1c424ad3af143704a824c7ad34b4675c9374f20f613104bab7b92b9350e4.c1e6c0bd62cd7231"
+    "master": "v1_6dab1c424ad3af143704a824c7ad34b4675c9374f20f613104bab7b92b9350e4.c1e6c0bd62cd7231",
+    "vip_perm": "v1_b24197d1f38aff3b4b67795b213220c5e1a85f956078feaec5e78addcf51b7ed.3cacc12a17935bf5"
   }
 }
