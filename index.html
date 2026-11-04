@@ -794,9 +794,36 @@ tr:hover{background:#eff6ff}
       sessionStorage.setItem('decision_role','guest');
       window.__scanScore=parseInt(sc,10)||0;
       window.__scanDir=q.get('d')||'';
-      if(typeof trackEvent==='function') trackEvent('scan_landing',{s:window.__scanScore,d:window.__scanDir});
+      // 主脚本尚未加载，trackEvent 还不存在：延迟到 load 后补报
+      window.__pendingTrack=[{e:'scan_landing',p:{s:window.__scanScore,d:window.__scanDir}}];
+      window.addEventListener('load',function(){
+        setTimeout(function(){
+          try{
+            if(window.__pendingTrack && typeof trackEvent==='function'){
+              window.__pendingTrack.forEach(function(x){ trackEvent(x.e,x.p); });
+              window.__pendingTrack=null;
+            }
+          }catch(e){}
+        },300);
+      });
     }
   }catch(e){}
+})();
+// 门禁按钮在主脚本加载完成前被点击时，先排队，等真实实现出现后再执行
+(function(){
+  var names=['enterAsGuest','checkSubscriber','toggleMasterInput','checkMaster','goLogin'];
+  names.forEach(function(n){
+    if(typeof window[n]==='function') return;
+    var stub=function(){
+      var args=arguments, self=this, tries=0;
+      (function retry(){
+        if(window[n] && window[n]!==stub){ return window[n].apply(self,args); }
+        if(++tries>200) return;
+        setTimeout(retry,50);
+      })();
+    };
+    window[n]=stub;
+  });
 })();
 </script>
 </head>
