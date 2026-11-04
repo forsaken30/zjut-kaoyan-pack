@@ -608,19 +608,14 @@ tr:hover{background:#eff6ff}
 /* 动态密码面板（仅主人可见） */
 
 
-#lockScreen .daily-panel{margin-top:14px;padding:12px;border-radius:8px;background:#f0fdf4;border:2px solid #16a34a;text-align:center}
 
 
-#lockScreen .daily-panel-title{font-size:12px;color:#16a34a;font-weight:600;margin-bottom:6px}
 
 
-#lockScreen .daily-code{font-size:24px;font-weight:700;color:#16a34a;letter-spacing:3px;font-family:monospace}
 
 
-#lockScreen .daily-date{font-size:12px;color:#94a3b8;margin-top:4px}
 
 
-#lockScreen .daily-copy{margin-top:8px;padding:6px 16px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:12px;cursor:pointer}
 
 
 /* 订阅登录面板 */
@@ -1090,7 +1085,7 @@ tr:hover{background:#eff6ff}
 var MASTER_PASS_HASH = 's2_656f446da9fa1e8839c1fd525c96c1486ead406f3ebba96f82942aa703b70256';
 
 
-var SECRET_SEED = 'ZJUT_MaterialSci_2026_DecisionPack_Secret_v2';
+var SECRET_SEED = 'ZJUT_MaterialSci_2026_DecisionPack_Secret_v2'; // 仅旧文本哈希兼容用，非动态密码
 
 
 var LOCK_SESSION_KEY = 'decision_unlocked';
@@ -1537,25 +1532,6 @@ function getTodayStr(){
 // 生成今日动态密码（SHA-256 + 8位字母数字混合，安全性大幅提升）
 
 
-function getDailyPassword(){
-
-
-  var raw = SECRET_SEED + '|daily|' + getTodayStr();
-
-
-  var hash = sha256(raw);
-
-
-  // 取前8位，全小写字母+数字，共 36^8 ≈ 2.8万亿 种组合
-
-
-  var code = hash.substring(0, 8);
-
-
-  return code;
-
-
-}
 
 
 
@@ -2660,8 +2636,6 @@ function checkMaster(){
 
 
       window.__SCF_TOKEN = data.token;
-
-      if(data.dailyCode){ sessionStorage.setItem('daily_code',data.dailyCode); }
       if(data.adminToken){
         sessionStorage.setItem('scf_admin_token',data.adminToken);
         window.__SCF_ADMIN_TOKEN = data.adminToken;
@@ -2895,70 +2869,11 @@ function lockError(msg){
 
 
 
-function showDailyPanel(){
-
-
-  var panel = document.getElementById('dailyPanel');
-
-
-  if(!panel) return;
-
-
-  var code = sessionStorage.getItem('daily_code') || getDailyPassword();
-
-
-  var today = getTodayStr();
-
-
-  panel.style.display = 'block';
-
-
-  panel.innerHTML = '<div class="daily-panel">' +
-
-
-    '<div class="daily-panel-title">今日动态密码（兼容旧版访客入口）</div>' +
-
-
-    '<div class="daily-code">' + code + '</div>' +
-
-
-    '<div class="daily-date">有效期：' + today + '（次日失效）</div>' +
-
-
-    '<button class="daily-copy" onclick="copyDailyCode()">复制密码</button>' +
-
-
-    '<div style="font-size:12px;color:#94a3b8;margin-top:6px">2秒后自动进入</div>' +
-
-
-    '</div>';
-
-
-}
 
 
 
 
 
-function copyDailyCode(){
-
-
-  var code = sessionStorage.getItem('daily_code') || getDailyPassword();
-
-
-  var ta = document.createElement('textarea');
-
-
-  ta.value = code; document.body.appendChild(ta); ta.select();
-
-
-  try { document.execCommand('copy'); showLockToast('已复制：' + code); } catch(e){}
-
-
-  document.body.removeChild(ta);
-
-
-}
 
 
 
@@ -3091,22 +3006,6 @@ function getTodayStr(){
 // 生成今日动态密码（SHA-256 + 8位字母数字混合）
 
 
-function getDailyPassword(){
-
-
-  var raw = SECRET_SEED + '|daily|' + getTodayStr();
-
-
-  var hash = sha256(raw);
-
-
-  var code = hash.substring(0, 8);
-
-
-  return code;
-
-
-}
 
 
 
@@ -3131,12 +3030,6 @@ function toggleMode(){
 
 
   var btn = document.querySelector('.mode-switch a');
-
-
-  var panel = document.getElementById('dailyPanel');
-
-
-  if(!panel) return;
 
 
   if(isMasterMode){
@@ -3265,27 +3158,10 @@ function checkLock(){
   } else {
 
 
-    // 访客模式：验证今日动态密码
+    recordLoginFail(false);
 
 
-    var _dailyBody = JSON.stringify({password:pwd, type:'daily'});
-fetch(SCF_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:_dailyBody})
-  .then(function(r){return r.json();})
-  .then(function(data){
-    if(data && data.ok && data.token){
-      sessionStorage.setItem(LOCK_SESSION_KEY,'1');
-      sessionStorage.setItem(LOCK_DATE_KEY,today);
-      sessionStorage.setItem(LOCK_ROLE_KEY,'visitor');
-      sessionStorage.setItem('scf_token',data.token);
-      window.__SCF_TOKEN = data.token;
-      recordLoginFail(true);
-      unlockApp();
-    } else {
-      recordLoginFail(false);
-      lockError('今日密码错误或已过期');
-    }
-  });
-
+    lockError('密码错误');
 
   }
 
@@ -3350,106 +3226,11 @@ function lockError(msg){
 
 
 
-function showDailyPanel(){
 
 
-  var panel = document.getElementById('dailyPanel');
 
 
-  if(!panel) return;
 
-
-  var code = sessionStorage.getItem('daily_code') || getDailyPassword();
-
-
-  var today = getTodayStr();
-
-
-  panel.style.display = 'block';
-
-
-  panel.innerHTML = '<div class="daily-panel">' +
-
-
-    '<div class="daily-panel-title">今日动态密码（发送给朋友）</div>' +
-
-
-    '<div class="daily-code">' + code + '</div>' +
-
-
-    '<div class="daily-date">有效期：' + today + '（次日失效）</div>' +
-
-
-    '<button class="daily-copy" onclick="copyDailyCode()">复制密码</button>' +
-
-
-    '<div style="font-size:12px;color:#94a3b8;margin-top:6px">3秒后自动进入</div>' +
-
-
-    '</div>';
-
-
-}
-
-
-
-
-
-function copyDailyCode(){
-
-
-  var code = sessionStorage.getItem('daily_code') || getDailyPassword();
-
-
-  if(navigator.clipboard){
-
-
-    navigator.clipboard.writeText(code).then(function(){
-
-
-      showLockToast('已复制：' + code);
-
-
-    }).catch(function(){
-
-
-      // 降级方案
-
-
-      var ta = document.createElement('textarea');
-
-
-      ta.value = code; document.body.appendChild(ta); ta.select();
-
-
-      try { document.execCommand('copy'); showLockToast('已复制：' + code); } catch(e){}
-
-
-      document.body.removeChild(ta);
-
-
-    });
-
-
-  } else {
-
-
-    var ta = document.createElement('textarea');
-
-
-    ta.value = code; document.body.appendChild(ta); ta.select();
-
-
-    try { document.execCommand('copy'); showLockToast('已复制：' + code); } catch(e){}
-
-
-    document.body.removeChild(ta);
-
-
-  }
-
-
-}
 
 
 
