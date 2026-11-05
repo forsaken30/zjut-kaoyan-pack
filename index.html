@@ -6277,7 +6277,7 @@ var DATA_MASKED = true;
 
 function versionTag(){ try{ var m=APP_DATA&&APP_DATA.meta; return (m&&m.version)?(' · 数据 '+m.version):''; }catch(e){ return ''; } }
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function fmtVal(v){ if(typeof DATA_MASKED!=='undefined' && DATA_MASKED) return '订阅可查看'; return (v===null || v===undefined || v==='') ? '订阅可查看' : esc(v); }
+function fmtVal(v){ if(v==='订阅可查看') return '订阅可查看'; return (v===null || v===undefined || v==='') ? '-' : esc(v); }
 function wrapTables(){ var ts=document.querySelectorAll('table'); for(var i=0;i<ts.length;i++){ var t=ts[i]; if(t.parentNode && t.parentNode.classList && t.parentNode.classList.contains('data-table-wrap')) continue; var w=document.createElement('div'); w.className='data-table-wrap'; t.parentNode.insertBefore(w,t); w.appendChild(t); } }
 document.addEventListener('DOMContentLoaded', function(){ setTimeout(wrapTables, 300); });
 
@@ -6788,7 +6788,7 @@ function renderOverview(){
     var rm = {};
 
 
-    for(var ei=0;ei<entries.length;ei++){ rm[entries[ei].range] = DATA_MASKED ? 0 : ((rm[entries[ei].range]||0) + entries[ei].count); }
+    for(var ei=0;ei<entries.length;ei++){ rm[entries[ei].range] = ((rm[entries[ei].range]||0) + entries[ei].count); }
 
 
     var mx = 1;
@@ -6797,7 +6797,7 @@ function renderOverview(){
     for(var r0=0;r0<ranges.length;r0++){ var cv = rm[ranges[r0]]||0; if(cv>mx) mx=cv; }
 
 
-    if(DATA_MASKED){ h += '<div class="sub-note">订阅后可查看完整分数分布</div>'; }
+    // 分数段分布已对游客全量开放
 
 
     h += '<div class="bar-chart">';
@@ -13561,7 +13561,7 @@ function buildPositionLines(d){
   }
   L.push('分数段 ' + d.range + ' · 该段 2026 级 ' + d.dist + ' 人');
   if(DATA_MASKED){
-    var tl2 = d.tutors.length ? d.tutors.join('、') : '该方向暂无记录';
+    var tl2 = d.tutors.length ? d.tutors.join('、') : '导师名单加载失败，请刷新重试';
     L.push('该方向导师（名额需订阅）：' + tl2);
     L.push('导师名额 · 招生明细 · 智能推荐：订阅后解锁');
   } else {
@@ -13747,6 +13747,11 @@ function buildReportHTML(){
   h += '<div style="color:#475569">生成时间：' + stamp + ' · 数据版本 ' + ((APP_DATA.meta && APP_DATA.meta.version)||'2026.11') + '</div>';
   h += '<h2>一、分数定位</h2>';
   for(var i=0;i<lines.length;i++){ h += '<div>' + (i+1) + '. ' + esc(lines[i]) + '</div>'; }
+  var guestReport = (typeof DATA_MASKED !== 'undefined') && DATA_MASKED;
+  if(guestReport){
+    h += '<h2>二、导师参考</h2>';
+    h += '<div>含导师推荐、匹配排序与录取明细的完整报告，需订阅后导出。</div>';
+  } else {
   h += '<h2>二、导师参考（按匹配排序，前 ' + rows.length + ' 位）</h2>';
   if(rows.length){
     h += '<table><thead><tr><th>导师</th><th>研究所</th><th>学硕</th><th>专硕</th><th>录取</th><th>均分</th><th>最低</th><th>最高</th></tr></thead><tbody>';
@@ -13759,6 +13764,7 @@ function buildReportHTML(){
     h += '</tbody></table>';
   } else {
     h += '<div>无匹配结果</div>';
+  }
   }
   h += '<div class="rep-note">说明：本报告基于 2026 级录取统计自动生成，仅供报考参考，不构成录取承诺；最终以学校官方公布为准。</div>';
   h += '<div class="rep-note">来源：' + SITE_URL + '</div>';
