@@ -8243,7 +8243,7 @@ function renderAdmission(){
   // 顶部
 
 
-  h += '<div class="card"><div class="card-title">2026级导师招生情况（'+quotaTotal()+'人/'+tutorHeadcount()+'位导师/'+Object.keys(APP_DATA.institutes||{}).length+'个研究所）</div>';
+  h += '<div class="card"><div class="card-title">2026级导师招生情况（'+(DATA_MASKED?'—':quotaTotal()+'人')+'/'+tutorHeadcount()+'位导师/'+Object.keys(APP_DATA.institutes||{}).length+'个研究所）</div>';
 
 
   if(!canView){
