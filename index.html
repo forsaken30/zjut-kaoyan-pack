@@ -1174,7 +1174,13 @@ async function fetchLatestData(){
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({action:'getData', token: token})
     });
-    if(!resp.ok){ notifyDataFail(); return false; }
+    if(!resp.ok){
+      var errBody=null;
+      try{ errBody=await resp.json(); }catch(e){}
+      var errCode=errBody&&errBody.code;
+      if(token && errCode){ handleSessionInvalid(errCode, errBody&&errBody.error); return fetchLatestData().then(function(r){ if(typeof applyRoleUI==='function') applyRoleUI(); return r; }); }
+      notifyDataFail(); return false;
+    }
     var result = await resp.json();
     if(result && result.data){
       APP_DATA = result.data;
@@ -1194,6 +1200,62 @@ async function fetchLatestData(){
   }catch(e){ notifyDataFail(); }
   return false;
 }
+
+
+var TRIAL_UNTIL_KEY='decision_trial_until';
+
+
+function saveTrialUntil(sec){
+  try{
+    if(sec>0){ localStorage.setItem(TRIAL_UNTIL_KEY, String(Date.now()+sec*1000)); }
+    else { localStorage.removeItem(TRIAL_UNTIL_KEY); }
+  }catch(e){}
+}
+
+
+function clearTrialUntil(){ try{ localStorage.removeItem(TRIAL_UNTIL_KEY); }catch(e){} }
+
+
+function trialRemainMs(){
+  try{ var t=parseInt(localStorage.getItem(TRIAL_UNTIL_KEY)||'0',10); return t? t-Date.now():0; }catch(e){ return 0; }
+}
+
+
+function trialRemainText(){
+  var ms=trialRemainMs();
+  if(ms<=0) return '';
+  var m=Math.floor(ms/60000);
+  if(m>=60) return Math.floor(m/60)+' 小时 '+(m%60)+' 分';
+  return (m>0? m+' 分钟' : '不到 1 分钟');
+}
+
+
+function cleanSessionLocal(){
+  try{ sessionStorage.removeItem('scf_token'); sessionStorage.setItem(LOCK_ROLE_KEY,'guest'); }catch(e){}
+  clearTrialUntil();
+}
+
+
+function handleSessionInvalid(code, msg){
+  var map={trial_ended:'试用已结束，已切回游客视图', account_disabled:'账号已停用，请联系管理员', token_revoked:'登录已失效，请重新登录', token_invalid:'登录状态无效，请重新登录'};
+  cleanSessionLocal();
+  showToast(map[code] || msg || '登录已失效，请重新登录');
+}
+
+
+function dropToGuestAndReload(msg){
+  cleanSessionLocal();
+  if(msg) showToast(msg);
+  fetchLatestData().then(function(){ if(typeof applyRoleUI==='function') applyRoleUI(); });
+}
+
+
+setInterval(function(){
+  var until=parseInt(localStorage.getItem(TRIAL_UNTIL_KEY)||'0',10);
+  if(!until) return;
+  if(Date.now()>until){ dropToGuestAndReload('试用已结束，已切回游客视图'); return; }
+  if(typeof isSubscriber==='function' && isSubscriber() && typeof applyRoleUI==='function') applyRoleUI();
+},60000);
 
 
 function tutorHeadcount(){ var m=APP_DATA.meta||{}; return m.tutorCount || APP_DATA.tutors.length; }
@@ -2827,6 +2889,9 @@ function checkSubscriber(){
       sessionStorage.setItem('scf_token', data.token);
 
 
+      if(data.type === 'trial'){ saveTrialUntil(data.trialRemaining || 0); } else { clearTrialUntil(); }
+
+
       window.__SCF_TOKEN = data.token;
 
 
@@ -2881,7 +2946,9 @@ function checkSubscriber(){
       recordLoginFail(false);
 
 
-      lockError(data.error || '登录失败');
+      var loginErr = data.error || '登录失败';
+      if(loginErr.indexOf('试用已结束') >= 0) loginErr = '试用已结束，如需继续使用请订阅';
+      lockError(loginErr);
 
 
     }
@@ -3578,7 +3645,10 @@ function applyRoleUI(){
       var uname = sessionStorage.getItem('decision_sub_user') || '订阅用户';
 
 
-      badge.textContent = '⭐ ' + uname;
+      var tremain = trialRemainText();
+
+
+      badge.textContent = '⭐ ' + uname + (tremain ? ' · 试用剩余 ' + tremain : '');
 
 
       badge.style.background = '#dbeafe';
@@ -3608,7 +3678,7 @@ function applyRoleUI(){
   // 状态栏
 
 
-  var roleTag = master ? '👑 主人模式' : (sub ? '⭐ 订阅用户' : '👁️ 游客试用');
+  var roleTag = master ? '👑 主人模式' : (sub ? ('⭐ 订阅用户' + (trialRemainText() ? ' · 试用剩余 ' + trialRemainText() : '')) : '👁️ 游客试用');
 
 
   var sb = $('statusbar');
