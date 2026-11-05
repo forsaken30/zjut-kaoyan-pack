@@ -9105,7 +9105,7 @@ function renderAdminAccounts(c){
   h += '<div style="margin-bottom:12px;padding:10px 14px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;font-size:12px;color:#92400e">';
 
 
-  h += 'ℹ️ 当前为加密外壳模式，账号列表在登录时自动同步。新建/删除账号仅在本会话生效，如需永久生效请联系管理员重新构建站点。试用账号刷新功能可正常使用。';
+  h += 'ℹ️ 新建/停用账号会写入服务端（立即生效）；账号列表载入时自动同步，本页仅缓存展示。试用账号刷新功能可正常使用。';
 
 
   h += '</div>';
@@ -9210,7 +9210,7 @@ function renderAdminAccounts(c){
       h += '<tr style="border-bottom:1px solid #e0f2fe">';
 
 
-      h += '<td style="padding:8px;font-weight:600">' + esc(ta.username) + '</td>';
+      h += '<td style="padding:8px;font-weight:600">' + esc(ta.username) + (ta.note ? '<div style="font-size:11px;color:#64748b;font-weight:400">' + esc(ta.note) + '</div>' : '') + '</td>';
 
 
       h += '<td style="padding:8px;text-align:center">' + ta.trialHours + '小时</td>';
@@ -9270,7 +9270,7 @@ function renderAdminAccounts(c){
     h += '<table style="width:100%;border-collapse:collapse;font-size:13px">';
 
 
-    h += '<tr style="background:#f1f5f9"><th style="padding:8px;text-align:left">账号</th><th style="padding:8px">创建日期</th><th style="padding:8px">到期日期</th><th style="padding:8px">状态</th><th style="padding:8px">操作</th></tr>';
+    h += '<tr style="background:#f1f5f9"><th style="padding:8px;text-align:left">账号</th><th style="padding:8px">备注</th><th style="padding:8px">创建日期</th><th style="padding:8px">到期日期</th><th style="padding:8px">状态</th><th style="padding:8px">操作</th></tr>';
 
 
     for(var i=0;i<normals.length;i++){
@@ -9289,6 +9289,9 @@ function renderAdminAccounts(c){
 
 
       h += '<td style="padding:8px;font-weight:600">' + esc(a.username) + '</td>';
+
+
+      h += '<td style="padding:8px;color:#64748b">' + (a.note ? esc(a.note) : '-') + '</td>';
 
 
       h += '<td style="padding:8px;text-align:center">' + (a.created?a.created.substring(0,10):'-') + '</td>';
@@ -9378,7 +9381,16 @@ function showCreateAccountForm(){
   html += '<div style="margin-bottom:12px"><label style="display:block;font-size:13px;margin-bottom:4px">账号名</label><input id="newAccUser" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px" placeholder="如 student01"></div>';
 
 
-  html += '<div style="margin-bottom:12px"><label style="display:block;font-size:13px;margin-bottom:4px">密码</label><input id="newAccPass" type="password" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px" placeholder="至少4位"></div>';
+  html += '<div style="margin-bottom:12px"><label style="display:block;font-size:13px;margin-bottom:4px">密码</label><input id="newAccPass" type="password" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px" placeholder="至少6位"></div>';
+
+
+  html += '<div style="margin-bottom:12px"><label style="display:block;font-size:13px;margin-bottom:4px">账号类型</label><select id="newAccType" onchange="(function(v){var w=document.getElementById(\'newAccHoursWrap\');if(w)w.style.display=v===\'trial\'?\'block\':\'none\';})(this.value)" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px"><option value="normal">订阅账号（长期）</option><option value="trial">试用账号（限时）</option></select></div>';
+
+
+  html += '<div id="newAccHoursWrap" style="margin-bottom:12px;display:none"><label style="display:block;font-size:13px;margin-bottom:4px">试用时长（小时）</label><input id="newAccHours" type="number" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px" placeholder="如 24，首次登录开始计时"></div>';
+
+
+  html += '<div style="margin-bottom:12px"><label style="display:block;font-size:13px;margin-bottom:4px">备注（渠道/编号，不要写姓名）</label><input id="newAccNote" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px" placeholder="如 wx-1105-1"><div style="font-size:11px;color:#b45309;margin-top:4px">备注会存入状态文件，可能被公开读取，请只写代号</div></div>';
 
 
   html += '<div style="margin-bottom:12px"><label style="display:block;font-size:13px;margin-bottom:4px">有效期（天，留空=永久）</label><input id="newAccDays" type="number" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px" placeholder="如 30 表示30天后到期"></div>';
@@ -9402,7 +9414,7 @@ function showCreateAccountForm(){
 function doCreateAccount(){
 
 
-  var user = document.getElementById('newAccUser').value;
+  var user = (document.getElementById('newAccUser').value || '').trim();
 
 
   var pass = document.getElementById('newAccPass').value;
@@ -9411,10 +9423,71 @@ function doCreateAccount(){
   var days = document.getElementById('newAccDays').value;
 
 
-  var result = createAccount(user, pass, days ? parseInt(days) : null);
+  var typeEl = document.getElementById('newAccType');
 
 
-  if(result.ok){
+  var accType = typeEl ? typeEl.value : 'normal';
+
+
+  var hoursEl = document.getElementById('newAccHours');
+
+
+  var hours = hoursEl && hoursEl.value ? parseInt(hoursEl.value) : null;
+
+
+  var noteEl = document.getElementById('newAccNote');
+
+
+  var note = noteEl ? noteEl.value.trim() : '';
+
+
+  if(!user || !pass || pass.length < 6){ showToast('账号名必填，密码至少6位'); return; }
+
+
+  if(accType === 'trial' && (!hours || hours <= 0)) hours = 24;
+
+
+  var expiry = null;
+
+
+  if(days){ var d = new Date(); d.setDate(d.getDate() + parseInt(days)); expiry = d.toISOString().substring(0,10); }
+
+
+  var adminToken = getAdminToken();
+
+
+  if(!adminToken){ showToast('请先设置管理密码（adminToken）'); return; }
+
+
+  var payload = {action:'upsert_account', adminToken:adminToken, username:user, password:pass,
+                 role:'subscriber', accountType:accType, note:note, expiry:expiry};
+
+
+  if(accType === 'trial') payload.trialHours = hours;
+
+
+  fetch(SCF_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
+  }).then(function(r){return r.json();}).then(function(d){
+
+
+    if(!d.ok){ showToast(d.error || d.message || '保存失败'); return; }
+
+
+    var list = getAccounts();
+
+
+    var ex = list.find(function(a){return a.username.toLowerCase() === user.toLowerCase();});
+
+
+    if(ex){ ex.type = accType; ex.status = 'active'; ex.expiry = expiry; ex.note = note;
+            if(accType === 'trial') ex.trialHours = hours; }
+    else { list.push({username:user, type:accType, status:'active', expiry:expiry, note:note,
+            trialHours: accType === 'trial' ? hours : null, activatedAt:null,
+            created:new Date().toISOString(), passHash:''}); }
+
+
+    saveAccounts(list);
 
 
     closeModal();
@@ -9423,16 +9496,10 @@ function doCreateAccount(){
     renderAdminAccounts();
 
 
-    showToast('账号创建成功');
+    showToast('账号已保存到服务端');
 
 
-  } else {
-
-
-    showToast(result.msg);
-
-
-  }
+  }).catch(function(){ showToast('网络错误，保存失败'); });
 
 
 }
@@ -9486,13 +9553,28 @@ function toggleAccountStatus(username){
   var newStatus = acc.status === 'active' ? 'disabled' : 'active';
 
 
-  updateAccountStatus(username, newStatus);
+  var adminToken = getAdminToken();
 
 
-  renderAdminAccounts();
+  function applyLocal(){ updateAccountStatus(username, newStatus); renderAdminAccounts(); showToast('已' + (newStatus==='active'?'启用':'停用') + '账号 ' + username); }
 
 
-  showToast('已' + (newStatus==='active'?'启用':'停用') + '账号 ' + username);
+  if(!adminToken){ applyLocal(); return; }
+
+
+  fetch(SCF_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action: newStatus==='active' ? 'activate_account' : 'deactivate_account',
+                         adminToken: adminToken, username: username})
+  }).then(function(r){return r.json();}).then(function(d){
+
+
+    if(d.ok){ applyLocal(); }
+
+
+    else { showToast(d.error || '操作失败'); }
+
+
+  }).catch(function(){ showToast('网络错误，未同步服务端'); });
 
 
 }
