@@ -9186,6 +9186,10 @@ function renderAdminAccounts(c){
 
   h += '</div>';
 
+  if(typeof getAdminToken === 'function' && !getAdminToken()){
+    h += '<div style="margin-bottom:12px;padding:10px 14px;background:#fee2e2;border:1px solid #fecaca;border-radius:8px;font-size:12px;color:#b91c1c">⚠️ 未连接服务端（缺少管理密码）：当前列表仅为本地缓存，可能缺少新账号。请用主人密码重新登录后再看本页。</div>';
+  }
+
 
   h += '<div style="margin-bottom:16px">';
 
@@ -9713,7 +9717,13 @@ function renderAdminContent(tab){
     case 'decision': renderAdminDecision(c); break;
 
 
-    case 'accounts': renderAdminAccounts(c); break;
+    case 'accounts':
+      renderAdminAccounts(c);
+      // 进入账号管理时主动从服务端同步一次（修复：bootApp 时未登录导致永不同步）
+      if(typeof syncAccountsFromSCF === 'function'){
+        syncAccountsFromSCF(function(){ renderAdminAccounts(); });
+      }
+      break;
 
 
     case 'settings': renderAdminSettings(c); break;
