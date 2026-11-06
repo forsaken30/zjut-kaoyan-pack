@@ -15436,6 +15436,22 @@ function syncAccountsFromSCF(callback){
             if(scf.trialHours !== undefined) la.trialHours = scf.trialHours;
 
 
+          } else {
+
+            // 服务端存在但本地没有（例如批量写入的试用号）：插入本地缓存
+
+            local.push({
+              username: scf.username,
+              type: scf.type || 'normal',
+              role: scf.role || 'subscriber',
+              status: scf.status === 'active' ? 'active' : 'disabled',
+              trialHours: scf.trialHours,
+              note: scf.note || '',
+              expiry: scf.expiry || null,
+              activatedAt: scf.activatedAt || null,
+              createdAt: null
+            });
+
           }
 
 
