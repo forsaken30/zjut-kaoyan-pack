@@ -2658,6 +2658,8 @@ function refreshTrialAccount(username){
 function enterAsGuest(){
 
 
+  sessionStorage.removeItem('scf_token');  // 选游客即放弃登录态，防止残留令牌拉全量数据
+
   sessionStorage.setItem(LOCK_SESSION_KEY, '1');
 
 
@@ -3535,6 +3537,8 @@ function goLogin(){
 
 
   sessionStorage.removeItem(LOCK_ROLE_KEY);
+
+  sessionStorage.removeItem('scf_token');  // 防泄露：退出必须丢弃令牌，否则刷新后仍拉全量数据
 
 
   location.reload();
